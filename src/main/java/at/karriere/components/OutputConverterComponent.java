@@ -6,7 +6,7 @@ import redis.clients.jedis.BuilderFactory;
 import java.util.List;
 
 @Component
-public class OutputConverter {
+public class OutputConverterComponent {
 
     //Frech kopiert, github.com/ApesRise/jedis-cli/
     public String stringify(Object obj){
