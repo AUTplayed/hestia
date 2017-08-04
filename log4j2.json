@@ -1,0 +1,51 @@
+{
+  "configuration": {
+    "packages": "org.apache.logging.log4j.core,io.sentry:sentry.log4j2",
+    "Properties": {
+      "Property": {
+        "name": "baseDir",
+        "value": "logs"
+      }
+    },
+    "appenders": {
+      "appender": [
+        {
+          "type": "Console",
+          "name": "STDOUT",
+          "PatternLayout": {
+            "pattern": "%style{%d{DATE} [%t]}{Cyan} %style{%-5level %c{1.}:}{Magenta} %highlight{%msg%n%throwable}{STYLE=Logback}"
+          }
+        },
+        {
+          "type": "File",
+          "name": "durationLogger",
+          "FileName": "${baseDir}/heliosDuration.log",
+          "PatternLayout": {
+            "pattern": "%d{DATE} %msg%n"
+          }
+        }
+      ]
+    },
+    "loggers": {
+      "root": {
+        "level": "info",
+        "appender-ref": [
+          {
+            "ref": "STDOUT"
+          }
+        ]
+      },
+      "logger": [
+        {
+          "level": "info",
+          "name": "durationLogger",
+          "appender-ref": [
+            {
+              "ref": "durationLogger"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
