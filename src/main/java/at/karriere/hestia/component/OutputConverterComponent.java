@@ -1,4 +1,4 @@
-package at.karriere.components;
+package at.karriere.hestia.component;
 
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.BuilderFactory;

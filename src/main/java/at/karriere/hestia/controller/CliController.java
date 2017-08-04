@@ -1,7 +1,7 @@
-package at.karriere.controller;
+package at.karriere.hestia.controller;
 
 
-import at.karriere.services.CliService;
+import at.karriere.hestia.service.CliService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

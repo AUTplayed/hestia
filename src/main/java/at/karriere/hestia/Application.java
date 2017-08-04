@@ -1,19 +1,14 @@
-package at.karriere;
+package at.karriere.hestia;
 
 
-import at.karriere.repositories.Repository;
-import io.sentry.Sentry;
+import at.karriere.hestia.repository.Repository;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.apache.logging.log4j.core.config.ConfigurationSource;
-import org.apache.logging.log4j.core.config.Configurator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import javax.annotation.PostConstruct;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 
 @SpringBootApplication

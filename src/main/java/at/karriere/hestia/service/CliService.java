@@ -1,9 +1,9 @@
-package at.karriere.services;
+package at.karriere.hestia.service;
 
-import at.karriere.components.DefaultHostComponent;
-import at.karriere.components.OutputConverterComponent;
-import at.karriere.entities.Connection;
-import at.karriere.repositories.CliRepository;
+import at.karriere.hestia.component.DefaultHostComponent;
+import at.karriere.hestia.component.OutputConverterComponent;
+import at.karriere.hestia.entity.Connection;
+import at.karriere.hestia.repository.CliRepository;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

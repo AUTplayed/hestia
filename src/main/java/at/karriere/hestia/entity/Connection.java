@@ -1,4 +1,4 @@
-package at.karriere.entities;
+package at.karriere.hestia.entity;
 
 /**
  * Class for passing reference of host and port

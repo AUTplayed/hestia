@@ -1,14 +1,18 @@
-package at.karriere.repositories;
+package at.karriere.hestia.repository;
 
 import org.apache.log4j.Logger;
+import org.springframework.context.annotation.Scope;
 import redis.clients.util.RedisInputStream;
 import redis.clients.util.RedisOutputStream;
+
+import javax.xml.ws.BindingType;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
 
 @org.springframework.stereotype.Repository
+@Scope("prototype")
 public class CliRepository {
 
     final static Logger LOGGER = Logger.getLogger(CliRepository.class);

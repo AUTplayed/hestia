@@ -1,6 +1,6 @@
-package at.karriere.repositories;
+package at.karriere.hestia.repository;
 
-import at.karriere.controller.CliController;
+import at.karriere.hestia.controller.CliController;
 import org.apache.log4j.Logger;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisMonitor;

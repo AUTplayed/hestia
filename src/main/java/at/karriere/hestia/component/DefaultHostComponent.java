@@ -1,6 +1,6 @@
-package at.karriere.components;
+package at.karriere.hestia.component;
 
-import at.karriere.entities.Connection;
+import at.karriere.hestia.entity.Connection;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 import java.io.FileInputStream;
