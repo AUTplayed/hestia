@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Protocol;
+import redis.clients.jedis.exceptions.JedisDataException;
 import redis.clients.util.RedisInputStream;
 import redis.clients.util.RedisOutputStream;
 
@@ -44,8 +45,14 @@ public class CliService {
             RedisInputStream instream = repository.getInstream();
             RedisOutputStream outstream = repository.getOutstream();
 
+            Protocol.Command cmd = null;
+            try{
+                 cmd = Protocol.Command.valueOf(command.toUpperCase());
+            }catch(IllegalArgumentException e){
+                LOGGER.error("Failed to parse command",e);
+                return "ERR illegal command '"+command.toLowerCase()+"'";
+            }
 
-            Protocol.Command cmd = Protocol.Command.valueOf(command.toUpperCase());
             byte[][] byteArgs = new byte[args.length][];
             for (int i = 0; i < args.length; i++) {
                 byteArgs[i] = args[i].getBytes();
@@ -56,7 +63,14 @@ public class CliService {
             } catch (IOException e) {
                 LOGGER.error("Failed to flush to redis",e);
             }
-            Object result = Protocol.read(instream);
+
+            Object result = null;
+            try{
+                result = Protocol.read(instream);
+            }catch (JedisDataException e){
+                LOGGER.error("Failed to execute command",e);
+                return e.getMessage();
+            }
 
             repository.disconnect();
             return outputConverter.stringify(result);

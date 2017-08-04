@@ -34,7 +34,7 @@ public class CliController {
         String[] splitCommand = command.split(" ");
         String[] args = Arrays.copyOfRange(splitCommand,1,splitCommand.length);
         String result = service.executeCommand(hostname,port,splitCommand[0], args);
-        LOGGER.info(result);
+        //LOGGER.info(result);
         return result;
     }
 
