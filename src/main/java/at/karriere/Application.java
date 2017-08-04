@@ -1,7 +1,6 @@
 package at.karriere;
 
 
-
 import at.karriere.repositories.Repository;
 import io.sentry.Sentry;
 import org.apache.log4j.LogManager;
@@ -31,12 +30,14 @@ public class Application {
 
         SpringApplication.run(Application.class, args);
     }
+
     private static final Logger LOGGER = LogManager.getLogger(Application.class);
+
     @PostConstruct
     public void init() throws IOException {
         /*
         File file = new File(System.getProperty("user.dir")+"/log4j2.json");
-        if(file.exists()){
+        if (file.exists()) {
             LOGGER.error("config exists");
             ConfigurationSource source = new ConfigurationSource(new FileInputStream(file));
             Configurator.initialize(null, source);
