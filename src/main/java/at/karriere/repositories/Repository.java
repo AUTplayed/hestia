@@ -2,8 +2,8 @@ package at.karriere.repositories;
 
 import at.karriere.controller.CliController;
 import org.apache.log4j.Logger;
-import redis.clients.jedis.*;
-import redis.clients.util.RedisOutputStream;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisMonitor;
 
 @org.springframework.stereotype.Repository
 public class Repository {

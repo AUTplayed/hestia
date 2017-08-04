@@ -44,8 +44,6 @@ public class Application {
         */
         //Sentry.init("https://public:private@host:port/1");
         LOGGER.info("Started");
-        //repository.executeCommand("SET","FOO","BAR");
-
 
     }
 }

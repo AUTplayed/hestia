@@ -1,6 +1,8 @@
 package at.karriere.entities;
 
-
+/**
+ * Class for passing reference of host and port
+ */
 public class Connection {
 
     private Integer port;

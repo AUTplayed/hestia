@@ -1,11 +1,8 @@
 package at.karriere.repositories;
 
-import at.karriere.controller.CliController;
 import org.apache.log4j.Logger;
-import redis.clients.jedis.Protocol;
 import redis.clients.util.RedisInputStream;
 import redis.clients.util.RedisOutputStream;
-
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -20,6 +17,12 @@ public class CliRepository {
     private RedisInputStream instream;
     private RedisOutputStream outstream;
 
+    /**
+     * Connect to specified host and port via socket and setup streams
+     * @param hostname
+     * @param port
+     * @return
+     */
     public boolean connect(String hostname,int port){
         socket = new Socket();
         try {
@@ -43,7 +46,9 @@ public class CliRepository {
                 && !socket.isInputShutdown() && !socket.isOutputShutdown();
     }
 
-
+    /**
+     * Disconnect from connected socket and closing streams
+     */
     public void disconnect(){
         try {
             if (instream != null) {

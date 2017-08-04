@@ -11,10 +11,7 @@ import redis.clients.jedis.Protocol;
 import redis.clients.jedis.exceptions.JedisDataException;
 import redis.clients.util.RedisInputStream;
 import redis.clients.util.RedisOutputStream;
-
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Properties;
 
 @Service
 public class CliService {
@@ -31,17 +28,27 @@ public class CliService {
         this.defaultHostComponent = defaultHostComponent;
     }
 
+    /**
+     * Executes a specified command with specified args on specified host and port redis server, returning results in String form
+     * @param hostname
+     * @param port
+     * @param command
+     * @param args
+     * @return
+     */
     public String executeCommand(String hostname,Integer port, String command, String... args){
 
         Connection connection = new Connection(hostname,port);
         defaultHostComponent.check(connection);
 
+        //Connect to redis server socket
         if(!repository.connect(connection.getHostname(), connection.getPort())){
-            return null;
+            return "ERR failed to connect to specified hostname and port";
         }else{
             RedisInputStream instream = repository.getInstream();
             RedisOutputStream outstream = repository.getOutstream();
 
+            //Parse args to command enum
             Protocol.Command cmd = null;
             try{
                  cmd = Protocol.Command.valueOf(command.toUpperCase());
@@ -50,10 +57,13 @@ public class CliService {
                 return "ERR illegal command '"+command.toLowerCase()+"'";
             }
 
+            //Parse args to byte array
             byte[][] byteArgs = new byte[args.length][];
             for (int i = 0; i < args.length; i++) {
                 byteArgs[i] = args[i].getBytes();
             }
+
+            //Send command
             Protocol.sendCommand(outstream,cmd,byteArgs);
             try {
                 outstream.flush();
@@ -61,6 +71,7 @@ public class CliService {
                 LOGGER.error("Failed to flush to redis",e);
             }
 
+            //Recieve result
             Object result = null;
             try{
                 result = Protocol.read(instream);
@@ -69,6 +80,7 @@ public class CliService {
                 return e.getMessage();
             }
 
+            //Stringify and return result
             repository.disconnect();
             return outputConverterComponent.stringify(result);
         }
