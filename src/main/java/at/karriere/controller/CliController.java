@@ -5,10 +5,7 @@ import at.karriere.services.CliService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 
@@ -30,13 +27,15 @@ public class CliController {
     }
 
     @RequestMapping(value = "/cli",method = RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
-    public String cli(@RequestParam(required = true,name = "hostname")String hostname,
-                      @RequestParam(required = true,name = "port")int port,
+    public String cli(@RequestParam(required = false,name = "hostname")String hostname,
+                      @RequestParam(required = false,name = "port")Integer port,
                       @RequestParam(required = true,name = "command")String command){
         LOGGER.info("GET cli");
         String[] splitCommand = command.split(" ");
-        service.executeCommand(hostname,port,splitCommand[0], Arrays.copyOfRange(splitCommand,1,splitCommand.length));
-        return "working";
+        String[] args = Arrays.copyOfRange(splitCommand,1,splitCommand.length);
+        String result = service.executeCommand(hostname,port,splitCommand[0], args);
+        LOGGER.info(result);
+        return result;
     }
 
 }
