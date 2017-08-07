@@ -45,6 +45,7 @@ dependencies {
     compile group: 'redis.clients', name: 'jedis', version: '2.9.0'
 }
 
+/*
 integrationTest {
     afterTest { descriptor, result ->
         def className = descriptor.getClassName()
@@ -53,4 +54,4 @@ integrationTest {
         }
         logger.lifecycle("IT: " + className + "." + descriptor.getName() + " (" + result.getResultType() + ")")
     }
-}
+}*/

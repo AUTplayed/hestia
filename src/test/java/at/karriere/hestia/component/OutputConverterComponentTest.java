@@ -22,7 +22,7 @@ public class OutputConverterComponentTest {
     public void testLong() {
         Long testlong = 10L;
         String result = outputConverterComponent.stringify(testlong);
-        Assertions.assertThat(result).as("check Long conversion").isEqualTo(testlong);
+        Assertions.assertThat(result).as("check Long conversion").isEqualTo(10);
     }
 
     @Test
