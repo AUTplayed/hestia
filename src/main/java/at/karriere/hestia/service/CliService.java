@@ -2,6 +2,8 @@ package at.karriere.hestia.service;
 
 import at.karriere.hestia.component.DefaultHostComponent;
 import at.karriere.hestia.component.OutputConverterComponent;
+import at.karriere.hestia.component.SplitCommandComponent;
+import at.karriere.hestia.entity.CommandContainer;
 import at.karriere.hestia.entity.Connection;
 import at.karriere.hestia.repository.CliRepository;
 import org.apache.log4j.Logger;
@@ -20,6 +22,7 @@ public class CliService {
     private CliRepository repository;
     private OutputConverterComponent outputConverterComponent;
     private DefaultHostComponent defaultHostComponent;
+    private SplitCommandComponent splitCommandComponent;
     final static Logger LOGGER = Logger.getLogger(CliService.class);
 
     @Value("${redis.host}")
@@ -29,22 +32,28 @@ public class CliService {
 
 
     @Autowired
-    public CliService(CliRepository repository, OutputConverterComponent outputConverterComponent, DefaultHostComponent defaultHostComponent) {
+    public CliService(CliRepository repository, OutputConverterComponent outputConverterComponent, DefaultHostComponent defaultHostComponent, SplitCommandComponent splitCommandComponent) {
         this.repository = repository;
         this.outputConverterComponent = outputConverterComponent;
         this.defaultHostComponent = defaultHostComponent;
+        this.splitCommandComponent = splitCommandComponent;
         defaultHostComponent.setDefault(defaultHostname,defaultPort);
     }
 
     /**
-     * Executes a specified command with specified args on specified host and port redis server, returning results in String form
+     * Executes a specified command on specified host and port redis server, returning results in String form
      * @param hostname
      * @param port
      * @param command
-     * @param args
      * @return
      */
-    public String executeCommand(String hostname,Integer port, String command, String... args) {
+    public String executeCommand(String hostname,Integer port, String command) {
+
+        //Split commandString into command and args
+        CommandContainer commandContainer = splitCommandComponent.split(command);
+
+        command = commandContainer.getCommand();
+        String [] args = commandContainer.getArgs();
 
         Connection connection = new Connection(hostname,port);
         defaultHostComponent.check(connection);
