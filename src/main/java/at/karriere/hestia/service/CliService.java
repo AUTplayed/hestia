@@ -6,6 +6,7 @@ import at.karriere.hestia.entity.Connection;
 import at.karriere.hestia.repository.CliRepository;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Protocol;
 import redis.clients.jedis.exceptions.JedisDataException;
@@ -16,16 +17,23 @@ import java.io.IOException;
 @Service
 public class CliService {
 
-    CliRepository repository;
-    OutputConverterComponent outputConverterComponent;
-    DefaultHostComponent defaultHostComponent;
+    private CliRepository repository;
+    private OutputConverterComponent outputConverterComponent;
+    private DefaultHostComponent defaultHostComponent;
     final static Logger LOGGER = Logger.getLogger(CliService.class);
+
+    @Value("${redis.host}")
+    private String defaultHostname;
+    @Value("${redis.port}")
+    private Integer defaultPort;
+
 
     @Autowired
     public CliService(CliRepository repository, OutputConverterComponent outputConverterComponent, DefaultHostComponent defaultHostComponent) {
         this.repository = repository;
         this.outputConverterComponent = outputConverterComponent;
         this.defaultHostComponent = defaultHostComponent;
+        defaultHostComponent.setDefault(defaultHostname,defaultPort);
     }
 
     /**
@@ -45,8 +53,6 @@ public class CliService {
         if (!repository.connect(connection.getHostname(), connection.getPort())) {
             return "ERR failed to connect to specified hostname and port";
         } else {
-            RedisInputStream instream = repository.getInstream();
-            RedisOutputStream outstream = repository.getOutstream();
 
             //Parse args to command enum
             Protocol.Command cmd = null;
@@ -64,17 +70,16 @@ public class CliService {
             }
 
             //Send command
-            Protocol.sendCommand(outstream,cmd,byteArgs);
             try {
-                outstream.flush();
+                repository.sendToRedis(cmd,byteArgs);
             } catch (IOException e) {
                 LOGGER.error("Failed to flush to redis",e);
             }
 
-            //Recieve result
+            //Receive result
             Object result = null;
             try {
-                result = Protocol.read(instream);
+                result = repository.readResult();
             } catch (JedisDataException e) {
                 LOGGER.error("Failed to execute command",e);
                 return e.getMessage();

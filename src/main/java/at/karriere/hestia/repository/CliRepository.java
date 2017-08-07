@@ -2,6 +2,8 @@ package at.karriere.hestia.repository;
 
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Scope;
+import redis.clients.jedis.Protocol;
+import redis.clients.jedis.exceptions.JedisDataException;
 import redis.clients.util.RedisInputStream;
 import redis.clients.util.RedisOutputStream;
 
@@ -50,6 +52,23 @@ public class CliRepository {
                 && !socket.isInputShutdown() && !socket.isOutputShutdown();
     }
 
+    public void sendToRedis(Protocol.Command command, byte[]... args) throws IOException {
+        if (isConnected()) {
+            Protocol.sendCommand(outstream,command,args);
+            outstream.flush();
+        } else {
+            throw new IOException("Connection not open");
+        }
+    }
+
+    public Object readResult() throws JedisDataException {
+        if (isConnected()) {
+            return Protocol.read(instream);
+        } else {
+            throw new JedisDataException("Connection not open");
+        }
+    }
+
     /**
      * Disconnect from connected socket and closing streams
      */
@@ -69,11 +88,4 @@ public class CliRepository {
         }
     }
 
-    public RedisInputStream getInstream() {
-        return instream;
-    }
-
-    public RedisOutputStream getOutstream() {
-        return outstream;
-    }
 }
