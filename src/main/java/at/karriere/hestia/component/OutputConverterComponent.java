@@ -8,51 +8,70 @@ import java.util.List;
 @Component
 public class OutputConverterComponent {
 
-    //Frech kopiert, github.com/ApesRise/jedis-cli/
+    //Frech kopiert, github.com/ApesRise/jedis-cli/ - Kommentare wurden ergänzt
     public String stringify(Object obj){
+        //When byte[]
         if (obj instanceof byte[]) {
             return new String((byte[]) obj);
-        } else if (obj instanceof Long) {
+        }
+        //When Long
+        else if (obj instanceof Long) {
             return ((Long) obj).toString();
-        } else if (obj instanceof List) {
-            List temp = (List) obj;
-            if (temp.size() == 0) {
-                return "";
-            }
-
-            StringBuilder sb = new StringBuilder();
-
-            String className = temp.get(0).getClass().getName();
-            String className2 = null;
-            if (temp.size() > 1) {
-                className2 = temp.get(1).getClass().getName();
-            }
-            List build = null;
-            if (className2 == null || className2.equals(className)) {
-                if (className.equals("[B")) {
-                    build = BuilderFactory.STRING_LIST.build((List<byte[]>) temp);
-                } else if (className.equals("java.lang.Long")) {
-                    build = BuilderFactory.STRING_LIST.build((List<Long>) temp);
-                } else if (className.equals("java.lang.Object")) {
-                    build = BuilderFactory.STRING_LIST.build((List<Long>) temp);
-                }
-            } else {
-                sb.append(new String((byte[]) temp.get(0)));
-                sb.append("\n");
-                build = BuilderFactory.STRING_LIST.build(((List) (temp.subList(1, temp.size()))).get(0));
-            }
-
-            if (build == null) {
-                return "";
-            }
-
-            for (Object cur : build) {
-                sb.append(cur);
-                sb.append("\n");
-            }
-            return sb.toString().trim();
+        }
+        //When List
+        else if (obj instanceof List) {
+            return stringifyList((List) obj);
         }
         return "";
+    }
+
+    private String stringifyList(List list) {
+        //When list has no elements, return ""
+        if (list.size() == 0) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+
+        //Determine dataType of first element
+        String className = list.get(0).getClass().getName();
+        String className2 = null;
+        //Also determine dataType of second element - because 1st element can be a header
+        if (list.size() > 1) {
+            className2 = list.get(1).getClass().getName();
+        }
+        List build = null;
+        //When there is no header as the first element just convert the whole list to a String list
+        if (className2 == null || className2.equals(className)) {
+            //When the elements are byte[]
+            if (className.equals("[B")) {
+                build = BuilderFactory.STRING_LIST.build((List<byte[]>) list);
+            }
+            //When the elements are Long
+            else if (className.equals("java.lang.Long")) {
+                build = BuilderFactory.STRING_LIST.build((List<Long>) list);
+            }
+            //Not really sure about this case
+            else if (className.equals("java.lang.Object")) {
+                build = BuilderFactory.STRING_LIST.build((List<Long>) list);
+            }
+        } else {
+            //When the 1st element is a header, parse that one first, then append the rest of the list
+            sb.append(new String((byte[]) list.get(0)));
+            sb.append("\n");
+            build = BuilderFactory.STRING_LIST.build(((List) (list.subList(1, list.size()))).get(0));
+        }
+        //case for empty list
+        if (build == null) {
+            return "";
+        }
+
+        //Append every element to StringBuilder
+        for (Object cur : build) {
+            sb.append(cur);
+            sb.append("\n");
+        }
+        //Return built String
+        return sb.toString().trim();
     }
 
 }

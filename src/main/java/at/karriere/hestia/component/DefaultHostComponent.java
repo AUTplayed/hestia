@@ -13,11 +13,13 @@ public class DefaultHostComponent {
 
     final static Logger LOGGER = Logger.getLogger(DefaultHostComponent.class);
 
-    @Value("${redis.host}")
     private String defaultHostname;
-    @Value("${redis.port}")
     private Integer defaultPort;
 
+    public void setDefault(String hostname,Integer port) {
+        defaultHostname = hostname;
+        defaultPort = port;
+    }
 
     public void check(Connection connection) {
         //check if no host or port are passed
