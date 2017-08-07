@@ -36,23 +36,23 @@ public class CliService {
      * @param args
      * @return
      */
-    public String executeCommand(String hostname,Integer port, String command, String... args){
+    public String executeCommand(String hostname,Integer port, String command, String... args) {
 
         Connection connection = new Connection(hostname,port);
         defaultHostComponent.check(connection);
 
         //Connect to redis server socket
-        if(!repository.connect(connection.getHostname(), connection.getPort())){
+        if (!repository.connect(connection.getHostname(), connection.getPort())) {
             return "ERR failed to connect to specified hostname and port";
-        }else{
+        } else {
             RedisInputStream instream = repository.getInstream();
             RedisOutputStream outstream = repository.getOutstream();
 
             //Parse args to command enum
             Protocol.Command cmd = null;
-            try{
+            try {
                  cmd = Protocol.Command.valueOf(command.toUpperCase());
-            }catch(IllegalArgumentException e){
+            } catch (IllegalArgumentException e) {
                 LOGGER.error("Failed to parse command",e);
                 return "ERR illegal command '"+command.toLowerCase()+"'";
             }
@@ -73,9 +73,9 @@ public class CliService {
 
             //Recieve result
             Object result = null;
-            try{
+            try {
                 result = Protocol.read(instream);
-            }catch (JedisDataException e){
+            } catch (JedisDataException e) {
                 LOGGER.error("Failed to execute command",e);
                 return e.getMessage();
             }

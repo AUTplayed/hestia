@@ -27,7 +27,7 @@ public class CliRepository {
      * @param port
      * @return
      */
-    public boolean connect(String hostname,int port){
+    public boolean connect(String hostname,int port) {
         socket = new Socket();
         try {
             socket.setKeepAlive(true);

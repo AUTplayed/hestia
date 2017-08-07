@@ -1,6 +1,8 @@
 package at.karriere.hestia.controller;
 
 
+import at.karriere.hestia.component.SplitCommandComponent;
+import at.karriere.hestia.entity.CommandContainer;
 import at.karriere.hestia.service.CliService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +16,12 @@ public class CliController {
     final static Logger LOGGER = Logger.getLogger(CliController.class);
 
     CliService service;
+    SplitCommandComponent splitCommandComponent;
 
     @Autowired
-    public CliController(CliService service) {
+    public CliController(CliService service, SplitCommandComponent splitCommandComponent) {
         this.service = service;
+        this.splitCommandComponent = splitCommandComponent;
     }
 
     //Test route for testing
@@ -40,12 +44,11 @@ public class CliController {
                       @RequestParam(required = true,name = "command")String command){
         LOGGER.info("GET cli");
 
-        //Split args from command
-        String[] splitCommand = command.split(" ");
-        String[] args = Arrays.copyOfRange(splitCommand,1,splitCommand.length);
+        //Split commandString into command and args
+        CommandContainer commandContainer = splitCommandComponent.split(command);
 
         //Execute command
-        String result = service.executeCommand(hostname,port,splitCommand[0], args);
+        String result = service.executeCommand(hostname, port, commandContainer.getCommand(), commandContainer.getArgs());
 
         return result;
     }

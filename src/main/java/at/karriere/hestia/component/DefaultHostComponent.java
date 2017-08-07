@@ -2,6 +2,7 @@ package at.karriere.hestia.component;
 
 import at.karriere.hestia.entity.Connection;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -12,21 +13,20 @@ public class DefaultHostComponent {
 
     final static Logger LOGGER = Logger.getLogger(DefaultHostComponent.class);
 
-    public void check(Connection connection){
-        //check if no host and port are passed
-        if(connection.getHostname() == null && connection.getPort() == null) {
+    @Value("${redis.host}")
+    private String defaultHostname;
+    @Value("${redis.port}")
+    private Integer defaultPort;
 
-            //Load default properties
-            Properties prop = new Properties();
-            try {
-                prop.load(new FileInputStream(System.getProperty("user.dir") + "/config/application.properties"));
-            } catch (IOException e) {
-                LOGGER.error("Could not load application properties",e);
-            }
 
-            //Set default properties
-            connection.setHostname(prop.getProperty("redis.host"));
-            connection.setPort(Integer.valueOf(prop.getProperty("redis.port")));
+    public void check(Connection connection) {
+        //check if no host or port are passed
+        //and set default properties
+        if(connection.getHostname() == null) {
+            connection.setHostname(defaultHostname);
+        }
+        if(connection.getPort() == null) {
+            connection.setPort(defaultPort);
         }
     }
 }
