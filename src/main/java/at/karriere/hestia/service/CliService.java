@@ -14,6 +14,8 @@ import redis.clients.jedis.Protocol;
 import redis.clients.jedis.exceptions.JedisDataException;
 import redis.clients.util.RedisInputStream;
 import redis.clients.util.RedisOutputStream;
+
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 
 @Service
@@ -37,6 +39,11 @@ public class CliService {
         this.outputConverterComponent = outputConverterComponent;
         this.defaultHostComponent = defaultHostComponent;
         this.splitCommandComponent = splitCommandComponent;
+
+    }
+
+    @PostConstruct
+    public void init() {
         defaultHostComponent.setDefault(defaultHostname,defaultPort);
     }
 
