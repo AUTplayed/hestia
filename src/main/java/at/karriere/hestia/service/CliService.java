@@ -75,7 +75,7 @@ public class CliService {
             try {
                  cmd = Protocol.Command.valueOf(command.toUpperCase());
             } catch (IllegalArgumentException e) {
-                LOGGER.error("Failed to parse command",e);
+                LOGGER.error("Failed to parse command");
                 return "ERR illegal command '"+command.toLowerCase()+"'";
             }
 

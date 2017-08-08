@@ -29,6 +29,29 @@ repositories {
     mavenCentral()
 }
 
+sourceSets {
+    integrationTest {
+        java {
+            srcDir 'src/integrationTest/java'
+        }
+        resources {
+            srcDir 'src/integrationTest/resources'
+        }
+        compileClasspath += sourceSets.test.compileClasspath
+        runtimeClasspath += sourceSets.test.runtimeClasspath
+    }
+}
+
+
+jar {
+    baseName = 'hestia'
+    def implementationVersion = version
+    version = ''
+    manifest {
+        attributes("Implementation-Title": "Hestia",
+                "Implementation-Version": implementationVersion)
+    }
+}
 
 dependencies {
     testCompile 'junit:junit:4.+'
@@ -46,7 +69,13 @@ dependencies {
     compile group: 'com.spotify', name: 'docker-client', version: '8.8.3'
 }
 
-/*
+
+task integrationTest(type: Test) {
+    group = 'verification'
+    testClassesDir = sourceSets.integrationTest.output.classesDir
+    classpath = sourceSets.integrationTest.runtimeClasspath
+}
+
 integrationTest {
     afterTest { descriptor, result ->
         def className = descriptor.getClassName()
@@ -55,4 +84,14 @@ integrationTest {
         }
         logger.lifecycle("IT: " + className + "." + descriptor.getName() + " (" + result.getResultType() + ")")
     }
-}*/
+}
+
+test {
+    afterTest { descriptor, result ->
+        def className = descriptor.getClassName()
+        if (className != null) {
+            className = className.substring(className.lastIndexOf(".") + 1)
+        }
+        logger.lifecycle("Test: " + className + "." + descriptor.getName() + " (" + result.getResultType() + ")")
+    }
+}
