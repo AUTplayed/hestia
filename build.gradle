@@ -43,8 +43,10 @@ dependencies {
     compile 'org.apache.logging.log4j:log4j-core:2.6.2'
     compile 'io.sentry:sentry-log4j2:1.4.0'
     compile group: 'redis.clients', name: 'jedis', version: '2.9.0'
+    compile group: 'com.spotify', name: 'docker-client', version: '8.8.3'
 }
 
+/*
 integrationTest {
     afterTest { descriptor, result ->
         def className = descriptor.getClassName()
@@ -53,4 +55,4 @@ integrationTest {
         }
         logger.lifecycle("IT: " + className + "." + descriptor.getName() + " (" + result.getResultType() + ")")
     }
-}
+}*/

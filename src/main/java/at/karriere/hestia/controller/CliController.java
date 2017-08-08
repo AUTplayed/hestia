@@ -42,11 +42,8 @@ public class CliController {
                       @RequestParam(required = true,name = "command")String command){
         LOGGER.info("GET cli");
 
-        //Split commandString into command and args
-        CommandContainer commandContainer = splitCommandComponent.split(command);
-
         //Execute command
-        String result = service.executeCommand(hostname, port, commandContainer.getCommand(), commandContainer.getArgs());
+        String result = service.executeCommand(hostname, port, command);
 
         return result;
     }

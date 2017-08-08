@@ -35,7 +35,7 @@ public class OutputConverterComponent {
         //Determine dataType of first element
         String className = list.get(0).getClass().getName();
         String className2 = null;
-        //Also determine dataType of second element - because 1st element can be a header
+        //Also determine dataType of second element - because 1st element can be a header to an embedded list
         if (list.size() > 1) {
             className2 = list.get(1).getClass().getName();
         }
@@ -55,10 +55,10 @@ public class OutputConverterComponent {
                 build = BuilderFactory.STRING_LIST.build((List<Long>) list);
             }
         } else {
-            //When the 1st element is a header, parse that one first, then append the rest of the list
+            //When the 1st element is a header, parse that one first, then append the embedded list
             sb.append(new String((byte[]) list.get(0)));
             sb.append("\n");
-            build = BuilderFactory.STRING_LIST.build(((List) (list.subList(1, list.size()))).get(0));
+            build = BuilderFactory.STRING_LIST.build((list.subList(1, list.size())).get(0));
         }
         //case for empty list
         if (build == null) {
@@ -67,8 +67,10 @@ public class OutputConverterComponent {
 
         //Append every element to StringBuilder
         for (Object cur : build) {
-            sb.append(cur);
-            sb.append("\n");
+            if(cur!=null) {
+                sb.append(cur);
+                sb.append("\n");
+            }
         }
         //Return built String
         return sb.toString().trim();
