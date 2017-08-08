@@ -27,9 +27,9 @@ public class CliService {
     private SplitCommandComponent splitCommandComponent;
     final static Logger LOGGER = Logger.getLogger(CliService.class);
 
-    @Value("${redis.host}")
+    @Value("${redis.host:localhost}")
     private String defaultHostname;
-    @Value("${redis.port}")
+    @Value("${redis.port:6379}")
     private Integer defaultPort;
 
 

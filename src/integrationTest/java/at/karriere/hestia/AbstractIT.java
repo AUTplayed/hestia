@@ -22,7 +22,7 @@ import java.util.Map;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @TestPropertySource("test.properties")
-public class TestApplication {
+public class AbstractIT {
 
     private Integer redisPort = 6379;
     private String dockerId;
@@ -35,7 +35,6 @@ public class TestApplication {
 
     public void startDockerContainer() {
         try {
-            //docker = DefaultDockerClient.builder().uri(URI.create("unix:///var/run/docker.sock")).build();
             //Pull redis image
             //docker.pull("redis");
             Process pull = Runtime.getRuntime().exec("docker pull redis");
