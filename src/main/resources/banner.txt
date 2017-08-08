@@ -1,0 +1,24 @@
+
+
+hhhhhhh                                                           tttt            iiii
+h:::::h                                                        ttt:::t           i::::i
+h:::::h                                                        t:::::t            iiii
+h:::::h                                                        t:::::t
+ h::::h hhhhh           eeeeeeeeeeee        ssssssssss   ttttttt:::::ttttttt    iiiiiii   aaaaaaaaaaaaa
+ h::::hh:::::hhh      ee::::::::::::ee    ss::::::::::s  t:::::::::::::::::t    i:::::i   a::::::::::::a
+ h::::::::::::::hh   e::::::eeeee:::::eess:::::::::::::s t:::::::::::::::::t     i::::i   aaaaaaaaa:::::a
+ h:::::::hhh::::::h e::::::e     e:::::es::::::ssss:::::stttttt:::::::tttttt     i::::i            a::::a
+ h::::::h   h::::::he:::::::eeeee::::::e s:::::s  ssssss       t:::::t           i::::i     aaaaaaa:::::a
+ h:::::h     h:::::he:::::::::::::::::e    s::::::s            t:::::t           i::::i   aa::::::::::::a
+ h:::::h     h:::::he::::::eeeeeeeeeee        s::::::s         t:::::t           i::::i  a::::aaaa::::::a
+ h:::::h     h:::::he:::::::e           ssssss   s:::::s       t:::::t    tttttt i::::i a::::a    a:::::a
+ h:::::h     h:::::he::::::::e          s:::::ssss::::::s      t::::::tttt:::::ti::::::ia::::a    a:::::a
+ h:::::h     h:::::h e::::::::eeeeeeee  s::::::::::::::s       tt::::::::::::::ti::::::ia:::::aaaa::::::a
+ h:::::h     h:::::h  ee:::::::::::::e   s:::::::::::ss          tt:::::::::::tti::::::i a::::::::::aa:::a
+ hhhhhhh     hhhhhhh    eeeeeeeeeeeeee    sssssssssss              ttttttttttt  iiiiiiii  aaaaaaaaaa  aaaa
+
+
+
+
+                                        v${application.version}
+
