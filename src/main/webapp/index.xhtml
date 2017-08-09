@@ -12,11 +12,11 @@
                     <p:inputText binding="#{port}"/>
                     <p:commandButton value="Enter Port"/>
 					<p:inputText binding="#{input}"/>
-                    <p:commandButton value="Send" action="#{cliController.cli(hostname.value,port.value,input.value)}" update="output"/>
+                    <p:commandButton value="Send" update="output"/>
             </p:panel>
             <p:panel header="CLI Output">
-                <h:outputText id="output" value ="#{cliController.cli(hostname.value, port.value,input.value)}"/>
+                <h:outputText id="output" style="white-space:pre-line" value ="#{cliController.cli(hostname.value, port.value,input.value)}"/>
             </p:panel>
-		</h:form>
+    </h:form>
 	</h:body>
 </f:view>
