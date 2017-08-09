@@ -1,22 +1,22 @@
 <f:view xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-        xmlns:pe="http://primefaces.org/ui/extensions"
 	xmlns:p="http://primefaces.org/ui">
 	<h:head>
 	</h:head>
 	<h:body>
 		<h:form>
 			<p:panel header="Hestia CLI Input Line" >
-
+                    <p:inputText binding="#{hostname}"/>
+                    <p:commandButton value="Enter Hostname"/>
+                    <p:inputText binding="#{port}"/>
+                    <p:commandButton value="Enter Port"/>
 					<p:inputText binding="#{input}"/>
-                    <p:commandButton value="Send" action="#{cliService.executeCommand(input.value)}" update="output"/>
-
+                    <p:commandButton value="Send" action="#{cliController.cli(hostname.value,port.value,input.value)}" update="output"/>
             </p:panel>
             <p:panel header="CLI Output">
-                <h:outputText id="output" value ="#{cliService.executeCommand(input.value)}"/>
+                <h:outputText id="output" value ="#{cliController.cli(hostname.value, port.value,input.value)}"/>
             </p:panel>
-
 		</h:form>
 	</h:body>
 </f:view>

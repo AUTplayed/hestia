@@ -49,11 +49,12 @@ public class CliService {
 
     /**
      * Executes a specified command on specified host and port redis server, returning results in String form
-     * 
+     * @param hostname
+     * @param port
      * @param command
      * @return
      */
-    public String executeCommand(String command) {
+    public String executeCommand(String hostname,Integer port, String command) {
         LOGGER.info(command);
         //Split commandString into command and args
         CommandContainer commandContainer = splitCommandComponent.split(command);
@@ -61,7 +62,7 @@ public class CliService {
         command = commandContainer.getCommand();
         String [] args = commandContainer.getArgs();
 
-        Connection connection = new Connection(null,null);
+        Connection connection = new Connection(hostname,port);
         defaultHostComponent.check(connection);
 
         //Connect to redis server socket

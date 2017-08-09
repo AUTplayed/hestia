@@ -22,11 +22,6 @@ public class CliController {
     CliService service;
     SplitCommandComponent splitCommandComponent;
 
-    @Value("${redis.host:localhost}")
-    private String defaultHostname;
-    @Value("${redis.port:6379}")
-    private Integer defaultPort;
-
     @Autowired
     public CliController(CliService service, SplitCommandComponent splitCommandComponent) {
         this.service = service;
@@ -55,7 +50,7 @@ public class CliController {
         LOGGER.info("GET cli");
 
         //Execute command
-        String result = service.executeCommand(command);
+        String result = service.executeCommand(hostname, port,command);
 
         return result;
     }
