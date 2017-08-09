@@ -27,7 +27,7 @@ public class DefaultHostComponent {
         if(connection.getHostname() == null || connection.getHostname().equals("")) {
             connection.setHostname(defaultHostname);
         }
-        if(connection.getPort() == null) {
+        if(connection.getPort() == null || connection.getPort() == 0) {
             connection.setPort(defaultPort);
         }
     }
