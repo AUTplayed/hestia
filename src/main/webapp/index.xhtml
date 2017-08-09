@@ -15,6 +15,19 @@
                 <p:inputText binding="#{input}"/>
                 <p:commandButton value="Send" update="output"/>
             </p:panel>
+            <p:panel header="Limited Search">
+                <h:outputLabel for="start" value="Start:"/>
+                <p:inputText binding="#{start}" id="start"/>
+                <h:outputLabel for="end" value="End:"/>
+                <p:inputText binding="#{end}" id="end" value="1"/>
+                <h:outputLabel for="pattern" value="Search Pattern:"/>
+                <p:inputText binding="#{pattern}" id="pattern"/>
+                <br/>
+                <p:commandButton id="nextpage" value="Next Page"/>
+                <br/>
+                <h:outputText id="search" style="white-space:pre-line" value="#{apiController.keys(start.value,end.value,pattern.value,hostname.value,port.value)}"/>
+
+            </p:panel>
             <p:panel header="CLI Output">
                 <h:outputText id="output" style="white-space:pre-line" value ="#{cliController.cli(hostname.value, port.value,input.value)}"/>
             </p:panel>
