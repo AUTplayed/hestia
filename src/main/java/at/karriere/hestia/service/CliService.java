@@ -55,6 +55,12 @@ public class CliService {
      * @return
      */
     public String executeCommand(String hostname,Integer port, String command) {
+        LOGGER.info(command);
+
+        //UI case
+        if (command.equals("")) {
+            return "";
+        }
 
         LOGGER.info(command);
 

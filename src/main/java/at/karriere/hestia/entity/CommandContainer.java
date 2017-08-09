@@ -1,6 +1,8 @@
 package at.karriere.hestia.entity;
 
+import javax.faces.bean.ManagedBean;
 
+@ManagedBean
 public class CommandContainer {
 
     String command;

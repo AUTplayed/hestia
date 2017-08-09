@@ -24,7 +24,7 @@ public class DefaultHostComponent {
     public void check(Connection connection) {
         //check if no host or port are passed
         //and set default properties
-        if(connection.getHostname() == null) {
+        if(connection.getHostname() == null || connection.getHostname().equals("")) {
             connection.setHostname(defaultHostname);
         }
         if(connection.getPort() == null) {
