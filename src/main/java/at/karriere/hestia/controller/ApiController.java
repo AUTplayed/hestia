@@ -23,6 +23,15 @@ public class ApiController {
         this.cliService = cliService;
     }
 
+    /**
+     * Endpoint for /keys command, returns keys and cursor depending on specified cursor, count and pattern in JSON format
+     * @param cursor
+     * @param count
+     * @param pattern
+     * @param host
+     * @param port
+     * @return
+     */
     @RequestMapping(value = "/keys",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public String keys(@RequestParam(required = false, name = "cursor") Long cursor,
                        @RequestParam(required = false, name = "count") Long count,
@@ -33,5 +42,17 @@ public class ApiController {
         return keysService.keys(cursor, count, pattern, host, port);
     }
 
+    /**
+     * Endpoint for /size command, returns amount of keys in database
+     * @param host
+     * @param port
+     * @return
+     */
+    @RequestMapping(value = "/size", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
+    public String size(@RequestParam(required = false, name = "host") String host,
+                       @RequestParam(required = false, name = "port") Integer port) {
+        LOGGER.info("GET /size");
+        return cliService.executeCommand(host, port, "DBSIZE");
+    }
 
 }
