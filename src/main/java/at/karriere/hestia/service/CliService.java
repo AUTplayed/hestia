@@ -56,6 +56,12 @@ public class CliService {
      */
     public String executeCommand(String hostname,Integer port, String command) {
         LOGGER.info(command);
+
+        //UI case
+        if (command.equals("")) {
+            return "";
+        }
+
         //Split commandString into command and args
         CommandContainer commandContainer = splitCommandComponent.split(command);
 

@@ -7,12 +7,13 @@
 	<h:body>
 		<h:form>
 			<p:panel header="Hestia CLI Input Line" >
-                    <p:inputText binding="#{hostname}"/>
-                    <p:commandButton value="Enter Hostname"/>
-                    <p:inputText binding="#{port}"/>
-                    <p:commandButton value="Enter Port"/>
-					<p:inputText binding="#{input}"/>
-                    <p:commandButton value="Send" update="output"/>
+                <h:outputLabel for="hostname" value="Hostname:" />
+                <p:inputText id="hostname" binding="#{hostname}"/>
+                <h:outputLabel for="port" value="Port:" />
+                <p:inputText id="port" binding="#{port}"/>
+                <br/>
+                <p:inputText binding="#{input}"/>
+                <p:commandButton value="Send" update="output"/>
             </p:panel>
             <p:panel header="CLI Output">
                 <h:outputText id="output" style="white-space:pre-line" value ="#{cliController.cli(hostname.value, port.value,input.value)}"/>
