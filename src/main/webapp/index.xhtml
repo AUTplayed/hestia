@@ -5,32 +5,33 @@
 	<h:head>
 	</h:head>
 	<h:body>
-		<h:form>
-			<p:panel header="Hestia CLI Input Line" >
-                <h:outputLabel for="hostname" value="Hostname:" />
-                <p:inputText id="hostname" binding="#{hostname}"/>
+		<h:form id="root">
+            <p:panel header="Connection Configuration" >
+                <h:outputLabel for="host" value="Hostname:" />
+                <p:inputText id="host" binding="#{host}"/>
                 <h:outputLabel for="port" value="Port:" />
                 <p:inputText id="port" binding="#{port}"/>
-                <br/>
+            </p:panel>
+			<p:panel header="Hestia CLI Input Line" >
                 <p:inputText binding="#{input}"/>
                 <p:commandButton value="Send" update="output"/>
             </p:panel>
-            <p:panel header="Limited Search">
-                <h:outputLabel for="start" value="Start:"/>
-                <p:inputText binding="#{start}" id="start"/>
-                <h:outputLabel for="end" value="End:"/>
-                <p:inputText binding="#{end}" id="end" value="1"/>
+            <p:panel header="Keys">
+                <h:outputLabel for="count" value="Count:"/>
+                <p:inputText binding="#{count}" id="count"/>
                 <h:outputLabel for="pattern" value="Search Pattern:"/>
                 <p:inputText binding="#{pattern}" id="pattern"/>
                 <br/>
-                <p:commandButton id="nextpage" value="Next Page"/>
+                <p:commandButton id="search" value="Search"/>
+                <p:commandButton id="nextPage" value="Next Page"/>
+                <h:outputLabel id="error" style="color:red"/>
                 <br/>
-                <h:outputText id="search" style="white-space:pre-line" value="#{apiController.keys(start.value,end.value,pattern.value,hostname.value,port.value)}"/>
-
             </p:panel>
-            <p:panel header="CLI Output">
-                <h:outputText id="output" style="white-space:pre-line" value ="#{cliController.cli(hostname.value, port.value,input.value)}"/>
+            <p:panel header="Output">
+                <h:outputText id="output" style="white-space:pre-line" value ="#{cliController.cli(host.value, port.value,input.value)}"/>
             </p:panel>
-    </h:form>
+        </h:form>
 	</h:body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="script.js"></script>
 </f:view>
