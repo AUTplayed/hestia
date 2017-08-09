@@ -103,7 +103,7 @@ public class CliService {
 
             //Stringify and return result
             repository.disconnect();
-            return outputConverterComponent.stringify(result);
+            return outputConverterComponent.stringify(result).replaceAll("(\n)", "<br />");
         }
 
 
