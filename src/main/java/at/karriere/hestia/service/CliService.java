@@ -62,6 +62,8 @@ public class CliService {
             return "";
         }
 
+        LOGGER.info(command);
+
         //Split commandString into command and args
         CommandContainer commandContainer = splitCommandComponent.split(command);
 
