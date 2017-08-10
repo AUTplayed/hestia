@@ -8,6 +8,9 @@ public class CommandContainer {
     String command;
     String[] args;
 
+    public CommandContainer() {
+    }
+
     public CommandContainer(String command, String[] args) {
         this.command = command;
         this.args = args;

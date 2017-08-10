@@ -2,30 +2,28 @@ package at.karriere.hestia.controller;
 
 
 import at.karriere.hestia.component.SplitCommandComponent;
-import at.karriere.hestia.entity.CommandContainer;
 import at.karriere.hestia.service.CliService;
+import at.karriere.hestia.service.DBWrapperCliService;
+import at.karriere.hestia.service.KeyspaceService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.context.FacesContext;
-import java.util.Map;
 
 @ManagedBean
 @RestController
 public class CliController {
     final static Logger LOGGER = Logger.getLogger(CliController.class);
 
-    CliService service;
     SplitCommandComponent splitCommandComponent;
+    DBWrapperCliService dbWrapperCliService;
 
     @Autowired
-    public CliController(CliService service, SplitCommandComponent splitCommandComponent) {
-        this.service = service;
+    public CliController(SplitCommandComponent splitCommandComponent, DBWrapperCliService dbWrapperCliService) {
         this.splitCommandComponent = splitCommandComponent;
+        this.dbWrapperCliService = dbWrapperCliService;
     }
 
     //Test route for testing
@@ -45,13 +43,12 @@ public class CliController {
     @RequestMapping(value = "/cli",method = RequestMethod.GET,produces = MediaType.TEXT_PLAIN_VALUE)
     public String cli(@RequestParam(required = false, name = "host") String host,
                       @RequestParam(required = false, name = "port") Integer port,
-                      @RequestParam(required = true, name = "command") String command){
+                      @RequestParam(required = true, name = "command") String command,
+                      @RequestParam(required = false, name = "db") Integer db){
         LOGGER.info("GET /cli");
 
         //Execute command
-        String result = service.executeCommand(host, port, command);
-
-        return result;
+        return dbWrapperCliService.wrapAndExecute(host, port, command, db);
     }
 
 }

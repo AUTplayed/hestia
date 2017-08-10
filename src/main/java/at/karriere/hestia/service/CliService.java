@@ -55,8 +55,7 @@ public class CliService {
      * @param command
      * @return
      */
-    public String executeCommand(String hostname,Integer port, String command) {
-        LOGGER.info(command);
+    public String executeCommand(String hostname, Integer port, String command) {
 
         //UI case
         if (command.equals("")) {
@@ -66,7 +65,11 @@ public class CliService {
         //Split commandString into command and args
         CommandContainer commandContainer = splitCommandComponent.split(command);
 
-        command = commandContainer.getCommand();
+        return executeCommand(hostname, port, commandContainer);
+    }
+
+    public String executeCommand(String hostname, Integer port, CommandContainer commandContainer) {
+        String command = commandContainer.getCommand();
         String [] args = commandContainer.getArgs();
 
         Connection connection = new Connection(hostname,port);
@@ -80,7 +83,7 @@ public class CliService {
             //Parse args to command enum
             Protocol.Command cmd = null;
             try {
-                 cmd = Protocol.Command.valueOf(command.toUpperCase());
+                cmd = Protocol.Command.valueOf(command.toUpperCase());
             } catch (IllegalArgumentException e) {
                 LOGGER.error("Failed to parse command");
                 return "ERR illegal command '"+command.toLowerCase()+"'";
@@ -111,7 +114,5 @@ public class CliService {
             repository.disconnect();
             return outputConverterComponent.stringify(result);
         }
-
-
     }
 }
