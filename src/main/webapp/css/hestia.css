@@ -1,0 +1,15 @@
+#connection-server, #connection-database {
+    width: 20%;
+}
+
+#cli-output {
+    white-space: pre-wrap;
+}
+
+.tab-pane {
+    margin-left:20px;
+}
+
+.keys-row:hover {
+    background-color: lightgray;
+}
