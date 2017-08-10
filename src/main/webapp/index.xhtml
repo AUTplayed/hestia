@@ -8,9 +8,15 @@
 		<h:form id="root">
             <p:panel header="Connection Configuration" >
                 <h:outputLabel for="host" value="Hostname:" />
-                <p:inputText id="host" binding="#{host}"/>
+                <p:inputText id="host" binding="#{host}" value="#{dropdownView.host}"/>
                 <h:outputLabel for="port" value="Port:" />
-                <p:inputText id="port" binding="#{port}"/>
+                <p:inputText id="port" binding="#{port}" value="#{dropdownView.port}"/>
+                <p:outputLabel for="servers" value="Servers: " />
+                <p:selectOneMenu id="servers" value="#{dropdownView.server}">
+                    <p:ajax listener="#{dropdownView.onChange}" update="host port" />
+                    <f:selectItem itemLabel="Select Server" itemValue="" noSelectionOption="true" />
+                    <f:selectItems value="#{dropdownView.servers}" />
+                </p:selectOneMenu>
             </p:panel>
 			<p:panel header="Hestia CLI Input Line" >
                 <p:inputText binding="#{input}"/>
@@ -32,6 +38,6 @@
             </p:panel>
         </h:form>
 	</h:body>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
     <script src="script.js"></script>
 </f:view>

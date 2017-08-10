@@ -50,4 +50,5 @@ function getHostAndPort() {
     if(port) {
         url += "&port="+port;
     }
+    return url;
 }
