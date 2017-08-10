@@ -14,6 +14,7 @@ import redis.clients.jedis.Protocol;
 import redis.clients.jedis.exceptions.JedisDataException;
 import redis.clients.util.RedisInputStream;
 import redis.clients.util.RedisOutputStream;
+import redis.clients.util.SafeEncoder;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
@@ -84,11 +85,10 @@ public class CliService {
                 LOGGER.error("Failed to parse command");
                 return "ERR illegal command '"+command.toLowerCase()+"'";
             }
-
             //Parse args to byte array
             byte[][] byteArgs = new byte[args.length][];
             for (int i = 0; i < args.length; i++) {
-                byteArgs[i] = args[i].getBytes();
+                byteArgs[i] = SafeEncoder.encode(args[i]);
             }
 
             //Send command

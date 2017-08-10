@@ -54,7 +54,7 @@ public class CliRepository {
 
     public void sendToRedis(Protocol.Command command, byte[]... args) throws IOException {
         if (isConnected()) {
-            Protocol.sendCommand(outstream,command,args);
+            //Protocol.sendCommand(outstream,command,args);
             outstream.flush();
         } else {
             throw new IOException("Connection not open");

@@ -26,7 +26,7 @@ public class SplitCommandComponentTest {
         CommandContainer commandContainer = splitCommandComponent.split(commandString);
         assertThat(commandContainer.getCommand().equals("EVAL"));
         assertThat(commandContainer.getArgs().length).as("Check length").isEqualTo(2);
-        assertThat(commandContainer.getArgs()[0]).as("Check arg0").isEqualTo("\"return redis.call('DBSIZE')\"");
+        assertThat(commandContainer.getArgs()[0]).as("Check arg0").isEqualTo("return redis.call('DBSIZE')");
         assertThat(commandContainer.getArgs()[1]).as("Check arg1").isEqualTo("0");
     }
 }

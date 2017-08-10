@@ -18,7 +18,7 @@ public class SplitCommandComponent {
         List<String> list = new LinkedList<>();
         Matcher m = Pattern.compile("([^\"]\\S*|\".+?\")\\s*").matcher(commandString);
         while(m.find()) {
-            list.add(m.group(1));
+            list.add(m.group(1).replace("\"", ""));
         }
         String[] splitCommand = new String[list.size()];
         splitCommand = list.toArray(splitCommand);
