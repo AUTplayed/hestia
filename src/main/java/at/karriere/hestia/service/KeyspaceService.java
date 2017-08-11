@@ -1,7 +1,6 @@
 package at.karriere.hestia.service;
 
 import at.karriere.hestia.component.JsonKeySpaceConverterComponent;
-import at.karriere.hestia.component.JsonKeysConverterComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
