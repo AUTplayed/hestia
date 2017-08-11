@@ -27,12 +27,18 @@ function setupEvents() {
             //Get command from testfield
             var command = $("#cli-command").val();
 
-            //Send Request to server
-            $.get("/cli?command=" + command + getConnection(), function(res) {
+            //If command is clear, clear the output
+            if(command == "clear") {
+                $("#cli-output").html("");
+            } else {
 
-                //Display result
-                $("#cli-output").html(res);
-            });
+                //Send Request to server
+                $.get("/cli?command=" + command + getConnection(), function(res) {
+
+                    //Display result
+                    $("#cli-output").html(res);
+                });
+            }
         }
     });
 
