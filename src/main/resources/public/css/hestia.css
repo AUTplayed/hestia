@@ -11,7 +11,7 @@
 }
 
 .keys-row:hover {
-    background-color: lightgray;
+    background-color: #8bc72a;
 }
 
 #keys-value {
@@ -30,4 +30,13 @@
 #keys-output {
     width: 40%;
     float:left;
+}
+
+.navbar-nav>.active>a {
+    background-color: #8bc72a !important;
+    color: black !important;
+}
+
+a {
+    color: #8bc72a !important;
 }
