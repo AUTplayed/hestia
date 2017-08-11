@@ -19,8 +19,8 @@
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="hestia.html">Hestia<span class="sr-only">(current)</span></a></li>
-                <li><a href="#">Helios</a></li>
+                <li class="active"><a href="hestia.html">Hestia</a></li>
+                <li><a href="helios.html">Helios</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
                     <ul class="dropdown-menu">
@@ -40,19 +40,19 @@
 <h1>Hestia</h1>
 <ul class="nav nav-tabs" role="tablist">
     <li class="nav-item active">
-        <a class="nav-link" data-toggle="tab" href="#home" role="tab">Connection</a>
+        <a class="nav-link" data-toggle="tab" href="#connection" role="tab">Connection</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#profile" role="tab">Cli</a>
+        <a class="nav-link" data-toggle="tab" href="#cli" role="tab">Cli</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#messages" role="tab">Keys</a>
+        <a class="nav-link" data-toggle="tab" href="#keys" role="tab">Keys</a>
     </li>
 </ul>
 
 <!-- Tab panes -->
 <div class="tab-content">
-    <div class="tab-pane active" id="home" role="tabpanel">
+    <div class="tab-pane active" id="connection" role="tabpanel">
         <h3>Connection</h3>
         <select class="form-control" id="connection-server"></select>
         <input type="text" id="connection-host" placeholder="hostname">
@@ -62,13 +62,13 @@
             <option>Default (0)</option>
         </select>
     </div>
-    <div class="tab-pane" id="profile" role="tabpanel">
+    <div class="tab-pane" id="cli" role="tabpanel">
         <h3>Cli</h3>
         <input type="text" placeholder="command" id="cli-command">
         <h3>Output</h3>
         <div id="cli-output"></div>
     </div>
-    <div class="tab-pane" id="messages" role="tabpanel">
+    <div class="tab-pane" id="keys" role="tabpanel">
         <div id="keys-keys">
             <h3>Keys</h3>
             <input type="number" id="keys-count" placeholder="count">
