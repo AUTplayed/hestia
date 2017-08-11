@@ -36,8 +36,17 @@ function getKeys() {
                 res.keys.forEach(function (key) {
                     $("#keys-output").append("<tr class='keys-row'><td>"+key+"</td></tr>");
                 });
-                $(".keys-row").click(function() {
-
+                $(".keys-row").click(function(ev) {
+                    var key = $(ev.currentTarget).children().first().html();
+                    var url = "/cli?command=GET "+key+getConnection();
+                    $.get(url,function (response) {
+                        try {
+                            var json = JSON.parse(response);
+                            $("#keys-value-value").html(JSON.stringify(json,null,2));
+                        }catch(e){
+                            $("#keys-value-value").html(response);
+                        }
+                    });
                 });
             }
         }
