@@ -53,14 +53,17 @@
 <!-- Tab panes -->
 <div class="tab-content">
     <div class="tab-pane active" id="connection" role="tabpanel">
-        <h3>Connection</h3>
-        <select class="form-control" id="connection-server"></select>
-        <input type="text" id="connection-host" placeholder="hostname">
-        <input type="number" id="connection-port" placeholder="port">
-        <h4>Database</h4>
-        <select class="form-control" id="connection-database">
-            <option>Default (0)</option>
-        </select>
+        <div id="connection-wrapper">
+            <p>Connection</p>
+            <select class="form-control" id="connection-server"></select>
+            <input type="text" id="connection-host" placeholder="hostname">
+            <input type="number" id="connection-port" placeholder="port">
+            <p>Database</p>
+            <select class="form-control" id="connection-database">
+                <option>Default (0)</option>
+            </select>
+        </div>
+        <img id="redis-logo" src="res/redis.png" alt="redis.png">
     </div>
     <div class="tab-pane" id="cli" role="tabpanel">
         <h3>Cli</h3>
@@ -70,7 +73,7 @@
     </div>
     <div class="tab-pane" id="keys" role="tabpanel">
         <div id="keys-keys">
-            <h3>Keys</h3>
+            <p>Keys</p>
             <input type="number" id="keys-count" placeholder="count">
             <input type="text" id="keys-pattern" placeholder="pattern">
             <input type="button" id="keys-search" value="Search">
@@ -79,7 +82,7 @@
         </div>
         <div id="keys-value">
             <div id="keys-value-wrapper">
-                <h3>Value</h3>
+                <p>Value</p>
                 <input type="button" id="keys-value-delete" value="Delete">
                 <span id="keys-value-status"></span>
                 <pre id="keys-value-value"></pre>

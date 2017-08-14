@@ -1,7 +1,3 @@
-#connection-server, #connection-database {
-    width: 20%;
-}
-
 #cli-command {
     font-size: 20px;
     width: 30%;
@@ -25,8 +21,13 @@
 }
 
 #keys-keys {
-    width: 40%;
+    width: 50%;
     float: left;
+    font-size: 25px;
+}
+
+#keys-value-wrapper>p, #keys-value-delete {
+    font-size: 25px;
 }
 
 #keys-value-wrapper {
@@ -52,6 +53,26 @@
 
 a {
     color: #8bc72a !important;
+}
+
+#connection-wrapper {
+    float: left;
+    width: 50%;
+    font-size: 25px !important;
+}
+
+select {
+    font-size: 25px !important;
+    max-width: 50%;
+}
+
+#redis-logo {
+    max-height: 200px;
+    width: auto;
+    height: auto;
+    display: block;
+    float: right;
+    margin: 5%;
 }
 
 .marked {
