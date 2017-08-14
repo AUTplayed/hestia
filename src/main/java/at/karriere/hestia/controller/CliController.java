@@ -10,9 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import javax.faces.bean.ManagedBean;
 
-@ManagedBean
 @RestController
 public class CliController {
     final static Logger LOGGER = Logger.getLogger(CliController.class);
