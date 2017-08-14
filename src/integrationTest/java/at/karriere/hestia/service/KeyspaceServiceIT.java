@@ -30,7 +30,7 @@ public class KeyspaceServiceIT extends AbstractIT {
                 public boolean matches(Integer value) {
                     return value > 1;
                 }
-            })
+            });
             assertThat(json.get(0).toString().split("=")[1]).as("check key size in db0 greater than 1").is(new Condition<String>() {
                 @Override
                 public boolean matches(String value) {
