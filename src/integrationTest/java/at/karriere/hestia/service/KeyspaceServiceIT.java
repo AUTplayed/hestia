@@ -25,7 +25,12 @@ public class KeyspaceServiceIT extends AbstractIT {
         String result = keyspaceService.getKeySpaces(host, port);
         try {
             JSONArray json = new JSONArray(result);
-            assertThat(json.length()).as("check if json array contains all keyspaces").isEqualTo(2);
+            assertThat(json.length()).as("check if json array contains more than 1 keyspace").is(new Condition<Integer>() {
+                @Override
+                public boolean matches(Integer value) {
+                    return value > 1;
+                }
+            })
             assertThat(json.get(0).toString().split("=")[1]).as("check key size in db0 greater than 1").is(new Condition<String>() {
                 @Override
                 public boolean matches(String value) {
