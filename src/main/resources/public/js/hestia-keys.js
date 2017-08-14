@@ -104,6 +104,12 @@ function getKeys() {
                     //Save the selected row
                     selectedRow = $(ev.currentTarget);
 
+                    //Unmark other rows
+                    $(".marked").removeClass("marked");
+
+                    //Mark the row as clicked
+                    selectedRow.addClass("marked");
+
                     //Save the selected key
                     curkey = selectedRow.children().first().html();
 

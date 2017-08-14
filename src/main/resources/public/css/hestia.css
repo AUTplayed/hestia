@@ -20,21 +20,29 @@
 }
 
 #keys-value {
-    float:right;
     width: 30%;
-    margin-right: 20px;
+    margin-left: 60%;
 }
 
 #keys-keys {
     width: 40%;
+    float: left;
 }
+
+#keys-value-wrapper {
+    position: fixed;
+    height: 90%;
+    min-width: 30%;
+}
+
 #keys-value-value {
     height:80%;
 }
 
 #keys-output {
     width: 40%;
-    float:left;
+    float: left;
+    margin-right: 21%;
 }
 
 .navbar-nav>.active>a {
@@ -44,4 +52,8 @@
 
 a {
     color: #8bc72a !important;
+}
+
+.marked {
+    background-color: #8bc72a;
 }
