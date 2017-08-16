@@ -33,10 +33,10 @@ repositories {
 sourceSets {
     integrationTest {
         java {
-            srcDir 'src/integrationTest/java'
+            srcDirs = ['src/integrationTest/java']
         }
         resources {
-            srcDir 'src/integrationTest/resources'
+            srcDirs = ['src/integrationTest/resources']
         }
         compileClasspath += sourceSets.test.compileClasspath
         runtimeClasspath += sourceSets.test.runtimeClasspath
@@ -99,10 +99,8 @@ test {
     }
 }
 
-jacocoTestReport {
-    reports {
-        xml.enabled true
-        csv.enabled false
-        html.destination "${buildDir}/reports/jacocoHtml"
-    }
+task jacocoReport(type: JacocoReport) {
+    sourceSets sourceSets.main
+    executionData test, integrationTest
+
 }
