@@ -41,7 +41,7 @@ public class OutputConverterComponentTest {
     public void testNull() {
         Object o = null;
         String result = outputConverterComponent.stringify(o);
-        assertThat(result).as("check null conversion").isEqualTo("");
+        assertThat(result).as("check null conversion").isEqualTo("no results found");
     }
 
     @Test
@@ -67,7 +67,7 @@ public class OutputConverterComponentTest {
     public void testEmptyList() {
         List list = new LinkedList();
         String result = outputConverterComponent.stringify(list);
-        assertThat(result).as("check empty list conversion").isEqualTo("");
+        assertThat(result).as("check empty list conversion").isEqualTo("no results found");
     }
 
     @Test
