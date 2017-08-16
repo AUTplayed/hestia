@@ -53,8 +53,7 @@
 <!-- Tab panes -->
 <div class="tab-content">
     <div class="tab-pane active" id="connection" role="tabpanel">
-        <div id="connection-wrapper">
-            <p>Connection</p>
+        <div id="connection-wrapper" class="tabwrap">
             <select class="form-control" id="connection-server"></select>
             <input type="text" id="connection-host" placeholder="hostname">
             <input type="number" id="connection-port" placeholder="port">
@@ -66,14 +65,18 @@
         <img id="redis-logo" src="res/redis.png" alt="redis.png">
     </div>
     <div class="tab-pane" id="cli" role="tabpanel">
-        <h3>Cli</h3>
-        <input type="text" placeholder="command" id="cli-command">
-        <h3>Output</h3>
+        <div id="cli-wrapper" class="tabwrap">
+            <input type="text" placeholder="command" id="cli-command">
+            <span class="checkbox"><label style="font-size: 25px">
+                <input type="checkbox" value="" checked="" id="cli-clear">
+                <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>Clear after send</label>
+            </span>
+            <h3>Output</h3>
+        </div>
         <div id="cli-output"></div>
     </div>
     <div class="tab-pane" id="keys" role="tabpanel">
-        <div id="keys-keys">
-            <p>Keys</p>
+        <div id="keys-keys" class="tabwrap">
             <input type="number" id="keys-count" placeholder="count">
             <input type="text" id="keys-pattern" placeholder="pattern">
             <input type="button" id="keys-search" value="Search">
