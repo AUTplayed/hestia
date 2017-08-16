@@ -38,7 +38,7 @@ $(document).ready(function() {
         if (curkey && selectedRow) {
 
             //Build url and send delete request to server
-            var url = "/cli?command=DEL " + curkey + getConnection();
+            var url = "/cli?command=DEL " + encodeURIComponent(curkey) + getConnection();
             $.get(url, function(res) {
 
                 //Display deleted amount
@@ -114,7 +114,7 @@ function getKeys() {
                     curkey = selectedRow.children().first().html();
 
                     //Build url and send get request to server
-                    var url = "/cli?command=GET " + curkey + getConnection();
+                    var url = "/cli?command=GET " + encodeURIComponent(curkey) + getConnection();
                     $.get(url, function(response) {
                         try {
 
@@ -128,6 +128,8 @@ function getKeys() {
                         }
                     });
                 });
+            } else {
+                $("#keys-output").append("<tr class='keys-row'><td>no results on this page</td></tr>");
             }
         }
     });

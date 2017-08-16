@@ -7,6 +7,17 @@
     white-space: pre-wrap;
 }
 
+#cli-wrapper {
+    float:left;
+    width:100%;
+}
+
+#cli-help {
+    float:right;
+    width: 30%;
+    margin-right:10%;
+}
+
 .tab-pane {
     margin-left:20px;
 }
