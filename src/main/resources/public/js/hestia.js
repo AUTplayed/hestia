@@ -60,9 +60,15 @@ function setupEvents() {
             if (server.name == selected) {
                 $("#connection-host").val(server.host);
                 $("#connection-port").val(server.port);
+                getAndSetInfo();
             }
         });
 
+    });
+
+    //On Hostname or port unfocus
+    $("#connection-port, #connection-port").focusout(function () {
+        getAndSetInfo();
     });
 
     //On Database dropdown click
@@ -71,15 +77,9 @@ function setupEvents() {
         //delete all choices except the first one (Default)
         $("#connection-database").find("option").slice(1).remove();
 
-        //Get host and port
-        var host = $("#connection-host").val();
-        var port = $("#connection-port").val();
-
         //Build url
         var url = "/keyspaces";
-        if (host && port) {
-            url += "?host=" + host + "&port=" + port;
-        }
+        url += getConnectionNoDb();
 
         //Send request to server
         $.get(url, function(res) {
@@ -94,6 +94,16 @@ function setupEvents() {
                 });
             }
         });
+    });
+}
+
+function getAndSetInfo() {
+    var url = "/info";
+    url += getConnectionNoDb();
+    $.get(url, function (res) {
+        $("#connection-info").html(res);
+    }).fail(function () {
+        $("#connection-info").html("Unable to connect");
     });
 }
 
@@ -122,6 +132,22 @@ function getConnection() {
     }
     if (db) {
         url += "&db=" + db;
+    }
+    return url;
+}
+
+function getConnectionNoDb() {
+    //Get host and port
+    var host = $("#connection-host").val();
+    var port = $("#connection-port").val();
+
+    //Build url
+    var url = "";
+    if (host) {
+        url += "?host=" + host;
+    }
+    if (port) {
+        url += "&port=" + port;
     }
     return url;
 }

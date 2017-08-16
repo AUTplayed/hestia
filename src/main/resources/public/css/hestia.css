@@ -80,6 +80,12 @@ a {
     font-size: 25px !important;
 }
 
+#connection-info {
+    margin-top: 20px;
+    float: left;
+    white-space: pre-line;
+}
+
 select {
     font-size: 25px !important;
     max-width: 50%;
