@@ -4,6 +4,10 @@ import at.karriere.hestia.entity.CommandContainer;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Component
 public class SplitCommandComponent {
@@ -11,7 +15,13 @@ public class SplitCommandComponent {
 
     public CommandContainer split(String commandString) {
         //Split args from command
-        String[] splitCommand = commandString.split(" ");
+        List<String> list = new LinkedList<>();
+        Matcher m = Pattern.compile("([^\"]\\S*|\".+?\")\\s*").matcher(commandString);
+        while(m.find()) {
+            list.add(m.group(1).replace("\"", ""));
+        }
+        String[] splitCommand = new String[list.size()];
+        splitCommand = list.toArray(splitCommand);
         String[] args = Arrays.copyOfRange(splitCommand,1, splitCommand.length);
 
         return new CommandContainer(splitCommand[0], args);

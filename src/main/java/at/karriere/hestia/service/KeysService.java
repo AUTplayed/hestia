@@ -9,27 +9,27 @@ import org.springframework.stereotype.Service;
 public class KeysService {
     final static Logger LOGGER = Logger.getLogger(KeysService.class);
 
-    CliService cliService;
     JsonKeysConverterComponent jsonKeysConverterComponent;
+    DBWrapperCliService dbWrapperCliService;
 
     @Autowired
-    public KeysService(CliService cliService, JsonKeysConverterComponent jsonKeysConverterComponent) {
-        this.cliService = cliService;
+    public KeysService(JsonKeysConverterComponent jsonKeysConverterComponent, DBWrapperCliService dbWrapperCliService) {
         this.jsonKeysConverterComponent = jsonKeysConverterComponent;
+        this.dbWrapperCliService = dbWrapperCliService;
     }
 
-    public String keys(Long cursor, Long count, String pattern, String host, Integer port) {
+    public String keys(Long cursor, Long count, String pattern, String host, Integer port, Integer db) {
         if (cursor == null) {
             cursor = 0L;
         }
         if (count == null) {
-            count = Long.valueOf(cliService.executeCommand(host, port,"DBSIZE")) + 1;
+            count = Long.valueOf(dbWrapperCliService.wrapAndExecute(host, port,"DBSIZE", db)) + 1;
         }
         if (pattern == null || pattern.equals("")) {
             pattern = "*";
         }
         String command = "SCAN "+cursor+" COUNT "+count+" MATCH "+pattern;
-        String result = cliService.executeCommand(host, port, command);
+        String result = dbWrapperCliService.wrapAndExecute(host, port, command, db);
         return jsonKeysConverterComponent.convert(result);
     }
 }

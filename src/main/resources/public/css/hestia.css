@@ -1,0 +1,161 @@
+#cli-command {
+    font-size: 25px;
+    width: 30%;
+}
+
+#cli-output {
+    white-space: pre-wrap;
+}
+
+#cli-wrapper {
+    float:left;
+    width:100%;
+}
+
+#cli-help {
+    float:right;
+    width: 30%;
+    margin-right:10%;
+}
+
+.tab-pane {
+    margin-left:20px;
+}
+
+.nav-link {
+    font-size: 25px;
+}
+
+.keys-row:hover {
+    background-color: #8bc72a;
+}
+
+.tabwrap {
+    margin-top: 10px;
+}
+
+#keys-value {
+    width: 30%;
+    margin-left: 60%;
+}
+
+#keys-keys {
+    width: 50%;
+    float: left;
+    font-size: 25px;
+}
+
+#keys-value-wrapper>p, #keys-value-delete {
+    font-size: 25px;
+}
+
+#keys-value-wrapper {
+    position: fixed;
+    height: 90%;
+    width: 30%;
+}
+
+#keys-value-value {
+    height:80%;
+}
+
+#keys-output {
+    width: 40%;
+    float: left;
+    margin-right: 21%;
+}
+
+.navbar-nav>.active>a {
+    background-color: #8bc72a !important;
+    color: black !important;
+}
+
+a {
+    color: #8bc72a !important;
+}
+
+#connection-wrapper {
+    float: left;
+    width: 50%;
+    font-size: 25px !important;
+}
+
+select {
+    font-size: 25px !important;
+    max-width: 50%;
+}
+
+#redis-logo {
+    max-height: 200px;
+    width: auto;
+    height: auto;
+    display: block;
+    float: right;
+    margin: 5%;
+}
+
+.marked {
+    background-color: #8bc72a;
+}
+
+.checkbox {
+    display: inline !important;
+}
+.checkbox label:after,
+.radio label:after {
+    content: '';
+    display: table;
+    clear: both;
+}
+
+.checkbox .cr,
+.radio .cr {
+    position: relative;
+    display: inline-block;
+    border: 1px solid #a9a9a9;
+    border-radius: .25em;
+    width: 1.3em;
+    height: 1.3em;
+    float: left;
+    margin-right: .5em;
+}
+
+.radio .cr {
+    border-radius: 50%;
+}
+
+.checkbox .cr .cr-icon,
+.radio .cr .cr-icon {
+    position: absolute;
+    font-size: .8em;
+    line-height: 0;
+    top: 50%;
+    left: 20%;
+}
+
+.radio .cr .cr-icon {
+    margin-left: 0.04em;
+}
+
+.checkbox label input[type="checkbox"],
+.radio label input[type="radio"] {
+    display: none;
+}
+
+.checkbox label input[type="checkbox"] + .cr > .cr-icon,
+.radio label input[type="radio"] + .cr > .cr-icon {
+    transform: scale(3) rotateZ(-20deg);
+    opacity: 0;
+    transition: all .3s ease-in;
+}
+
+.checkbox label input[type="checkbox"]:checked + .cr > .cr-icon,
+.radio label input[type="radio"]:checked + .cr > .cr-icon {
+    transform: scale(1) rotateZ(0deg);
+    opacity: 1;
+}
+
+.checkbox label input[type="checkbox"]:disabled + .cr,
+.radio label input[type="radio"]:disabled + .cr {
+    opacity: .5;
+}

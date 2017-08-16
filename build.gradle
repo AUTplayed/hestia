@@ -18,6 +18,7 @@ apply plugin: "at.karriere.version"
 
 apply plugin: 'java'
 apply plugin: 'spring-boot'
+apply plugin: 'jacoco'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
@@ -32,10 +33,10 @@ repositories {
 sourceSets {
     integrationTest {
         java {
-            srcDir 'src/integrationTest/java'
+            srcDirs = ['src/integrationTest/java']
         }
         resources {
-            srcDir 'src/integrationTest/resources'
+            srcDirs = ['src/integrationTest/resources']
         }
         compileClasspath += sourceSets.test.compileClasspath
         runtimeClasspath += sourceSets.test.runtimeClasspath
@@ -69,9 +70,6 @@ dependencies {
     compile group: 'com.spotify', name: 'docker-client', version: '8.8.3'
     compile group: 'org.json', name: 'json', version: '20170516'
 
-    compile group: 'org.joinfaces', name: 'jsf-spring-boot-starter', version: '2.4.0'
-    compile group: 'org.primefaces.extensions', name: 'primefaces-extensions', version: '6.1.1'
-
 }
 
 
@@ -99,4 +97,10 @@ test {
         }
         logger.lifecycle("Test: " + className + "." + descriptor.getName() + " (" + result.getResultType() + ")")
     }
+}
+
+task jacocoReport(type: JacocoReport) {
+    sourceSets sourceSets.main
+    executionData test, integrationTest
+
 }

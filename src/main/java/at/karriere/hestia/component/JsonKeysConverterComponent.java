@@ -15,7 +15,7 @@ public class JsonKeysConverterComponent {
         JSONObject response = new JSONObject();
 
         //When the array is empty return empty jsonobject
-        if(lines.length < 1) {
+        if(lines.length < 2 && lines[0].equals("")) {
             return "{}";
         }
 

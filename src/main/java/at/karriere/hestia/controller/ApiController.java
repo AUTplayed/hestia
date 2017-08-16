@@ -1,8 +1,11 @@
 package at.karriere.hestia.controller;
 
 import at.karriere.hestia.service.CliService;
+import at.karriere.hestia.service.DBWrapperCliService;
 import at.karriere.hestia.service.KeysService;
+import at.karriere.hestia.service.KeyspaceService;
 import org.apache.log4j.Logger;
+import org.bouncycastle.cert.ocsp.Req;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,12 +18,16 @@ public class ApiController {
     final static Logger LOGGER = Logger.getLogger(ApiController.class);
 
     KeysService keysService;
+    DBWrapperCliService dbWrapperCliService;
     CliService cliService;
+    KeyspaceService keyspaceService;
 
     @Autowired
-    public ApiController(KeysService keysService, CliService cliService) {
+    public ApiController(KeysService keysService, CliService cliService, DBWrapperCliService dbWrapperCliService, KeyspaceService keyspaceService) {
         this.keysService = keysService;
         this.cliService = cliService;
+        this.dbWrapperCliService = dbWrapperCliService;
+        this.keyspaceService = keyspaceService;
     }
 
     /**
@@ -37,9 +44,10 @@ public class ApiController {
                        @RequestParam(required = false, name = "count") Long count,
                        @RequestParam(required = false, name = "pattern") String pattern,
                        @RequestParam(required = false, name = "host") String host,
-                       @RequestParam(required = false, name = "port") Integer port) {
+                       @RequestParam(required = false, name = "port") Integer port,
+                       @RequestParam(required = false, name = "db") Integer db) {
         LOGGER.info("GET /keys");
-        return keysService.keys(cursor, count, pattern, host, port);
+        return keysService.keys(cursor, count, pattern, host, port, db);
     }
 
     /**
@@ -50,9 +58,17 @@ public class ApiController {
      */
     @RequestMapping(value = "/size", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
     public String size(@RequestParam(required = false, name = "host") String host,
-                       @RequestParam(required = false, name = "port") Integer port) {
+                       @RequestParam(required = false, name = "port") Integer port,
+                       @RequestParam(required = false, name = "db") Integer db) {
         LOGGER.info("GET /size");
-        return cliService.executeCommand(host, port, "DBSIZE");
+        return dbWrapperCliService.wrapAndExecute(host, port, "DBSIZE", db);
+    }
+
+    @RequestMapping(value = "/keyspaces", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String keyspaces(@RequestParam(required = false, name = "host") String host,
+                            @RequestParam(required = false, name = "port") Integer port) {
+        LOGGER.info("GET /keyspaces");
+        return keyspaceService.getKeySpaces(host, port);
     }
 
 }

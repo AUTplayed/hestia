@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<header>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/hestia.css">
+</header>
+<body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="index.html">Service</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="hestia.html">Hestia</a></li>
+                <li><a href="helios.html">Helios</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">Separated link</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">One more separated link</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<h1>Hestia</h1>
+<ul class="nav nav-tabs" role="tablist">
+    <li class="nav-item active">
+        <a class="nav-link" data-toggle="tab" href="#connection" role="tab">Connection</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#cli" role="tab">Cli</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#keys" role="tab">Keys</a>
+    </li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+    <div class="tab-pane active" id="connection" role="tabpanel">
+        <div id="connection-wrapper" class="tabwrap">
+            <select class="form-control" id="connection-server"></select>
+            <input type="text" id="connection-host" placeholder="hostname">
+            <input type="number" id="connection-port" placeholder="port">
+            <p>Database</p>
+            <select class="form-control" id="connection-database">
+                <option>Default (0)</option>
+            </select>
+        </div>
+        <img id="redis-logo" src="res/redis.png" alt="redis.png">
+    </div>
+    <div class="tab-pane" id="cli" role="tabpanel">
+        <div id="cli-wrapper" class="tabwrap">
+            <input type="text" placeholder="command" id="cli-command">
+            <span class="checkbox"><label style="font-size: 25px">
+                <input type="checkbox" value="" checked="" id="cli-clear">
+                <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>Clear after send</label>
+            </span>
+            <h3>Output</h3>
+        </div>
+        <pre id="cli-help">Use any cli command like you normally would. <br>Select a connection and database in the 'Connection' tab. <br>Use 'clear' to clear the output.</pre>
+        <div id="cli-output"></div>
+    </div>
+    <div class="tab-pane" id="keys" role="tabpanel">
+        <div id="keys-keys" class="tabwrap">
+            <input type="number" id="keys-count" placeholder="count">
+            <input type="text" id="keys-pattern" placeholder="pattern">
+            <input type="button" id="keys-search" value="Search">
+            <input type="button" id="keys-nextpage" value="Next Page">
+            <div style="color:red" id="keys-error"></div>
+        </div>
+        <div id="keys-value">
+            <div id="keys-value-wrapper">
+                <p>Value</p>
+                <input type="button" id="keys-value-delete" value="Delete">
+                <span id="keys-value-status"></span>
+                <pre id="keys-value-value"></pre>
+            </div>
+        </div>
+        <table id="keys-output"></table>
+    </div>
+</div>
+</body>
+<footer>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="js/hestia.js"></script>
+    <script src="js/servers.js"></script>
+    <script src="js/hestia-keys.js"></script>
+</footer>
+</html>
