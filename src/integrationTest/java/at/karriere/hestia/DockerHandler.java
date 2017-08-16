@@ -26,7 +26,11 @@ public class DockerHandler {
     }
 
     private DockerHandler() {
-        docker = DefaultDockerClient.builder().uri(URI.create("unix:///var/run/docker.sock")).build();
+        if(System.getProperty("os.name").toLowerCase().contains("windows")) {
+            docker = DefaultDockerClient.builder().uri(URI.create("npipe:////./pipe/docker_engine")).build();
+        } else {
+            docker = DefaultDockerClient.builder().uri(URI.create("unix:///var/run/docker.sock")).build();
+        }
     }
 
     public void start() {

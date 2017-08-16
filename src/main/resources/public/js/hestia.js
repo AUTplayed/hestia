@@ -24,8 +24,6 @@ function setupEvents() {
         //If keypress is "ENTER"
         if (ev.originalEvent.keyCode == 13) {
 
-
-
             //Get command from input
             var commandInput = $("#cli-command");
             var command = commandInput.val();
