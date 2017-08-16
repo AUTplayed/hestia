@@ -67,7 +67,7 @@ function setupEvents() {
     });
 
     //On Hostname or port unfocus
-    $("#connection-port, #connection-port").focusout(function () {
+    $("#connection-host, #connection-port").focusout(function () {
         getAndSetInfo();
     });
 
