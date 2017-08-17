@@ -80,6 +80,10 @@ a {
     font-size: 25px !important;
 }
 
+#connection-namespaces-table > td, #connection-namespaces-table > th {
+    padding-right: 10px;
+}
+
 select {
     font-size: 25px !important;
     max-width: 50%;

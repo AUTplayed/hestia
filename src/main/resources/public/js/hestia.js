@@ -97,6 +97,49 @@ function setupEvents() {
     });
 }
 
+function getNamespaces() {
+    var url = "/namespaces" + getConnection();
+    $.get(url, function (res) {
+        $("#connection-namespaces").html(buildNamespaceTable(res));
+        $(".connection-namespaces-description").focusout(editNamespaceDescription);
+    });
+}
+
+function editNamespaceDescription(ev) {
+    var target = $(ev.currentTarget);
+    var value = target.val();
+    var children = target.parent().parent().children();
+    var key = children.eq(0).html();
+    var count = children.eq(1).html();
+    var url = "/cli?command=SET info:" + key + " " + count + ":" + value;
+    $.get(url, function (res) {
+        if(res !== "OK") {
+            target.css("background-color", "red");
+        } else {
+            target.css("background-color", "#8bc72a");
+        }
+    });
+}
+
+function buildNamespaceTable(res) {
+    var table = "<table id='connection-namespaces-table'>\n";
+    table += "<tr>\n<th>Namespace</th>\n<th>#</th>\n<th>Description</th>\n</tr>\n";
+    res = res.split("\n");
+    for(var i = 0; i < res.length; i++) {
+        if(res[i]) {
+            var fields = res[i].split(":");
+            table += "<tr>\n<td>" + fields[0] + "</td>\n";
+            table += "<td>" + fields[1] + "</td>\n";
+            if(fields[2] === undefined) {
+                fields[2] = "";
+            }
+            table += "<td><input class='connection-namespaces-description' value='" + fields[2] + "'></td>\n</tr>\n";
+        }
+    }
+    table += "</table>";
+    return table;
+}
+
 /**
  * Get hostname, port and database from respective input forms and parse them into an url
  * @returns {string}
