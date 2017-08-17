@@ -48,6 +48,9 @@
     <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#keys" role="tab">Keys</a>
     </li>
+    <li>
+        <a class="nav-link" id="connection-status">Unable to connect</a>
+    </li>
 </ul>
 
 <!-- Tab panes -->
@@ -67,7 +70,10 @@
     </div>
     <div class="tab-pane" id="cli" role="tabpanel">
         <div id="cli-wrapper" class="tabwrap">
-            <input type="text" placeholder="command" id="cli-command">
+            <span class="input-group" id="cli-input-wrapper">
+                <span class="input-group-addon">command</span>
+                <input type="text" id="cli-command">
+            </span>
             <span class="checkbox"><label style="font-size: 25px">
                 <input type="checkbox" value="" checked="" id="cli-clear">
                 <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>Clear after send</label>
@@ -79,8 +85,14 @@
     </div>
     <div class="tab-pane" id="keys" role="tabpanel">
         <div id="keys-keys" class="tabwrap">
-            <input type="number" id="keys-count" placeholder="count">
-            <input type="text" id="keys-pattern" placeholder="pattern">
+            <span class="input-group" id="keys-count-wrapper">
+                <span class="input-group-addon">count</span>
+                <input type="number" id="keys-count">
+            </span>
+            <span class="input-group" id="keys-pattern-wrapper">
+                <span class="input-group-addon">pattern</span>
+                <input type="text" id="keys-pattern">
+            </span>
             <input type="button" id="keys-search" value="Search">
             <input type="button" id="keys-nextpage" value="Next Page">
             <div style="color:red" id="keys-error"></div>
@@ -88,7 +100,7 @@
         <div id="keys-value">
             <div id="keys-value-wrapper">
                 <p>Value</p>
-                <input type="button" id="keys-value-delete" value="Delete">
+                <button id="keys-value-delete" class="btn btn-danger" data-toggle="confirmation" data-placement="left" data-popout="true">Delete</button>
                 <span id="keys-value-status"></span>
                 <pre id="keys-value-value"></pre>
             </div>
@@ -100,6 +112,7 @@
 <footer>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="js/bootstrap-confirmation.min.js"></script>
     <script src="js/hestia.js"></script>
     <script src="js/servers.js"></script>
     <script src="js/hestia-keys.js"></script>

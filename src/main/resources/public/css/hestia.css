@@ -1,6 +1,12 @@
 #cli-command {
     font-size: 25px;
+    width: 100%;
+}
+#cli-input-wrapper {
     width: 30%;
+}
+#cli-input-wrapper>span {
+    font-size: 25px;
 }
 
 #cli-output {
@@ -32,6 +38,26 @@
 
 .tabwrap {
     margin-top: 10px;
+}
+
+#keys-count-wrapper {
+    float:left;
+    width: 18%;
+}
+
+#keys-count {
+    width: 100%;
+}
+
+#keys-pattern-wrapper {
+    float:left;
+    width: 20%;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#keys-pattern {
+    width: 100%;
 }
 
 #keys-value {
@@ -70,7 +96,7 @@
     color: black !important;
 }
 
-a {
+li>a {
     color: #8bc72a !important;
 }
 
@@ -84,6 +110,19 @@ a {
     margin-top: 20px;
     float: left;
     white-space: pre-line;
+}
+
+#connection-server {
+    margin-bottom: 5px;
+}
+
+#connection-status {
+    padding-left: 59vw;
+    border: none;
+}
+#connection-status:hover {
+    background-color: inherit;
+    border:none;
 }
 
 select {
