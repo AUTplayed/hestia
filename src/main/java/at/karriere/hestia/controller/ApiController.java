@@ -1,9 +1,6 @@
 package at.karriere.hestia.controller;
 
-import at.karriere.hestia.service.CliService;
-import at.karriere.hestia.service.DBWrapperCliService;
-import at.karriere.hestia.service.KeysService;
-import at.karriere.hestia.service.KeyspaceService;
+import at.karriere.hestia.service.*;
 import org.apache.log4j.Logger;
 import org.bouncycastle.cert.ocsp.Req;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +18,15 @@ public class ApiController {
     DBWrapperCliService dbWrapperCliService;
     CliService cliService;
     KeyspaceService keyspaceService;
+    NamespaceService namespaceService;
 
     @Autowired
-    public ApiController(KeysService keysService, CliService cliService, DBWrapperCliService dbWrapperCliService, KeyspaceService keyspaceService) {
+    public ApiController(KeysService keysService, DBWrapperCliService dbWrapperCliService, CliService cliService, KeyspaceService keyspaceService, NamespaceService namespaceService) {
         this.keysService = keysService;
-        this.cliService = cliService;
         this.dbWrapperCliService = dbWrapperCliService;
+        this.cliService = cliService;
         this.keyspaceService = keyspaceService;
+        this.namespaceService = namespaceService;
     }
 
     /**
@@ -47,7 +46,7 @@ public class ApiController {
                        @RequestParam(required = false, name = "port") Integer port,
                        @RequestParam(required = false, name = "db") Integer db) {
         LOGGER.info("GET /keys");
-        return keysService.keys(cursor, count, pattern, host, port, db);
+        return keysService.keysJson(cursor, count, pattern, host, port, db);
     }
 
     /**
@@ -68,7 +67,13 @@ public class ApiController {
     public String keyspaces(@RequestParam(required = false, name = "host") String host,
                             @RequestParam(required = false, name = "port") Integer port) {
         LOGGER.info("GET /keyspaces");
-        return keyspaceService.getKeySpaces(host, port);
+        return keyspaceService.getKeySpacesJson(host, port);
     }
 
+    @RequestMapping(value = "/namespaces", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
+    public String namespaces(@RequestParam(required = false, name = "host") String host,
+                           @RequestParam(required = false, name = "port") Integer port) {
+        namespaceService.scan(host, port);
+        return "Done";
+    }
 }
