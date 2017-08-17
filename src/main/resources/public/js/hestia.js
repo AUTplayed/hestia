@@ -105,10 +105,31 @@ function getAndSetInfo() {
     var url = "/info";
     url += getConnectionNoDb();
     $.get(url, function (res) {
-        $("#connection-info").html(res);
+        $("#connection-info").html(setInfoTable(res));
     }).fail(function () {
         $("#connection-info").html("Unable to connect");
     });
+}
+
+function setInfoTable(info) {
+    var table = "<table id='connection-table'>\n";
+    var lines = info.split("\n");
+    for(var i = 0; i < lines.length; i++) {
+        var line = lines[i];
+        if(line != "") {
+            table+="<tr>\n";
+            if(line.startsWith("#")) {
+                var header = line.substr(2, line.length);
+                table += "<th>" + header + "</th>\n</tr>\n";
+            } else {
+                var keyVal = line.split(":");
+                table += "<td>" + keyVal[0] + "</td>\n";
+                table += "<td>" + keyVal[1] + "</td>\n</tr>\n";
+            }
+        }
+    }
+    table += "</table>";
+    return table;
 }
 
 /**

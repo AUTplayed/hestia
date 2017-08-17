@@ -97,7 +97,8 @@ select {
     height: auto;
     display: block;
     float: right;
-    margin: 5%;
+    margin-right: 5%;
+    margin-top: 5%;
 }
 
 .marked {
