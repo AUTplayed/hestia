@@ -95,6 +95,10 @@ function setupEvents() {
             }
         });
     });
+    
+    $("#tab-connection").click(function () {
+        getAndSetInfo();
+    });
 }
 
 function getAndSetInfo() {
