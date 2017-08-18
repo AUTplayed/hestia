@@ -21,15 +21,12 @@ public class ApiController {
     InfoService infoService;
 
     @Autowired
-    public ApiController(KeysService keysService, DBWrapperCliService dbWrapperCliService, CliService cliService, KeyspaceService keyspaceService, NamespaceScheduleService namespaceScheduleService, NamespaceService namespaceService, InfoService infoService) {
+    public ApiController(KeysService keysService, KeyspaceService keyspaceService, NamespaceScheduleService namespaceScheduleService, NamespaceService namespaceService, InfoService infoService) {
         this.keysService = keysService;
-        this.dbWrapperCliService = dbWrapperCliService;
-        this.cliService = cliService;
         this.keyspaceService = keyspaceService;
         this.namespaceScheduleService = namespaceScheduleService;
         this.namespaceService = namespaceService;
         this.infoService = infoService;
-        
     }
 
     /**
