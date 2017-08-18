@@ -1,4 +1,7 @@
 $(document).ready(function() {
+    $('[data-toggle=confirmation]').confirmation({
+        rootSelector: '[data-toggle=confirmation]'
+    });
     readServers();
     setupEvents();
 });
@@ -71,6 +74,15 @@ function setupEvents() {
         getAndSetInfo();
     });
 
+    $("#connection-host, #connection-port").keydown(function (ev) {
+        //If keypress is "ENTER"
+        if (ev.originalEvent.keyCode == 13) {
+            getAndSetInfo();
+        } else {
+            $("#connection-server").val("Custom");
+        }
+    });
+
     //On Database dropdown click
     $("#connection-database").click(function() {
 
@@ -104,11 +116,20 @@ function setupEvents() {
 function getAndSetInfo() {
     var url = "/info";
     url += getConnectionNoDb();
-    $.get(url, function (res) {
-        $("#connection-info").html(setInfoTable(res));
-    }).fail(function () {
+
+    function failed() {
         $("#connection-info").html("Unable to connect");
-    });
+        $("#connection-status").html("Unable to connect");
+    }
+    $.get(url, function (res) {
+        if(res && res != "") {
+            $("#connection-info").html(res);
+            $("#connection-status").html("Connected to: "+$("#connection-host").val()+" ("+$("#connection-server").val()+")");
+        } else {
+            failed();
+        }
+    }).fail(failed);
+
 }
 
 function setInfoTable(info) {
