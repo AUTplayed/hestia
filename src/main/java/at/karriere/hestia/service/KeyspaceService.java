@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class KeyspaceService {
 
-    JsonKeySpaceConverterComponent jsonKeySpaceConverterComponent;
-    CliService cliService;
+    private JsonKeySpaceConverterComponent jsonKeySpaceConverterComponent;
+    private CliService cliService;
 
     @Autowired
     public KeyspaceService(JsonKeySpaceConverterComponent jsonKeySpaceConverterComponent, CliService cliService) {
@@ -17,8 +17,11 @@ public class KeyspaceService {
     }
 
     public String getKeySpaces(String host, Integer port) {
+       return cliService.executeCommand(host,port,"info keyspace");
+    }
 
-        String result = cliService.executeCommand(host,port,"info keyspace");
+    public String getKeySpacesJson(String host, Integer port) {
+        String result = getKeySpaces(host, port);
         return jsonKeySpaceConverterComponent.convert(result);
     }
 }

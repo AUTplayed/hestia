@@ -16,17 +16,22 @@ public class ApiController {
 
     KeysService keysService;
     KeyspaceService keyspaceService;
+    NamespaceScheduleService namespaceScheduleService;
+    NamespaceService namespaceService;
     InfoService infoService;
 
     @Autowired
-    public ApiController(KeysService keysService, KeyspaceService keyspaceService, InfoService infoService) {
+    public ApiController(KeysService keysService, KeyspaceService keyspaceService, NamespaceScheduleService namespaceScheduleService, NamespaceService namespaceService, InfoService infoService) {
         this.keysService = keysService;
         this.keyspaceService = keyspaceService;
+        this.namespaceScheduleService = namespaceScheduleService;
+        this.namespaceService = namespaceService;
         this.infoService = infoService;
     }
 
     /**
      * Endpoint for /keys command, returns keys and cursor depending on specified cursor, count and pattern in JSON format
+     *
      * @param cursor
      * @param count
      * @param pattern
@@ -34,7 +39,7 @@ public class ApiController {
      * @param port
      * @return
      */
-    @RequestMapping(value = "/keys",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/keys", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public String keys(@RequestParam(required = false, name = "cursor") Long cursor,
                        @RequestParam(required = false, name = "count") Long count,
                        @RequestParam(required = false, name = "pattern") String pattern,
@@ -42,14 +47,30 @@ public class ApiController {
                        @RequestParam(required = false, name = "port") Integer port,
                        @RequestParam(required = false, name = "db") Integer db) {
         LOGGER.info("GET /keys");
-        return keysService.keys(cursor, count, pattern, host, port, db);
+        return keysService.keysJson(cursor, count, pattern, host, port, db);
     }
 
     @RequestMapping(value = "/keyspaces", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public String keyspaces(@RequestParam(required = false, name = "host") String host,
                             @RequestParam(required = false, name = "port") Integer port) {
         LOGGER.info("GET /keyspaces");
-        return keyspaceService.getKeySpaces(host, port);
+        return keyspaceService.getKeySpacesJson(host, port);
+    }
+
+    @RequestMapping(value = "/scheduleNamespaces", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
+    public String scheduleNamespaces(@RequestParam(required = false, name = "host") String host,
+                             @RequestParam(required = false, name = "port") Integer port) {
+        LOGGER.info("GET /scheduleNamespaces");
+        namespaceScheduleService.scan(host, port);
+        return "Done";
+    }
+
+    @RequestMapping(value = "/namespaces", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String namespaces(@RequestParam(required = false, name = "host") String host,
+                             @RequestParam(required = false, name = "port") Integer port,
+                             @RequestParam(required = false, name = "db") Integer db) {
+        LOGGER.info("GET /namespaces");
+        return namespaceService.getNamespaces(host, port, db);
     }
 
     @RequestMapping(value = "/info", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)

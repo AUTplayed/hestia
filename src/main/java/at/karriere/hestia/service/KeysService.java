@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 public class KeysService {
     final static Logger LOGGER = Logger.getLogger(KeysService.class);
 
-    JsonKeysConverterComponent jsonKeysConverterComponent;
-    DBWrapperCliService dbWrapperCliService;
+    private JsonKeysConverterComponent jsonKeysConverterComponent;
+    private DBWrapperCliService dbWrapperCliService;
 
     @Autowired
     public KeysService(JsonKeysConverterComponent jsonKeysConverterComponent, DBWrapperCliService dbWrapperCliService) {
@@ -29,7 +29,11 @@ public class KeysService {
             pattern = "*";
         }
         String command = "SCAN "+cursor+" COUNT "+count+" MATCH "+pattern;
-        String result = dbWrapperCliService.wrapAndExecute(host, port, command, db);
+        return dbWrapperCliService.wrapAndExecute(host, port, command, db);
+    }
+
+    public String keysJson(Long cursor, Long count, String pattern, String host, Integer port, Integer db) {
+        String result = keys(cursor, count, pattern, host, port, db);
         return jsonKeysConverterComponent.convert(result);
     }
 }

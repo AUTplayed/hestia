@@ -107,6 +107,10 @@ li>a {
     font-size: 25px !important;
 }
 
+#connection-namespaces-table > td, #connection-namespaces-table > th {
+    padding-right: 10px;
+}
+
 #connection-info {
     margin-top: 20px;
     float: left;

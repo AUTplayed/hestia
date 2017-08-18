@@ -16,6 +16,11 @@ function readServers() {
     });
 }
 
+String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.replace(new RegExp(search, 'g'), replacement);
+};
+
 /**
  * setup change events
  */
@@ -125,11 +130,11 @@ function getAndSetInfo() {
         if(res && res != "") {
             $("#connection-info").html(res);
             $("#connection-status").html("Connected to: "+$("#connection-host").val()+" ("+$("#connection-server").val()+")");
+            getNamespaces();
         } else {
             failed();
         }
     }).fail(failed);
-
 }
 
 function setInfoTable(info) {
@@ -149,6 +154,46 @@ function setInfoTable(info) {
             }
         }
     }
+    table += "</table>";
+    return table;
+}
+
+function getNamespaces() {
+    var url = "/namespaces" + getConnectionNoDb();
+    $.get(url, function (res) {
+        $("#connection-namespaces").html(buildNamespaceTable(res));
+        $(".connection-namespaces-description").focusout(editNamespaceDescription);
+    });
+}
+
+function editNamespaceDescription(ev) {
+    var target = $(ev.currentTarget);
+    var value = target.val();
+    var children = target.parent().parent().children();
+    var key = children.eq(0).html();
+    currentNamespaces[key].description = value;
+    var jsonString = JSON.stringify(currentNamespaces).replaceAll('\"', '\\"');  //WTF do not split into 2 method calls - won't work
+    var url = "/cli?command=SET info " + "\"" + encodeURIComponent(jsonString) + "\"";
+    $.get(url, function (res) {
+        if(res !== "OK") {
+            target.css("background-color", "red");
+        } else {
+            target.css("background-color", "#8bc72a");
+        }
+    });
+}
+var currentNamespaces;
+
+function buildNamespaceTable(res) {
+    currentNamespaces = res;
+    var table = "<table id='connection-namespaces-table'>\n";
+    table += "<tr>\n<th>Namespace</th>\n<th>#</th>\n<th>Description</th>\n</tr>\n";
+    var keys = Object.keys(res);
+    keys.forEach(function (key) {
+        table += "<tr>\n<td>" + key + "</td>\n";
+        table += "<td>" + res[key].count + "</td>\n";
+        table += "<td><input class='connection-namespaces-description' value='" + res[key].description + "'></td>\n</tr>\n";
+    });
     table += "</table>";
     return table;
 }

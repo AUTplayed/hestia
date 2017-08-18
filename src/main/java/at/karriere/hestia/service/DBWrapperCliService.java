@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 public class DBWrapperCliService {
     final static Logger LOGGER = Logger.getLogger(DBWrapperCliService.class);
 
-    CliService cliService;
-    SplitCommandComponent splitCommandComponent;
-    DBCommandWrapperComponent dbCommandWrapperComponent;
+    private CliService cliService;
+    private SplitCommandComponent splitCommandComponent;
+    private DBCommandWrapperComponent dbCommandWrapperComponent;
 
     @Autowired
     public DBWrapperCliService(CliService cliService, SplitCommandComponent splitCommandComponent, DBCommandWrapperComponent dbCommandWrapperComponent) {
