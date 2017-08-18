@@ -13,7 +13,7 @@ public class NamespaceCollectorComponentTest {
     @Test
     public void test() {
         HashMap<String, Long> map = new HashMap<>();
-        String[] keys = {"asd", "a:key1", "a:key2", "b:key1"};
+        String[] keys = {"a:key1", "a:key2", "b:key1"};
         namespaceCollectorComponent.collect(keys, map);
         assertThat(map.size()).as("check key map size").isEqualTo(2);
         assertThat(map.get("a")).as("check a namespace count").isEqualTo(2L);
