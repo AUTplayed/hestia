@@ -35,7 +35,7 @@ public class NamespaceScheduleService {
         for(Integer keyspace : keyspaces) {
             HashMap<String, Long> map = new HashMap<>();
             Long time = System.currentTimeMillis();
-            scan(0L, 1000000L, "*:*", host, port, keyspace, map);
+            scan(0L, 100000L, "*:*", host, port, keyspace, map);
             LOGGER.info("Scanning db" + keyspace + " took " + (System.currentTimeMillis() - time) / 1000 +"s");
             saveResults(map, host, port, keyspace);
         }
