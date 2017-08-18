@@ -38,7 +38,7 @@ public class CliRepository {
             outstream = new RedisOutputStream(socket.getOutputStream());
             instream = new RedisInputStream(socket.getInputStream());
         } catch (SocketException e) {
-            LOGGER.error("Error while setting socket settings",e);
+            LOGGER.error("Error while connecting to socket: "+e.getMessage());
             return false;
         } catch (IOException e) {
             LOGGER.error("Error while connecting to redis server via socket",e);
