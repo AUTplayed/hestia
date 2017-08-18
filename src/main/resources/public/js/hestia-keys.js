@@ -7,15 +7,14 @@ var selectedRow;
 $(document).ready(function() {
 
     //On Search button click
-    $("#keys-search").click(function() {
+    $("#keys-search").click(search);
 
-        //get all input values and call getKeys() which, well..., gets the keys
-        count = $("#keys-count").val();
-        pattern = $("#keys-pattern").val();
-
-        //Reset cursor
-        cursor = 0;
-        getKeys();
+    //On Count or Pattern enter event
+    $("#keys-count, #keys-pattern").keydown(function (ev) {
+        //If keypress is "ENTER"
+        if (ev.originalEvent.keyCode == 13) {
+            search();
+        }
     });
 
     //On Nextpage button click
@@ -35,26 +34,44 @@ $(document).ready(function() {
     $("#keys-value-delete").click(function() {
 
         //Only if a value is currently selected and displayed
-        if (curkey && selectedRow) {
-
-            //Build url and send delete request to server
-            var url = "/cli?command=DEL " + encodeURIComponent(curkey) + getConnection();
-            $.get(url, function(res) {
-
-                //Display deleted amount
-                $("#keys-value-status").html("Deleted: " + res);
-
-                //If there were keys deleted, remove the table row from the UI
-                if (res > 0) {
-                    selectedRow.remove();
-
-                    //And clear out the value display
-                    $("#keys-value-value").html("");
-                }
-            });
+        var marked = $(".marked");
+        if (marked.length > 0) {
+            var url = "/cli?command=DEL";
+            for(var i = 0; i < marked.length; i++) {
+                var key = getKeyFromRow(marked.eq(i));
+                url += " " + key;
+            }
+            url += getConnection();
+            deleteKeys(url);
         }
     });
 });
+
+function search() {
+    //get all input values and call getKeys() which, well..., gets the keys
+    count = $("#keys-count").val();
+    pattern = $("#keys-pattern").val();
+
+    //Reset cursor
+    cursor = 0;
+    getKeys();
+}
+
+function deleteKeys(url) {
+    $.get(url, function(res) {
+
+        //Display deleted amount
+        $("#keys-value-status").html("Deleted: " + res);
+
+        //If there were keys deleted, remove the table row from the UI
+        if (res > 0) {
+            $(".marked").remove();
+
+            //And clear out the value display
+            $("#keys-value-value").html("");
+        }
+    });
+}
 
 /**
  * Gets the next keys from the db
@@ -96,41 +113,83 @@ function getKeys() {
                 });
 
                 //If a key gets clicked
-                $(".keys-row").click(function(ev) {
-
-                    //clear the delete status
-                    $("#keys-value-status").html("");
-
-                    //Save the selected row
-                    selectedRow = $(ev.currentTarget);
-
-                    //Unmark other rows
-                    $(".marked").removeClass("marked");
-
-                    //Mark the row as clicked
-                    selectedRow.addClass("marked");
-
-                    //Save the selected key
-                    curkey = selectedRow.children().first().html();
-
-                    //Build url and send get request to server
-                    var url = "/cli?command=GET " + encodeURIComponent(curkey) + getConnection();
-                    $.get(url, function(response) {
-                        try {
-
-                            //If returned value is a json, pretty print to UI
-                            var json = JSON.parse(response);
-                            $("#keys-value-value").html(JSON.stringify(json, null, 2));
-                        } catch (e) {
-
-                            //If returned values is not a json, just display it normally
-                            $("#keys-value-value").html(response);
-                        }
-                    });
-                });
+                $(".keys-row").click(keyClick);
             } else {
                 $("#keys-output").append("<tr class='keys-row'><td>no results on this page</td></tr>");
             }
         }
     });
+}
+
+var lastClick;
+
+function keyClick(ev) {
+    ev.preventDefault();
+    //clear the delete status
+    $("#keys-value-status").html("");
+
+    //Save the selected row
+    selectedRow = $(ev.currentTarget);
+
+    if(ev.originalEvent.shiftKey) {
+        shiftClick(selectedRow);
+    } else if(ev.originalEvent.ctrlKey || ev.originalEvent.metaKey) {
+        ctrlClick(selectedRow);
+    } else {
+        //Remember last clicked row
+        lastClick = selectedRow;
+
+        //Unmark other rows
+        $(".marked").removeClass("marked");
+
+        //Mark the row as clicked
+        selectedRow.addClass("marked");
+
+        //Save the selected key
+        curkey = getKeyFromRow(selectedRow);
+
+        //Build url and send get request to server
+        var url = "/cli?command=GET " + curkey + getConnection();
+        $.get(url, function(response) {
+            try {
+
+                //If returned value is a json, pretty print to UI
+                var json = JSON.parse(response);
+                $("#keys-value-value").html(JSON.stringify(json, null, 2));
+            } catch (e) {
+
+                //If returned values is not a json, just display it normally
+                $("#keys-value-value").html(response);
+            }
+        });
+    }
+}
+
+function shiftClick(row) {
+    var lastindex = lastClick.index();
+    var index = row.index();
+    var smaller, bigger;
+    if(index < lastindex) {
+        smaller = index;
+        bigger = lastindex;
+    } else {
+        smaller = lastindex;
+        bigger = index;
+    }
+    for(var i = smaller; i <= bigger; i++) {
+        $(".keys-row").eq(i).addClass("marked");
+    }
+    var count = $(".marked").length;
+    $("#keys-value-status").html("Selected: " + count);
+}
+
+function ctrlClick(row) {
+    lastClick = row;
+    row.addClass("marked");
+    var count = $(".marked").length;
+    $("#keys-value-status").html("Selected: " + count);
+}
+
+function getKeyFromRow(row) {
+    return encodeURIComponent(row.children().first().html());
 }

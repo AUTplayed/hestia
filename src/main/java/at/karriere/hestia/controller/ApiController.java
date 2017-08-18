@@ -15,20 +15,21 @@ public class ApiController {
     final static Logger LOGGER = Logger.getLogger(ApiController.class);
 
     KeysService keysService;
-    DBWrapperCliService dbWrapperCliService;
-    CliService cliService;
     KeyspaceService keyspaceService;
     NamespaceScheduleService namespaceScheduleService;
     NamespaceService namespaceService;
+    InfoService infoService;
 
     @Autowired
-    public ApiController(KeysService keysService, DBWrapperCliService dbWrapperCliService, CliService cliService, KeyspaceService keyspaceService, NamespaceScheduleService namespaceScheduleService, NamespaceService namespaceService) {
+    public ApiController(KeysService keysService, DBWrapperCliService dbWrapperCliService, CliService cliService, KeyspaceService keyspaceService, NamespaceScheduleService namespaceScheduleService, NamespaceService namespaceService, InfoService infoService) {
         this.keysService = keysService;
         this.dbWrapperCliService = dbWrapperCliService;
         this.cliService = cliService;
         this.keyspaceService = keyspaceService;
         this.namespaceScheduleService = namespaceScheduleService;
         this.namespaceService = namespaceService;
+        this.infoService = infoService;
+        
     }
 
     /**
@@ -50,21 +51,6 @@ public class ApiController {
                        @RequestParam(required = false, name = "db") Integer db) {
         LOGGER.info("GET /keys");
         return keysService.keysJson(cursor, count, pattern, host, port, db);
-    }
-
-    /**
-     * Endpoint for /size command, returns amount of keys in database
-     *
-     * @param host
-     * @param port
-     * @return
-     */
-    @RequestMapping(value = "/size", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
-    public String size(@RequestParam(required = false, name = "host") String host,
-                       @RequestParam(required = false, name = "port") Integer port,
-                       @RequestParam(required = false, name = "db") Integer db) {
-        LOGGER.info("GET /size");
-        return dbWrapperCliService.wrapAndExecute(host, port, "DBSIZE", db);
     }
 
     @RequestMapping(value = "/keyspaces", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -89,4 +75,12 @@ public class ApiController {
         LOGGER.info("GET /namespaces");
         return namespaceService.getNamespaces(host, port, db);
     }
+
+    @RequestMapping(value = "/info", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
+    public String info(@RequestParam(required = false, name = "host") String host,
+                       @RequestParam(required = false, name = "port") Integer port) {
+        LOGGER.info("GET /info");
+        return infoService.getInfo(host, port);
+    }
+
 }

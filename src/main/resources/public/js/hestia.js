@@ -1,4 +1,7 @@
 $(document).ready(function() {
+    $('[data-toggle=confirmation]').confirmation({
+        rootSelector: '[data-toggle=confirmation]'
+    });
     readServers();
     setupEvents();
 });
@@ -60,9 +63,24 @@ function setupEvents() {
             if (server.name == selected) {
                 $("#connection-host").val(server.host);
                 $("#connection-port").val(server.port);
+                getAndSetInfo();
             }
         });
 
+    });
+
+    //On Hostname or port unfocus
+    $("#connection-host, #connection-port").focusout(function () {
+        getAndSetInfo();
+    });
+
+    $("#connection-host, #connection-port").keydown(function (ev) {
+        //If keypress is "ENTER"
+        if (ev.originalEvent.keyCode == 13) {
+            getAndSetInfo();
+        } else {
+            $("#connection-server").val("Custom");
+        }
     });
 
     //On Database dropdown click
@@ -71,15 +89,9 @@ function setupEvents() {
         //delete all choices except the first one (Default)
         $("#connection-database").find("option").slice(1).remove();
 
-        //Get host and port
-        var host = $("#connection-host").val();
-        var port = $("#connection-port").val();
-
         //Build url
         var url = "/keyspaces";
-        if (host && port) {
-            url += "?host=" + host + "&port=" + port;
-        }
+        url += getConnectionNoDb();
 
         //Send request to server
         $.get(url, function(res) {
@@ -95,6 +107,50 @@ function setupEvents() {
             }
         });
     });
+    
+    $("#tab-connection").click(function () {
+        getAndSetInfo();
+    });
+}
+
+function getAndSetInfo() {
+    var url = "/info";
+    url += getConnectionNoDb();
+
+    function failed() {
+        $("#connection-info").html("Unable to connect");
+        $("#connection-status").html("Unable to connect");
+    }
+    $.get(url, function (res) {
+        if(res && res != "") {
+            $("#connection-info").html(res);
+            $("#connection-status").html("Connected to: "+$("#connection-host").val()+" ("+$("#connection-server").val()+")");
+        } else {
+            failed();
+        }
+    }).fail(failed);
+
+}
+
+function setInfoTable(info) {
+    var table = "<table id='connection-table'>\n";
+    var lines = info.split("\n");
+    for(var i = 0; i < lines.length; i++) {
+        var line = lines[i];
+        if(line != "") {
+            table+="<tr>\n";
+            if(line.startsWith("#")) {
+                var header = line.substr(2, line.length);
+                table += "<th>" + header + "</th>\n</tr>\n";
+            } else {
+                var keyVal = line.split(":");
+                table += "<td>" + keyVal[0] + "</td>\n";
+                table += "<td>" + keyVal[1] + "</td>\n</tr>\n";
+            }
+        }
+    }
+    table += "</table>";
+    return table;
 }
 
 function getNamespaces() {
@@ -165,6 +221,22 @@ function getConnection() {
     }
     if (db) {
         url += "&db=" + db;
+    }
+    return url;
+}
+
+function getConnectionNoDb() {
+    //Get host and port
+    var host = $("#connection-host").val();
+    var port = $("#connection-port").val();
+
+    //Build url
+    var url = "";
+    if (host) {
+        url += "?host=" + host;
+    }
+    if (port) {
+        url += "&port=" + port;
     }
     return url;
 }
