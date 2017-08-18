@@ -3,11 +3,14 @@ package at.karriere.hestia.service;
 import at.karriere.hestia.component.KeySpaceCollectorComponent;
 import at.karriere.hestia.component.NamespaceCollectorComponent;
 import org.apache.log4j.Logger;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 public class NamespaceScheduleService {
@@ -53,19 +56,41 @@ public class NamespaceScheduleService {
     }
 
     private void saveResults(HashMap<String, Long> map, String host, Integer port, Integer db) {
-        for (String namespace : map.keySet()) {
-            Long count = map.get(namespace);
-            String key = "info:" + namespace;
-            String command = "GET " + key;
-            String value = String.valueOf(count);
-            String prevValue = dbWrapperCliService.wrapAndExecute(host, port, command, db);
-            String[] countAndName = prevValue.split(":");
-            if(countAndName.length > 1) {
-                value += ":" + countAndName[1];
-            }
-            command = "SET " + key + " " + value;
-            dbWrapperCliService.wrapAndExecute(host, port, command, db);
+        String key = "info";
+        String command = "GET " + key;
+        String prevVal = dbWrapperCliService.wrapAndExecute(host, port, command, db);
+
+        JSONObject info = null;
+        Set<String> existingSet = new HashSet<>();
+        if(!prevVal.equals("")) {
+
+            //Previous info json (value)
+            info = new JSONObject(prevVal);
+
+            //Previous namespaces
+            existingSet = info.keySet();
         }
+
+        //New info json
+        JSONObject newVal = new JSONObject();
+        for (String namespace : map.keySet()) {
+            JSONObject nameSpaceValue = new JSONObject();
+            if(existingSet.contains(namespace)) {
+                JSONObject prevNameSpaceValue = (JSONObject) info.get(namespace);
+                String description = prevNameSpaceValue.get("description").toString();
+                nameSpaceValue.put("description", description);
+            } else {
+                nameSpaceValue.put("description", "hallo test");
+            }
+            Long count = map.get(namespace);
+            nameSpaceValue.put("count", count);
+            newVal.put(namespace, nameSpaceValue);
+        }
+
+        String json = newVal.toString().replaceAll("\"","\\\\\"");
+        command = "SET " + key + " \"" + json + "\"";
+        dbWrapperCliService.wrapAndExecute(host, port, command, db);
+
 
     }
 

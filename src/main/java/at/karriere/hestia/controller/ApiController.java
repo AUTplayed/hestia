@@ -65,7 +65,7 @@ public class ApiController {
         return "Done";
     }
 
-    @RequestMapping(value = "/namespaces", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
+    @RequestMapping(value = "/namespaces", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public String namespaces(@RequestParam(required = false, name = "host") String host,
                              @RequestParam(required = false, name = "port") Integer port,
                              @RequestParam(required = false, name = "db") Integer db) {

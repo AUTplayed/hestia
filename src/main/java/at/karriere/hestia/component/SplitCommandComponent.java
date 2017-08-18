@@ -16,9 +16,15 @@ public class SplitCommandComponent {
     public CommandContainer split(String commandString) {
         //Split args from command
         List<String> list = new LinkedList<>();
-        Matcher m = Pattern.compile("([^\"]\\S*|\".+?\")\\s*").matcher(commandString);
+        Matcher m = Pattern.compile("([^\"]\\S*|(?<!\\\\)\".+?(?<!\\\\)\")\\s*").matcher(commandString);
         while(m.find()) {
-            list.add(m.group(1).replace("\"", ""));
+            String match = m.group(1);
+            if(match.startsWith("\"") && match.endsWith("\""))
+            {
+                match = match.substring(1, match.length() - 1);
+                match = match.replaceAll("\\\\\"", "\"");
+            }
+            list.add(match);
         }
         String[] splitCommand = new String[list.size()];
         splitCommand = list.toArray(splitCommand);

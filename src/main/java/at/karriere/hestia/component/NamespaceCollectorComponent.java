@@ -19,18 +19,5 @@ public class NamespaceCollectorComponent {
             Long count = map.get(key);
             map.replace(key, count + 1);
         });
-        /*for (String key : keys) {
-            String[] namespace = key.split(":");
-            if(namespace.length > 1) {
-                key = namespace[0];
-                if(map.containsKey(key)) {
-                    Long count = map.get(key);
-                    map.replace(key, count + 1);
-                } else {
-                    map.put(key, 1L);
-                }
-
-            }
-        }*/
     }
 }

@@ -22,13 +22,13 @@ public class OutputConverterComponent {
         else if (obj instanceof List) {
             return stringifyList((List) obj);
         }
-        return "no results found";
+        return "";
     }
 
     private String stringifyList(List list) {
         //When list has no elements, return ""
         if (list.size() == 0) {
-            return "no results found";
+            return "";
         }
         StringBuilder sb = new StringBuilder();
 
@@ -62,7 +62,7 @@ public class OutputConverterComponent {
         }
         //case for empty list
         if (build == null) {
-            return "no results found";
+            return "";
         }
 
         //Append every element to StringBuilder
