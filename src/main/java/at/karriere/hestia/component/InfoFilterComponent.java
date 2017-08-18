@@ -99,13 +99,47 @@ public class InfoFilterComponent {
      */
     private String uptimeConverter(String line) {
         //Get value of key:value pair
-        long fullSeconds = Long.valueOf(line.split(":")[1]);
+        double fullSeconds = Double.valueOf(line.split(":")[1]);
 
-        //Format Time
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("-hh-mm-ss");
-        LocalDateTime dateTime = LocalDateTime.ofEpochSecond(fullSeconds, 0, ZoneOffset.UTC);
-        int day = dateTime.getDayOfYear() - 1;
-        String dd = day < 10 ? "0" + day : String.valueOf(day);
-        return "uptime:" + dd + formatter.format(dateTime) + "\n";
+        //Format time
+        double days = fullSeconds / (60 * 60 * 24);
+        double hours = (days % 1) * 24;
+        double minutes = (hours % 1) * 60;
+        double seconds = (minutes % 1) * 60;
+        days -= days % 1;
+        hours -= hours % 1;
+        minutes -= minutes % 1;
+        seconds -= seconds % 1;
+
+        return "uptime:" + stringifyTime(days, hours, minutes, seconds) + "\n";
+    }
+
+    /**
+     * Converts a single time value to a 2 digit String
+     * @param time
+     * @return
+     */
+    private String stringifySingleTime(double time) {
+        String result = "";
+        if(time < 10) {
+            result = "0";
+        }
+        return result + String.valueOf((int)time);
+    }
+
+    /**
+     * Converts 4 time values to a dd-hh-mm-ss String
+     * @param days
+     * @param hours
+     * @param minutes
+     * @param seconds
+     * @return
+     */
+    private String stringifyTime(double days, double hours, double minutes, double seconds) {
+        String dd = stringifySingleTime(days);
+        String hh = stringifySingleTime(hours);
+        String mm = stringifySingleTime(minutes);
+        String ss = stringifySingleTime(seconds);
+        return dd + "-" + hh + "-" + mm + "-" + ss;
     }
 }
