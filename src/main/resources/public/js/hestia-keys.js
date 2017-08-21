@@ -1,13 +1,21 @@
 var count;
+var requestCount;
 var pattern;
 var cursor = 0;
 var curkey;
 var selectedRow;
+var rest = [];
+var medianSum = 0;
+var medianCount = 0;
 
 $(document).ready(function() {
 
     //On Search button click
     $("#keys-search").click(search);
+
+    $("#keys-pattern").keydown(function () {
+        resetKeys();
+    });
 
     //On Count or Pattern enter event
     $("#keys-count, #keys-pattern").keydown(function (ev) {
@@ -20,13 +28,15 @@ $(document).ready(function() {
     //On Nextpage button click
     $("#keys-nextpage").click(function() {
 
+        count = $("#keys-count").val();
+        requestCount = count;
         //When the cursor is 0 we are at the start again -  display "no more pages"
         if (cursor == 0) {
             $("#keys-error").html("No more pages")
         } else {
 
             //Else get the next keys
-            getKeys();
+            getExactKeys();
         }
     });
 
@@ -49,13 +59,15 @@ $(document).ready(function() {
 });
 
 function search() {
+    resetKeys();
     //get all input values and call getKeys() which, well..., gets the keys
     count = $("#keys-count").val();
+    requestCount = count;
     pattern = $("#keys-pattern").val();
 
     //Reset cursor
     cursor = 0;
-    getKeys();
+    getExactKeys();
 }
 
 function deleteKeys(url) {
@@ -74,12 +86,42 @@ function deleteKeys(url) {
     });
 }
 
+function resetKeys() {
+    medianCount = 0;
+    medianSum = 0;
+    rest = [];
+}
+
+function getExactKeys() {
+    $("#keys-output").html("");
+    var remaining = count - rest.length;
+    getExactKeysRec(remaining);
+}
+
+function getExactKeysRec(remaining) {
+    getKeys(true, function (resCount) {
+        remaining -= resCount;
+        if(resCount === 0) {
+            resCount = requestCount / 2;
+        }
+        medianCount++;
+        medianSum += requestCount / resCount;
+        if(remaining > 0) {
+            requestCount = remaining * (medianSum / medianCount);
+            requestCount = Math.ceil(requestCount);
+            getExactKeysRec(remaining);
+        }
+    });
+}
+
 /**
  * Gets the next keys from the db
  */
-function getKeys() {
+function getKeys(leaveData, callback) {
     //Clear all data
-    $("#keys-output").html("");
+    if(!leaveData) {
+        $("#keys-output").html("");
+    }
     $("#keys-error").html("");
     $("#keys-value-value").html("");
     $("#keys-value-status").html("");
@@ -88,14 +130,22 @@ function getKeys() {
 
     //Build url depending on filled input forms
     var url = "/keys?cursor=" + cursor;
-    if (count && count != "") {
-        url += "&count=" + count;
+    if (requestCount && requestCount != "") {
+        url += "&count=" + requestCount;
     }
     if (pattern && pattern != "") {
         url += "&pattern=" + pattern;
     }
     url += getConnection();
 
+    //Append rest from earlier request
+    if(rest.length > 0) {
+        var output = $("#keys-output");
+        rest.forEach(function (key) {
+            output.append("<tr class='keys-row'><td>" + key + "</td></tr>");
+        });
+    }
+    rest = [];
     //Send request to server
     $.get(url, function(res) {
 
@@ -110,13 +160,20 @@ function getKeys() {
 
                 //Iterate all keys and append them to the output table
                 res.keys.forEach(function(key) {
-                    $("#keys-output").append("<tr class='keys-row'><td>" + key + "</td></tr>");
+                    var output = $("#keys-output");
+                    var length = output.find("tr").length;
+                    if(length >= count) {
+                        rest.push(key);
+                    } else {
+                        output.append("<tr class='keys-row'><td>" + key + "</td></tr>");
+                    }
                 });
-
+                if(callback) callback(res.keys.length);
                 //If a key gets clicked
                 $(".keys-row").click(keyClick);
             } else {
-                $("#keys-output").append("<tr class='keys-row'><td>no results on this page</td></tr>");
+                //$("#keys-output").append("<tr class='keys-row'><td>no results on this page</td></tr>");
+                if(callback) callback(0);
             }
         }
     });
