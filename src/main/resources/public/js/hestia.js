@@ -71,7 +71,6 @@ function setupEvents() {
                 getAndSetInfo();
             }
         });
-
     });
 
     //On Hostname or port unfocus
@@ -123,6 +122,7 @@ function setupEvents() {
 }
 
 function getAndSetInfo() {
+    cursor = 0;
     var url = "/info";
     url += getConnectionNoDb();
 
@@ -163,6 +163,7 @@ function setInfoTable(info) {
 }
 
 function getNamespaces() {
+    cursor = 0;
     $("#connection-namespaces").html("");
     var url = "/namespaces?a=b" + getConnection();
     $.get(url, function (res) {

@@ -45,6 +45,7 @@ $(document).ready(function() {
             deleteKeys(url);
         }
     });
+
 });
 
 function search() {
