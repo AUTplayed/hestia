@@ -163,6 +163,7 @@ function setInfoTable(info) {
 }
 
 function getNamespaces() {
+    $("#connection-namespaces").html("");
     var url = "/namespaces?a=b" + getConnection();
     $.get(url, function (res) {
         $("#connection-namespaces").html(buildNamespaceTable(res));
