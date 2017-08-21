@@ -103,18 +103,30 @@ li>a {
 
 #connection-wrapper {
     float: left;
-    width: 50%;
+    width: 30%;
     font-size: 25px !important;
 }
 
-#connection-namespaces-table > td, #connection-namespaces-table > th {
+#connection-namespaces-table > tbody > tr > td, #connection-namespaces-table > tbody > tr > th, #connection-table > tbody > tr > td, #connection-table > tbody > tr > th{
+    padding-left: 10px;
     padding-right: 10px;
+}
+
+#connection-namespaces-table > td, #connection-namespaces-table > th {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
 }
 
 #connection-info {
     margin-top: 20px;
     float: left;
-    white-space: pre-line;
+    width: 40%;
+}
+
+#connection-namespaces {
+    float: right;
+    margin-top: 20px;
+    margin-right: 50px;
 }
 
 #connection-server {
@@ -139,7 +151,7 @@ select {
 }
 
 #redis-logo {
-    max-height: 200px;
+    max-height: 250px;
     width: auto;
     height: auto;
     display: block;

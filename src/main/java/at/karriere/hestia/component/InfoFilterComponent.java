@@ -111,7 +111,7 @@ public class InfoFilterComponent {
         minutes -= minutes % 1;
         seconds -= seconds % 1;
 
-        return "uptime:" + stringifyTime(days, hours, minutes, seconds) + "\n";
+        return "uptime(dd-HH-mm-ss):" + stringifyTime(days, hours, minutes, seconds) + "\n";
     }
 
     /**

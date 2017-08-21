@@ -80,7 +80,7 @@ public class NamespaceScheduleService {
                 String description = prevNameSpaceValue.get("description").toString();
                 nameSpaceValue.put("description", description);
             } else {
-                nameSpaceValue.put("description", "hallo test");
+                nameSpaceValue.put("description", "");
             }
             Long count = map.get(namespace);
             nameSpaceValue.put("count", count);

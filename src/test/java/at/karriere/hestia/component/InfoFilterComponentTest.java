@@ -8,7 +8,7 @@ public class InfoFilterComponentTest {
 
     InfoFilterComponent infoFilterComponent = new InfoFilterComponent();
     String propinfo = "redis_version: 1\nasd: 1\nuptime_in_seconds:52866\n";
-    String propfiltered = "redis_version: 1\nuptime:00-14-41-05\n";
+    String propfiltered = "redis_version: 1\nuptime(dd-HH-mm-ss):00-14-41-05\n";
     String catinfo = "# Memory\nprop\nprop\n\nno\nno\n";
     String catfiltered = "# Memory\nprop\nprop\n\n";
 

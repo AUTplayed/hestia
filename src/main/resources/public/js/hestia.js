@@ -116,6 +116,10 @@ function setupEvents() {
     $("#tab-connection").click(function () {
         getAndSetInfo();
     });
+
+    $("#connection-database").change(function() {
+        getNamespaces();
+    });
 }
 
 function getAndSetInfo() {
@@ -128,7 +132,7 @@ function getAndSetInfo() {
     }
     $.get(url, function (res) {
         if(res && res != "") {
-            $("#connection-info").html(res);
+            $("#connection-info").html(setInfoTable(res));
             $("#connection-status").html("Connected to: "+$("#connection-host").val()+" ("+$("#connection-server").val()+")");
             getNamespaces();
         } else {
@@ -159,7 +163,7 @@ function setInfoTable(info) {
 }
 
 function getNamespaces() {
-    var url = "/namespaces" + getConnectionNoDb();
+    var url = "/namespaces?a=b" + getConnection();
     $.get(url, function (res) {
         $("#connection-namespaces").html(buildNamespaceTable(res));
         $(".connection-namespaces-description").focusout(editNamespaceDescription);
@@ -173,7 +177,7 @@ function editNamespaceDescription(ev) {
     var key = children.eq(0).html();
     currentNamespaces[key].description = value;
     var jsonString = JSON.stringify(currentNamespaces).replaceAll('\"', '\\"');  //WTF do not split into 2 method calls - won't work
-    var url = "/cli?command=SET info " + "\"" + encodeURIComponent(jsonString) + "\"";
+    var url = "/cli?command=SET info " + "\"" + encodeURIComponent(jsonString) + "\"" + getConnection();
     $.get(url, function (res) {
         if(res !== "OK") {
             target.css("background-color", "red");
@@ -189,6 +193,9 @@ function buildNamespaceTable(res) {
     var table = "<table id='connection-namespaces-table'>\n";
     table += "<tr>\n<th>Namespace</th>\n<th>#</th>\n<th>Description</th>\n</tr>\n";
     var keys = Object.keys(res);
+    if(keys.length < 1) {
+        return "";
+    }
     keys.forEach(function (key) {
         table += "<tr>\n<td>" + key + "</td>\n";
         table += "<td>" + res[key].count + "</td>\n";
