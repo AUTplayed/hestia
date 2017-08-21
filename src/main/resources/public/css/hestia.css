@@ -79,6 +79,7 @@
 #keys-value-wrapper {
     position: fixed;
     height: 60%;
+    width: 25%;
 }
 
 #keys-value-value {
