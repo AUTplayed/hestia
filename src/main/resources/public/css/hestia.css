@@ -72,8 +72,13 @@
     font-size: 25px;
 }
 
-#keys-value-wrapper>p, #keys-value-delete {
+#keys-value-wrapper>p {
     font-size: 25px;
+}
+
+#keys-value-delete {
+    font-size: 25px;
+    margin-bottom: 5px;
 }
 
 #keys-value-wrapper {
