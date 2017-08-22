@@ -7,6 +7,7 @@ var selectedRow;
 var rest = [];
 var medianSum = 0;
 var medianCount = 0;
+var counter = 0;
 
 $(document).ready(function() {
 
@@ -29,6 +30,7 @@ $(document).ready(function() {
     $("#keys-nextpage").click(function() {
 
         count = $("#keys-count").val();
+        counter = 0;
         requestCount = count;
         //When the cursor is 0 we are at the start again -  display "no more pages"
         if (cursor == 0) {
@@ -90,26 +92,35 @@ function resetKeys() {
     medianCount = 0;
     medianSum = 0;
     rest = [];
+    counter = 0;
 }
 
 function getExactKeys() {
-    $("#keys-output").html("");
-    var remaining = count - rest.length;
-    getExactKeysRec(remaining);
+    if($("#keys-exact").is(':checked')) {
+        $("#keys-output").html("");
+        var remaining = count - rest.length;
+        getExactKeysRec(remaining);
+    } else {
+        getKeys();
+    }
 }
 
 function getExactKeysRec(remaining) {
     getKeys(true, function (resCount) {
         remaining -= resCount;
         if(resCount === 0) {
-            resCount = requestCount / 2;
+            resCount = requestCount / (requestCount * 4);
         }
         medianCount++;
         medianSum += requestCount / resCount;
         if(remaining > 0) {
             requestCount = remaining * (medianSum / medianCount);
             requestCount = Math.ceil(requestCount);
-            getExactKeysRec(remaining);
+            if (cursor == 0) {
+                $("#keys-error").html("No more pages")
+            } else {
+                getExactKeysRec(remaining);
+            }
         }
     });
 }
@@ -140,12 +151,21 @@ function getKeys(leaveData, callback) {
 
     //Append rest from earlier request
     if(rest.length > 0) {
-        var output = $("#keys-output");
-        rest.forEach(function (key) {
-            output.append("<tr class='keys-row'><td>" + key + "</td></tr>");
-        });
+
+        var restlen = rest.length;
+        for(var i = 0; i < restlen; i++) {
+            var output = $("#keys-output");
+            var length = output.find("tr").length;
+            if(length >= count) {
+                rest.push(key);
+            } else {
+                output.append("<tr class='keys-row'><td>" + (++counter) + "</td><td>" + rest.shift() + "</td></tr>");
+            }
+        }
     }
-    rest = [];
+    if(requestCount < 1 || rest.length > 0) {
+        return;
+    }
     //Send request to server
     $.get(url, function(res) {
 
@@ -162,10 +182,8 @@ function getKeys(leaveData, callback) {
                 res.keys.forEach(function(key) {
                     var output = $("#keys-output");
                     var length = output.find("tr").length;
-                    if(length >= count) {
-                        rest.push(key);
-                    } else {
-                        output.append("<tr class='keys-row'><td>" + key + "</td></tr>");
+                    if(length < count) {
+                        output.append("<tr class='keys-row'><td>" + (++counter) + "</td><td>" + key + "</td></tr>");
                     }
                 });
                 if(callback) callback(res.keys.length);
@@ -249,5 +267,5 @@ function ctrlClick(row) {
 }
 
 function getKeyFromRow(row) {
-    return encodeURIComponent(row.children().first().html());
+    return encodeURIComponent(row.children().last().html());
 }
