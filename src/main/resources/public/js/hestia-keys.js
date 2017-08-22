@@ -18,6 +18,15 @@ $(document).ready(function() {
         resetKeys();
     });
 
+    $("#keys-count").focusout(function () {
+        var keyscount = $("#keys-count");
+        if(keyscount.val() < 1) {
+            keyscount.val(1);
+        } else if(keyscount.val() > 1000) {
+            keyscount.val(1000);
+        }
+    });
+
     //On Count or Pattern enter event
     $("#keys-count, #keys-pattern").keydown(function (ev) {
         //If keypress is "ENTER"
