@@ -101,7 +101,7 @@ function getExactKeys() {
         var remaining = count - rest.length;
         getExactKeysRec(remaining);
     } else {
-        getKeys();
+        getKeys(false);
     }
 }
 
@@ -128,9 +128,9 @@ function getExactKeysRec(remaining) {
 /**
  * Gets the next keys from the db
  */
-function getKeys(leaveData, callback) {
+function getKeys(isExact, callback) {
     //Clear all data
-    if(!leaveData) {
+    if(!isExact) {
         $("#keys-output").html("");
     }
     $("#keys-error").html("");
@@ -190,7 +190,9 @@ function getKeys(leaveData, callback) {
                 //If a key gets clicked
                 $(".keys-row").click(keyClick);
             } else {
-                //$("#keys-output").append("<tr class='keys-row'><td>no results on this page</td></tr>");
+                if(!isExact) {
+                    $("#keys-output").append("<tr class='keys-row'><td>no results on this page</td></tr>");
+                }
                 if(callback) callback(0);
             }
         }
