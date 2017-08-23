@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class ExportService {
 
-    DBWrapperCliService dbWrapperCliService;
-    ExportFormatComponent exportFormatComponent;
+    private DBWrapperCliService dbWrapperCliService;
+    private ExportFormatComponent exportFormatComponent;
 
     @Autowired
     public ExportService(DBWrapperCliService dbWrapperCliService, ExportFormatComponent exportFormatComponent) {
