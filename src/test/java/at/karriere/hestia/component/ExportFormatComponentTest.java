@@ -32,7 +32,7 @@ public class ExportFormatComponentTest {
     @Test
     public void testCsv() {
         String csv = exportFormatComponent.format(keyArray, valueArray, "csv");
-        String expected = "key,value\nkey1,val1\nkey2,val2\nkey3,val3";
+        String expected = "sep=;\nkey;value\nkey1;val1\nkey2;val2\nkey3;val3";
         assertThat(csv).as("check if csv is valid").isEqualTo(expected);
     }
 
