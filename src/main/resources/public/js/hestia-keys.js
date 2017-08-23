@@ -48,7 +48,7 @@ $(document).ready(function() {
     //On Count or Pattern enter event
     $("#keys-count, #keys-pattern").keydown(function (ev) {
         //If keypress is "ENTER"
-        if (ev.originalEvent.keyCode == 13) {
+        if (ev.originalEvent.keyCode === 13) {
             search();
         }
     });
