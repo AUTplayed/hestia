@@ -5,8 +5,8 @@ var cursor = 0;
 var curkey;
 var selectedRow;
 var rest = [];
-var medianSum = 0;
-var medianCount = 0;
+var meanSum = 0;
+var meanCount = 0;
 var counter = 0;
 
 $(document).ready(function() {
@@ -98,8 +98,8 @@ function deleteKeys(url) {
 }
 
 function resetKeys() {
-    medianCount = 0;
-    medianSum = 0;
+    meanCount = 0;
+    meanSum = 0;
     rest = [];
     counter = 0;
 }
@@ -120,10 +120,10 @@ function getExactKeysRec(remaining) {
         if(resCount === 0) {
             resCount = requestCount / (requestCount * 4);
         }
-        medianCount++;
-        medianSum += requestCount / resCount;
+        meanCount++;
+        meanSum += requestCount / resCount;
         if(remaining > 0) {
-            requestCount = remaining * (medianSum / medianCount);
+            requestCount = remaining * (meanSum / meanCount);
             requestCount = Math.ceil(requestCount);
             if (cursor == 0) {
                 $("#keys-error").html("No more pages")
