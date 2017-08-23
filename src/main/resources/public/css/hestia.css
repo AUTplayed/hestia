@@ -87,6 +87,12 @@
     width: 100%;
 }
 
+#keys-value-export {
+    font-size: 25px;
+    margin-left: 5px;
+    margin-bottom: 5px;
+}
+
 #keys-output {
     width: 40%;
     float: left;

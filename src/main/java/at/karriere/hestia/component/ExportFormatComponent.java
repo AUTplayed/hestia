@@ -19,7 +19,7 @@ public class ExportFormatComponent {
     }
 
     public String formatCsv(String[] keyArray, String[] valueArray) {
-        String output = "key,value";
+        String output = "sep=,\nkey,value";
         for (int i = 0; i < keyArray.length; i++) {
             output += "\n";
             output += keyArray[i];

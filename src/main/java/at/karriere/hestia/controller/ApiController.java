@@ -7,6 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
 @RestController
 public class ApiController {
     final static Logger LOGGER = Logger.getLogger(ApiController.class);
@@ -83,9 +87,10 @@ public class ApiController {
     public String export(@RequestParam(required = false, name = "host") String host,
                          @RequestParam(required = false, name = "port") Integer port,
                          @RequestParam(required = false, name = "db") Integer db,
-                         @RequestParam(required = false, name = "format", defaultValue = "csv") String format,
-                         @RequestBody String keys) {
+                         @RequestParam(required = false, name = "format") String format,
+                         @RequestBody String keys) throws UnsupportedEncodingException {
         LOGGER.info("GET /export");
+        keys = URLDecoder.decode(keys, "utf-8");
         return exportService.export(host, port, db, keys, format);
     }
 

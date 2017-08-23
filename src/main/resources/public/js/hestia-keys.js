@@ -6,6 +6,24 @@ var selectedRow;
 
 $(document).ready(function() {
 
+    $("#keys-value-export").confirmation({
+        rootSelector: "#keys-value-export",
+        title: "Choose file format",
+        buttons: [
+            {
+                label: "csv",
+                onClick: function () {
+                    exportClick("csv");
+                }
+            },
+            {
+                label: "json",
+                onClick: function () {
+                    exportClick("json");
+                }
+            }
+        ]
+    });
     //On Search button click
     $("#keys-search").click(search);
 
@@ -47,6 +65,53 @@ $(document).ready(function() {
     });
 
 });
+
+function exportClick(format) {
+    var marked = $(".marked");
+    var list;
+    if(marked.length > 0) {
+        list = marked;
+    } else {
+        list = $("#keys-output").find("tr");
+    }
+    if(list.length <= 0) {
+        $("#keys-value-status").html("No keys found to export");
+    } else {
+        var keys = "";
+        for(var i = 0; i < list.length; i++) {
+            keys += getKeyFromRow(list.eq(i));
+            if(i < list.length - 1) {
+                keys += "\n";
+            }
+        }
+        exportFile(keys, format);
+    }
+}
+
+function exportFile(data, format) {
+    var url = "/export?format=" + format + getConnection();
+    var xhr = new XMLHttpRequest();
+    xhr.addEventListener("readystatechange", function () {
+        if (this.readyState === 4) {
+            download("export." + format, this.responseText);
+        }
+    });
+    xhr.open("POST", url);
+    xhr.send(data);
+}
+
+function download(filename, text) {
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+}
 
 function search() {
     //get all input values and call getKeys() which, well..., gets the keys
