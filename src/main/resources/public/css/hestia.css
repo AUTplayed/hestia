@@ -34,7 +34,7 @@
 }
 
 .keys-row:hover {
-    background-color: #8bc72a;
+    background-color: #8bc72a !important;
 }
 
 .tabwrap {
@@ -105,6 +105,10 @@
 }
 
 #keys-output {
+    width: 100%;
+}
+
+#keys-output-table {
     width: 40%;
     float: left;
     margin-right: 21%;
