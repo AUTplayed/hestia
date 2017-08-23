@@ -5,10 +5,7 @@ import org.apache.log4j.Logger;
 import org.bouncycastle.cert.ocsp.Req;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class ApiController {
@@ -19,14 +16,16 @@ public class ApiController {
     NamespaceScheduleService namespaceScheduleService;
     NamespaceService namespaceService;
     InfoService infoService;
+    ExportService exportService;
 
     @Autowired
-    public ApiController(KeysService keysService, KeyspaceService keyspaceService, NamespaceScheduleService namespaceScheduleService, NamespaceService namespaceService, InfoService infoService) {
+    public ApiController(KeysService keysService, KeyspaceService keyspaceService, NamespaceScheduleService namespaceScheduleService, NamespaceService namespaceService, InfoService infoService, ExportService exportService) {
         this.keysService = keysService;
         this.keyspaceService = keyspaceService;
         this.namespaceScheduleService = namespaceScheduleService;
         this.namespaceService = namespaceService;
         this.infoService = infoService;
+        this.exportService = exportService;
     }
 
     /**
@@ -78,6 +77,16 @@ public class ApiController {
                        @RequestParam(required = false, name = "port") Integer port) {
         LOGGER.info("GET /info");
         return infoService.getInfo(host, port);
+    }
+
+    @RequestMapping(value = "/export", method = RequestMethod.POST)
+    public String export(@RequestParam(required = false, name = "host") String host,
+                         @RequestParam(required = false, name = "port") Integer port,
+                         @RequestParam(required = false, name = "db") Integer db,
+                         @RequestParam(required = false, name = "format", defaultValue = "csv") String format,
+                         @RequestBody String keys) {
+        LOGGER.info("GET /export");
+        return exportService.export(host, port, db, keys, format);
     }
 
 }
