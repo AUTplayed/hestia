@@ -91,15 +91,15 @@ function setupEvents() {
     //On Database dropdown click
     $("#connection-database").click(function() {
 
-        //delete all choices except the first one (Default)
-        $("#connection-database").find("option").slice(1).remove();
-
         //Build url
         var url = "/keyspaces";
         url += getConnectionNoDb();
 
         //Send request to server
         $.get(url, function(res) {
+
+            //delete all choices except the first one (Default)
+            $("#connection-database").find("option").slice(1).remove();
 
             //if there are databases
             if (res.length > 0) {

@@ -38,8 +38,8 @@ $(document).ready(function() {
 
     $("#keys-count").focusout(function () {
         var keyscount = $("#keys-count");
-        if(keyscount.val() < 1) {
-            keyscount.val(1);
+        if(keyscount.val() < 0) {
+            keyscount.val(0);
         } else if(keyscount.val() > 1000) {
             keyscount.val(1000);
         }
@@ -170,12 +170,16 @@ function resetKeys() {
 }
 
 function getExactKeys() {
-    if($("#keys-exact").is(':checked')) {
+    if(count === 0) {
         $("#keys-output").html("");
-        var remaining = count - rest.length;
-        getExactKeysRec(remaining);
     } else {
-        getKeys(false);
+        if($("#keys-exact").is(':checked')) {
+            $("#keys-output").html("");
+            var remaining = count - rest.length;
+            getExactKeysRec(remaining);
+        } else {
+            getKeys(false);
+        }
     }
 }
 

@@ -98,6 +98,12 @@
     margin-bottom: 5px;
 }
 
+#keys-value-status {
+    margin-left: 5px;
+    margin-bottom: 5px;
+    font-size: 25px;
+}
+
 #keys-output {
     width: 40%;
     float: left;
