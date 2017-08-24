@@ -37,7 +37,6 @@ public class ExactKeysComponent {
         String rawKeys = keysService.keys(state.getCursor(), requestCount, pattern, host, port, db);
         String[] keysArray = parseKeys(state, rawKeys);
         double resCount = keysArray.length;
-        isBuggy(rawKeys);
         if(resCount == 0) {
             resCount = 0.1;
         } else {
@@ -50,7 +49,6 @@ public class ExactKeysComponent {
         }
         if(remaining > 0 && state.getCursor() != 0) {
             state.setKeys(addKeys(state,join(keysArray)));
-            isBuggy(state.getKeys());
             return getKeysRec(state, (long)Math.ceil(remaining * state.getMean()), remaining, pattern, host, port, db);
         }
         return addKeys(state, join(keysArray));

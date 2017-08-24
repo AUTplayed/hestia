@@ -7,6 +7,8 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -74,6 +76,13 @@ public class NamespaceScheduleService {
         //New info json
         JSONObject newVal = new JSONObject();
         for (String namespace : map.keySet()) {
+            if(namespace.contains("\"")) {
+                try {
+                    namespace = URLEncoder.encode(namespace, "utf-8");
+                } catch (UnsupportedEncodingException e) {
+                    LOGGER.error("failed to encode namespace" , e);
+                }
+            }
             JSONObject nameSpaceValue = new JSONObject();
             if(existingSet.contains(namespace)) {
                 JSONObject prevNameSpaceValue = (JSONObject) info.get(namespace);
