@@ -3,8 +3,13 @@ var pattern;
 var cursor = 0;
 var curkey;
 var selectedRow;
+var counter = 0;
 
 $(document).ready(function() {
+    var inputNextpage = $("#keys-nextpage");
+    var inputPattern = $("#keys-pattern");
+    var inputCount = $("#keys-count");
+    inputNextpage.prop("disabled", true);
 
     $("#keys-value-export").confirmation({
         rootSelector: "#keys-value-export",
@@ -27,11 +32,11 @@ $(document).ready(function() {
     //On Search button click
     $("#keys-search").click(search);
 
-    $("#keys-pattern").keydown(function () {
+    inputPattern.keydown(function () {
         resetKeys();
     });
 
-    $("#keys-count").focusout(function () {
+    inputCount.focusout(function () {
         var keyscount = $("#keys-count");
         if(keyscount.val() < 0) {
             keyscount.val(0);
@@ -41,15 +46,23 @@ $(document).ready(function() {
     });
 
     //On Count or Pattern enter event
-    $("#keys-count, #keys-pattern").keydown(function (ev) {
+    inputCount.keydown(function (ev) {
         //If keypress is "ENTER"
         if (ev.originalEvent.keyCode === 13) {
             search();
         }
     });
 
+    inputPattern.keydown(function (ev) {
+        //If keypress is "ENTER"
+        if (ev.originalEvent.keyCode === 13) {
+            search();
+        }
+        inputNextpage.prop("disabled", true);
+    });
+
     //On Nextpage button click
-    $("#keys-nextpage").click(function() {
+    inputNextpage.click(function() {
 
         //When the cursor is 0 we are at the start again -  display "no more pages"
         if (cursor == 0) {
@@ -130,10 +143,10 @@ function search() {
     //get all input values and call getKeys() which, well..., gets the keys
     count = $("#keys-count").val();
     pattern = $("#keys-pattern").val();
-
     //Reset cursor
     cursor = 0;
     getKeys();
+    $("#keys-nextpage").prop("disabled", false);
 }
 
 function deleteKeys(url) {
@@ -164,6 +177,7 @@ function getKeys(isExact, callback) {
     $("#keys-value-status").html("");
     curkey = false;
     selectedRow = false;
+    counter = 0;
 
     //Build url depending on filled input forms
     var url = "/exactKeys?cursor=" + cursor;
@@ -189,7 +203,7 @@ function getKeys(isExact, callback) {
 
                 //Iterate all keys and append them to the output table
                 res.keys.forEach(function(key) {
-                    $("#keys-output").append("<tr class='keys-row'><td>" + key + "</td></tr>");
+                    $("#keys-output").append("<tr class='keys-row'><td>" + (++counter) + "</td><td>" + key + "</td></tr>");
                 });
 
                 //If a key gets clicked

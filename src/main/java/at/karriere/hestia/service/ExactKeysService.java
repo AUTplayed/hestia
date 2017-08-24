@@ -28,9 +28,10 @@ public class ExactKeysService {
 
     public State keys(Long cursor, Long count, String pattern, String host, Integer port, Integer db, String cookie) {
         String keys = "";
-        State state = getState(cookie, cursor, host, port, db);
+        State state = getState(cookie, cursor, pattern, host, port, db);
+        int sizeOfQueue = state.getSizeOfQueue();
         keys += getBuffer(state, count);
-        count -= state.getSizeOfQueue();
+        count -= sizeOfQueue;
         keys += exactKeysComponent.getKeys(state, count, pattern, host, port, db);
         state.setKeys(keys);
         return state;
@@ -46,14 +47,14 @@ public class ExactKeysService {
         return state.getFromQueue(count);
     }
 
-    private State getState(String cookie, Long cursor, String host, Integer port, Integer db) {
+    private State getState(String cookie, Long cursor, String pattern, String host, Integer port, Integer db) {
         if(cookie == null) {
             cookie = cookieGenerateComponent.generate();
         }
         State state = stateStoreRepository.get(cookie);
         state.setKeys("");
         state.setCookie(cookie);
-        if(!state.getCursor().equals(cursor) && !state.isSameConnection(host, port, db)) {
+        if(!state.getCursor().equals(cursor) && !state.getPattern().equals(pattern) && !state.isSameConnection(host, port, db)) {
             state.clearQueue();
         }
         state.setCursor(cursor);

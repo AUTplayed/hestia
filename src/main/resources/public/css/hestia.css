@@ -188,7 +188,7 @@ select {
 }
 
 .marked {
-    background-color: #8bc72a;
+    background-color: #8bc72a !important;
 }
 
 .checkbox {
