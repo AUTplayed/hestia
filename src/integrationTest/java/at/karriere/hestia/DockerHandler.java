@@ -49,10 +49,10 @@ public class DockerHandler {
 
     private void startDockerContainer() {
         try {
-            //Pull redis image
-            //docker.pull("redis");
-            Process pull = Runtime.getRuntime().exec("docker pull redis");
-            pull.waitFor();
+            //Pull redis image https://github.com/spotify/docker-client/issues/857
+            docker.pull("redis:latest");
+            //Process pull = Runtime.getRuntime().exec("docker pull redis");
+            //pull.waitFor();
 
             //Bind container port 6379(redis default) to 6379 host port
             Map<String, List<PortBinding>> portBindings = new HashMap<>();
@@ -78,7 +78,7 @@ public class DockerHandler {
             docker.startContainer(dockerId);
 
             ContainerInfo containerInfo = docker.inspectContainer(dockerId);
-        } catch (DockerException | InterruptedException | IOException e) {
+        } catch (DockerException | InterruptedException  e) {
             e.printStackTrace();
         }
     }
