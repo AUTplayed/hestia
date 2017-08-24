@@ -88,7 +88,7 @@
         <div id="keys-keys" class="tabwrap">
             <span class="input-group" id="keys-count-wrapper">
                 <span class="input-group-addon">count</span>
-                <input type="number" id="keys-count">
+                <input type="number" id="keys-count" min="0" max="1000">
             </span>
             <span class="input-group" id="keys-pattern-wrapper">
                 <span class="input-group-addon">pattern</span>
@@ -96,17 +96,26 @@
             </span>
             <input type="button" id="keys-search" value="Search">
             <input type="button" id="keys-nextpage" value="Next Page">
+            <span class="checkbox"><label style="font-size: 25px">
+                <input type="checkbox" value="" checked="" id="keys-exact">
+                <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>Exact count (slower)</label>
+            </span>
             <div style="color:red" id="keys-error"></div>
         </div>
         <div id="keys-value">
             <div id="keys-value-wrapper">
                 <p>Value</p>
                 <button id="keys-value-delete" class="btn btn-danger" data-toggle="confirmation" data-placement="left" data-popout="true">Delete</button>
+                <button id="keys-value-export" class="btn" data-placement="top" data-popout="true">Export</button>
                 <span id="keys-value-status"></span>
                 <pre id="keys-value-value"></pre>
             </div>
         </div>
-        <table id="keys-output"></table>
+        <table id="keys-output-table" class="table table-condensed table-striped">
+            <tbody id="keys-output">
+
+            </tbody>
+        </table>
     </div>
 </div>
 </body>

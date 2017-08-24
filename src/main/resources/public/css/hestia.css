@@ -34,7 +34,7 @@
 }
 
 .keys-row:hover {
-    background-color: #8bc72a;
+    background-color: #8bc72a !important;
 }
 
 .tabwrap {
@@ -43,7 +43,7 @@
 
 #keys-count-wrapper {
     float:left;
-    width: 25%;
+    width: 15%;
 }
 
 #keys-count {
@@ -52,7 +52,7 @@
 
 #keys-pattern-wrapper {
     float:left;
-    width: 30%;
+    width: 20%;
     padding-left: 10px;
     padding-right: 10px;
 }
@@ -67,13 +67,18 @@
 }
 
 #keys-keys {
-    width: 50%;
+    width: 70%;
     float: left;
     font-size: 25px;
 }
 
-#keys-value-wrapper>p, #keys-value-delete {
+#keys-value-wrapper>p {
     font-size: 25px;
+}
+
+#keys-value-delete {
+    font-size: 25px;
+    margin-bottom: 5px;
 }
 
 #keys-value-wrapper {
@@ -87,7 +92,23 @@
     width: 100%;
 }
 
+#keys-value-export {
+    font-size: 25px;
+    margin-left: 5px;
+    margin-bottom: 5px;
+}
+
+#keys-value-status {
+    margin-left: 5px;
+    margin-bottom: 5px;
+    font-size: 25px;
+}
+
 #keys-output {
+    width: 100%;
+}
+
+#keys-output-table {
     width: 40%;
     float: left;
     margin-right: 21%;
@@ -107,11 +128,16 @@ li>a {
     width: 30%;
     font-size: 25px !important;
 }
-
+td, th {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+}
+/*
 #connection-namespaces-table > tbody > tr > td, #connection-namespaces-table > tbody > tr > th, #connection-table > tbody > tr > td, #connection-table > tbody > tr > th{
     padding-left: 10px;
     padding-right: 10px;
 }
+*/
 
 #connection-namespaces-table > td, #connection-namespaces-table > th {
     padding-left: 10px !important;

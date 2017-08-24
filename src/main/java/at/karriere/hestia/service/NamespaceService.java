@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class NamespaceService {
 
-    DBWrapperCliService dbWrapperCliService;
+    private DBWrapperCliService dbWrapperCliService;
 
     @Autowired
     public NamespaceService(DBWrapperCliService dbWrapperCliService) {

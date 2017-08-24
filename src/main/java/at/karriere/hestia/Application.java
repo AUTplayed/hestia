@@ -1,7 +1,6 @@
 package at.karriere.hestia;
 
 
-import at.karriere.hestia.repository.Repository;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +12,6 @@ import java.io.IOException;
 
 @SpringBootApplication
 public class Application {
-
-    Repository repository;
-
-    @Autowired
-    public Application(Repository repository) {
-        this.repository = repository;
-    }
 
     public static void main(String[] args) {
 

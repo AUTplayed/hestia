@@ -6,13 +6,44 @@ var selectedRow;
 
 $(document).ready(function() {
 
+    $("#keys-value-export").confirmation({
+        rootSelector: "#keys-value-export",
+        title: "Choose file format",
+        buttons: [
+            {
+                label: "csv",
+                onClick: function () {
+                    exportClick("csv");
+                }
+            },
+            {
+                label: "json",
+                onClick: function () {
+                    exportClick("json");
+                }
+            }
+        ]
+    });
     //On Search button click
     $("#keys-search").click(search);
+
+    $("#keys-pattern").keydown(function () {
+        resetKeys();
+    });
+
+    $("#keys-count").focusout(function () {
+        var keyscount = $("#keys-count");
+        if(keyscount.val() < 0) {
+            keyscount.val(0);
+        } else if(keyscount.val() > 1000) {
+            keyscount.val(1000);
+        }
+    });
 
     //On Count or Pattern enter event
     $("#keys-count, #keys-pattern").keydown(function (ev) {
         //If keypress is "ENTER"
-        if (ev.originalEvent.keyCode == 13) {
+        if (ev.originalEvent.keyCode === 13) {
             search();
         }
     });
@@ -48,6 +79,53 @@ $(document).ready(function() {
 
 });
 
+function exportClick(format) {
+    var marked = $(".marked");
+    var list;
+    if(marked.length > 0) {
+        list = marked;
+    } else {
+        list = $("#keys-output").find("tr");
+    }
+    if(list.length <= 0) {
+        $("#keys-value-status").html("No keys found to export");
+    } else {
+        var keys = "";
+        for(var i = 0; i < list.length; i++) {
+            keys += getKeyFromRow(list.eq(i));
+            if(i < list.length - 1) {
+                keys += "\n";
+            }
+        }
+        exportFile(keys, format);
+    }
+}
+
+function exportFile(data, format) {
+    var url = "/export?format=" + format + getConnection();
+    var xhr = new XMLHttpRequest();
+    xhr.addEventListener("readystatechange", function () {
+        if (this.readyState === 4) {
+            download("export." + format, this.responseText);
+        }
+    });
+    xhr.open("POST", url);
+    xhr.send(data);
+}
+
+function download(filename, text) {
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+}
+
 function search() {
     //get all input values and call getKeys() which, well..., gets the keys
     count = $("#keys-count").val();
@@ -74,10 +152,11 @@ function deleteKeys(url) {
     });
 }
 
+
 /**
  * Gets the next keys from the db
  */
-function getKeys() {
+function getKeys(isExact, callback) {
     //Clear all data
     $("#keys-output").html("");
     $("#keys-error").html("");
@@ -192,5 +271,5 @@ function ctrlClick(row) {
 }
 
 function getKeyFromRow(row) {
-    return encodeURIComponent(row.children().first().html());
+    return encodeURIComponent(row.children().last().html());
 }

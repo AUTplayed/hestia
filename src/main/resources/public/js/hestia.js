@@ -2,6 +2,7 @@ $(document).ready(function() {
     $('[data-toggle=confirmation]').confirmation({
         rootSelector: '[data-toggle=confirmation]'
     });
+
     readServers();
     setupEvents();
 });
@@ -30,7 +31,7 @@ function setupEvents() {
     $("#cli-command").keydown(function(ev) {
 
         //If keypress is "ENTER"
-        if (ev.originalEvent.keyCode == 13) {
+        if (ev.originalEvent.keyCode === 13) {
 
             //Get command from input
             var commandInput = $("#cli-command");
@@ -41,7 +42,7 @@ function setupEvents() {
             }
 
             //If command is clear, clear the output
-            if(command == "clear") {
+            if(command === "clear") {
                 $("#cli-output").html("");
             } else {
 
@@ -65,7 +66,7 @@ function setupEvents() {
         servers.forEach(function(server) {
 
             //set hostname and port of selected server
-            if (server.name == selected) {
+            if (server.name === selected) {
                 $("#connection-host").val(server.host);
                 $("#connection-port").val(server.port);
                 getAndSetInfo();
@@ -80,7 +81,7 @@ function setupEvents() {
 
     $("#connection-host, #connection-port").keydown(function (ev) {
         //If keypress is "ENTER"
-        if (ev.originalEvent.keyCode == 13) {
+        if (ev.originalEvent.keyCode === 13) {
             getAndSetInfo();
         } else {
             $("#connection-server").val("Custom");
@@ -90,15 +91,15 @@ function setupEvents() {
     //On Database dropdown click
     $("#connection-database").click(function() {
 
-        //delete all choices except the first one (Default)
-        $("#connection-database").find("option").slice(1).remove();
-
         //Build url
         var url = "/keyspaces";
         url += getConnectionNoDb();
 
         //Send request to server
         $.get(url, function(res) {
+
+            //delete all choices except the first one (Default)
+            $("#connection-database").find("option").slice(1).remove();
 
             //if there are databases
             if (res.length > 0) {
@@ -131,7 +132,7 @@ function getAndSetInfo() {
         $("#connection-status").html("Unable to connect");
     }
     $.get(url, function (res) {
-        if(res && res != "") {
+        if(res && res !== "") {
             $("#connection-info").html(setInfoTable(res));
             $("#connection-status").html("Connected to: "+$("#connection-host").val()+" ("+$("#connection-server").val()+")");
             getNamespaces();
@@ -146,7 +147,7 @@ function setInfoTable(info) {
     var lines = info.split("\n");
     for(var i = 0; i < lines.length; i++) {
         var line = lines[i];
-        if(line != "") {
+        if(line !== "") {
             table+="<tr>\n";
             if(line.startsWith("#")) {
                 var header = line.substr(2, line.length);

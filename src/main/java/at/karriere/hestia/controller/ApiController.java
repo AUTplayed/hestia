@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 @RestController
 public class ApiController {
@@ -21,15 +24,17 @@ public class ApiController {
     NamespaceService namespaceService;
     InfoService infoService;
     ExactKeysService exactKeysService;
+    ExportService exportService;
 
     @Autowired
-    public ApiController(KeysService keysService, KeyspaceService keyspaceService, NamespaceScheduleService namespaceScheduleService, NamespaceService namespaceService, InfoService infoService, ExactKeysService exactKeysService) {
+    public ApiController(KeysService keysService, KeyspaceService keyspaceService, NamespaceScheduleService namespaceScheduleService, NamespaceService namespaceService, InfoService infoService, ExportService exportService, ExactKeysService exactKeysService) {
         this.keysService = keysService;
         this.keyspaceService = keyspaceService;
         this.namespaceScheduleService = namespaceScheduleService;
         this.namespaceService = namespaceService;
         this.infoService = infoService;
         this.exactKeysService = exactKeysService;
+        this.exportService = exportService;
     }
 
     /**
@@ -98,6 +103,17 @@ public class ApiController {
         String resCookie = json.getString("cookie");
         response.addCookie(new Cookie("state", resCookie));
         return result;
+    }
+    
+    @RequestMapping(value = "/export", method = RequestMethod.POST)
+    public String export(@RequestParam(required = false, name = "host") String host,
+                         @RequestParam(required = false, name = "port") Integer port,
+                         @RequestParam(required = false, name = "db") Integer db,
+                         @RequestParam(required = false, name = "format") String format,
+                         @RequestBody String keys) throws UnsupportedEncodingException {
+        LOGGER.info("GET /export");
+        keys = URLDecoder.decode(keys, "utf-8");
+        return exportService.export(host, port, db, keys, format);
     }
 
 }
