@@ -21,6 +21,7 @@ public class State {
         bufferKeys = new LinkedBlockingQueue<>();
         pattern = "";
         cursor = 0L;
+        db = 0;
     }
 
     public void addMean(double meanSum) {
@@ -104,7 +105,7 @@ public class State {
             return true;
         if((host == null || port == null) && this.connection != null)
             return false;
-        if((this.db == null && db == null) || (this.db == null && db == 0) || (this.db == 0 && db == null))
+        if((this.db == null && db == null) || (this.db == null && db == 0))
             return true;
         if(connection == null)
             return false;

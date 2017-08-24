@@ -14,8 +14,11 @@ public class StateTest {
         assertThat(state.isSameConnection("localhost", 1234, 1)).as("check if all same = true").isTrue();
         state.setConnection("local", 124, 3);
         assertThat(state.isSameConnection("localhost", 1234, 1)).as("check if some different = false").isFalse();
-        state.setConnection("localhost", 1234, 0);
+        state = new State();
+        assertThat(state.isSameConnection("localhost", 1234, 1)).as("check if some null = false").isFalse();
+        state.setConnection("localhost", 1234, null);
         assertThat(state.isSameConnection("localhost", 1234, null)).as("check if edge cases is true").isTrue();
+        assertThat(state.isSameConnection(null, 1234, null)).as("check if some more null is false").isFalse();
     }
 
     @Test
