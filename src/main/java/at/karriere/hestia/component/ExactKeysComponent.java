@@ -23,7 +23,12 @@ public class ExactKeysComponent {
             keys = keysService.keys(state.getCursor(), count, pattern, host, port, db);
             join(parseKeys(state, keys));
         } else {
-            keys = getKeysRec(state, count, count, pattern, host, port, db);
+            double mean = state.getMean();
+            long requestCount = count;
+            if(mean != 0) {
+                requestCount = (long)Math.ceil(count * mean);
+            }
+            keys = getKeysRec(state, requestCount, count, pattern, host, port, db);
         }
         return keys;
     }

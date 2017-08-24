@@ -29,6 +29,8 @@ public class State {
     }
 
     public double getMean() {
+        if(meanCount == 0)
+            return 0;
         return meanSum / meanCount;
     }
 

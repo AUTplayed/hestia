@@ -87,7 +87,7 @@ function getKeys() {
     selectedRow = false;
 
     //Build url depending on filled input forms
-    var url = "/keys?cursor=" + cursor;
+    var url = "/exactKeys?cursor=" + cursor;
     if (count && count != "") {
         url += "&count=" + count;
     }
