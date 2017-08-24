@@ -83,15 +83,4 @@ public class ExactKeysComponent {
         }
         return add;
     }
-
-    private void isBuggy(String keys) {
-        String[] split = keys.split("\n");
-        if(split.length < 2)
-            return;
-        for (int i = 0; i < split.length; i++) {
-            if(split[i].equals("")){
-                System.out.println("med");
-            }
-        }
-    }
 }
