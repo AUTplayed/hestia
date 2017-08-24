@@ -21,7 +21,7 @@ public class ExactKeysComponent {
         String keys = "";
         if(pattern == null || pattern.equals("*")) {
             keys = keysService.keys(state.getCursor(), count, pattern, host, port, db);
-            join(parseKeys(state, keys));
+            keys = join(parseKeys(state, keys));
         } else {
             double mean = state.getMean();
             long requestCount = count;

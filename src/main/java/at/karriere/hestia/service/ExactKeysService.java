@@ -14,11 +14,11 @@ public class ExactKeysService {
 
     final static Logger LOGGER = Logger.getLogger(ExactKeysService.class);
 
-    KeysService keysService;
-    StateStoreRepository stateStoreRepository;
-    ExactKeysComponent exactKeysComponent;
-    JsonKeysConverterComponent jsonKeysConverterComponent;
-    CookieGenerateComponent cookieGenerateComponent;
+    private KeysService keysService;
+    private StateStoreRepository stateStoreRepository;
+    private ExactKeysComponent exactKeysComponent;
+    private JsonKeysConverterComponent jsonKeysConverterComponent;
+    private CookieGenerateComponent cookieGenerateComponent;
 
     @Autowired
     public ExactKeysService(KeysService keysService, StateStoreRepository stateStoreRepository, ExactKeysComponent exactKeysComponent, JsonKeysConverterComponent jsonKeysConverterComponent, CookieGenerateComponent cookieGenerateComponent) {
