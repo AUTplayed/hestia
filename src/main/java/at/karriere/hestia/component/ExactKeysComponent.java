@@ -37,9 +37,9 @@ public class ExactKeysComponent {
         String rawKeys = keysService.keys(state.getCursor(), requestCount, pattern, host, port, db);
         String[] keysArray = parseKeys(state, rawKeys);
         double resCount = keysArray.length;
-
+        isBuggy(rawKeys);
         if(resCount == 0) {
-            resCount = (double)requestCount / (requestCount * 4);
+            resCount = 0.1;
         } else {
             remaining -= (long)resCount;
         }
@@ -48,8 +48,9 @@ public class ExactKeysComponent {
         if(remaining < 0) {
             return addKeys(state, join(cutRest(state, keysArray, remaining)));
         }
-        if(remaining > 0) {
+        if(remaining > 0 && state.getCursor() != 0) {
             state.setKeys(addKeys(state,join(keysArray)));
+            isBuggy(state.getKeys());
             return getKeysRec(state, (long)Math.ceil(remaining * state.getMean()), remaining, pattern, host, port, db);
         }
         return addKeys(state, join(keysArray));
@@ -68,16 +69,29 @@ public class ExactKeysComponent {
     private String[] cutRest(State state, String[] keysArray, Long remaining) {
         int limit = keysArray.length + Integer.valueOf(Long.toString(remaining));
         String[] perfectCut = Arrays.copyOfRange(keysArray, 0, limit);
-        String[] rest = Arrays.copyOfRange(keysArray, limit - 1 , keysArray.length);
+        String[] rest = Arrays.copyOfRange(keysArray, limit , keysArray.length);
         state.addToQueue(rest);
         return perfectCut;
     }
 
     private String addKeys(State state, String add) {
         if(!state.getKeys().equals("")) {
-            return state.getKeys() + "\n" + add;
-        } else {
-            return add;
+            if(!add.equals("")) {
+                return state.getKeys() + "\n" + add;
+            }
+            return state.getKeys();
+        }
+        return add;
+    }
+
+    private void isBuggy(String keys) {
+        String[] split = keys.split("\n");
+        if(split.length < 2)
+            return;
+        for (int i = 0; i < split.length; i++) {
+            if(split[i].equals("")){
+                System.out.println("med");
+            }
         }
     }
 }

@@ -5,11 +5,14 @@ import at.karriere.hestia.component.ExactKeysComponent;
 import at.karriere.hestia.component.JsonKeysConverterComponent;
 import at.karriere.hestia.entity.State;
 import at.karriere.hestia.repository.StateStoreRepository;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ExactKeysService {
+
+    final static Logger LOGGER = Logger.getLogger(ExactKeysService.class);
 
     KeysService keysService;
     StateStoreRepository stateStoreRepository;
@@ -30,10 +33,13 @@ public class ExactKeysService {
         String keys = "";
         State state = getState(cookie, cursor, pattern, host, port, db);
         int sizeOfQueue = state.getSizeOfQueue();
-        keys += getBuffer(state, count);
+        keys = addKeys(keys, getBuffer(state, count));
         count -= sizeOfQueue;
-        keys += exactKeysComponent.getKeys(state, count, pattern, host, port, db);
+        if(count > 0) {
+            keys = addKeys(keys, exactKeysComponent.getKeys(state, count, pattern, host, port, db));
+        }
         state.setKeys(keys);
+        LOGGER.info(state.getSizeOfQueue() + " key(s) in queue after request");
         return state;
     }
 
@@ -54,11 +60,23 @@ public class ExactKeysService {
         State state = stateStoreRepository.get(cookie);
         state.setKeys("");
         state.setCookie(cookie);
-        if(!state.getCursor().equals(cursor) && !state.getPattern().equals(pattern) && !state.isSameConnection(host, port, db)) {
+        if(!state.getCursor().equals(cursor)) {
             state.clearQueue();
         }
+        if(!state.getPattern().equals(pattern) || !state.isSameConnection(host, port, db)) {
+            state.clear();
+        }
+        state.setPattern(pattern);
         state.setCursor(cursor);
         return state;
     }
+    private String addKeys(String add1, String add2) {
+        if(!add1.equals("")) {
+            return add1 + "\n" + add2;
+        } else {
+            return add2;
+        }
+    }
+
 
 }

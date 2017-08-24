@@ -50,6 +50,12 @@ public class State {
         this.cursor = cursor;
     }
 
+    public void clear() {
+        clearQueue();
+        meanCount = 0;
+        meanSum = 0;
+    }
+
     public void clearQueue() {
         bufferKeys.clear();
     }
