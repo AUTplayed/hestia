@@ -1,13 +1,8 @@
 var count;
-var requestCount;
 var pattern;
 var cursor = 0;
 var curkey;
 var selectedRow;
-var rest = [];
-var meanSum = 0;
-var meanCount = 0;
-var counter = 0;
 
 $(document).ready(function() {
 
@@ -56,16 +51,13 @@ $(document).ready(function() {
     //On Nextpage button click
     $("#keys-nextpage").click(function() {
 
-        count = $("#keys-count").val();
-        counter = 0;
-        requestCount = count;
         //When the cursor is 0 we are at the start again -  display "no more pages"
         if (cursor == 0) {
             $("#keys-error").html("No more pages")
         } else {
 
             //Else get the next keys
-            getExactKeys();
+            getKeys();
         }
     });
 
@@ -135,15 +127,13 @@ function download(filename, text) {
 }
 
 function search() {
-    resetKeys();
     //get all input values and call getKeys() which, well..., gets the keys
     count = $("#keys-count").val();
-    requestCount = count;
     pattern = $("#keys-pattern").val();
 
     //Reset cursor
     cursor = 0;
-    getExactKeys();
+    getKeys();
 }
 
 function deleteKeys(url) {
@@ -162,55 +152,13 @@ function deleteKeys(url) {
     });
 }
 
-function resetKeys() {
-    meanCount = 0;
-    meanSum = 0;
-    rest = [];
-    counter = 0;
-}
-
-function getExactKeys() {
-    if(count === 0) {
-        $("#keys-output").html("");
-    } else {
-        if($("#keys-exact").is(':checked')) {
-            $("#keys-output").html("");
-            var remaining = count - rest.length;
-            getExactKeysRec(remaining);
-        } else {
-            getKeys(false);
-        }
-    }
-}
-
-function getExactKeysRec(remaining) {
-    getKeys(true, function (resCount) {
-        remaining -= resCount;
-        if(resCount === 0) {
-            resCount = requestCount / (requestCount * 4);
-        }
-        meanCount++;
-        meanSum += requestCount / resCount;
-        if(remaining > 0) {
-            requestCount = remaining * (meanSum / meanCount);
-            requestCount = Math.ceil(requestCount);
-            if (cursor == 0) {
-                $("#keys-error").html("No more pages")
-            } else {
-                getExactKeysRec(remaining);
-            }
-        }
-    });
-}
 
 /**
  * Gets the next keys from the db
  */
 function getKeys(isExact, callback) {
     //Clear all data
-    if(!isExact) {
-        $("#keys-output").html("");
-    }
+    $("#keys-output").html("");
     $("#keys-error").html("");
     $("#keys-value-value").html("");
     $("#keys-value-status").html("");
@@ -218,32 +166,15 @@ function getKeys(isExact, callback) {
     selectedRow = false;
 
     //Build url depending on filled input forms
-    var url = "/keys?cursor=" + cursor;
-    if (requestCount && requestCount != "") {
-        url += "&count=" + requestCount;
+    var url = "/exactKeys?cursor=" + cursor;
+    if (count && count != "") {
+        url += "&count=" + count;
     }
     if (pattern && pattern != "") {
         url += "&pattern=" + pattern;
     }
     url += getConnection();
 
-    //Append rest from earlier request
-    if(rest.length > 0) {
-
-        var restlen = rest.length;
-        for(var i = 0; i < restlen; i++) {
-            var output = $("#keys-output");
-            var length = output.find("tr").length;
-            if(length >= count) {
-                rest.push(key);
-            } else {
-                output.append("<tr class='keys-row'><td>" + (++counter) + "</td><td>" + rest.shift() + "</td></tr>");
-            }
-        }
-    }
-    if(requestCount < 1 || rest.length > 0) {
-        return;
-    }
     //Send request to server
     $.get(url, function(res) {
 
@@ -258,20 +189,13 @@ function getKeys(isExact, callback) {
 
                 //Iterate all keys and append them to the output table
                 res.keys.forEach(function(key) {
-                    var output = $("#keys-output");
-                    var length = output.find("tr").length;
-                    if(length < count) {
-                        output.append("<tr class='keys-row'><td>" + (++counter) + "</td><td>" + key + "</td></tr>");
-                    }
+                    $("#keys-output").append("<tr class='keys-row'><td>" + key + "</td></tr>");
                 });
-                if(callback) callback(res.keys.length);
+
                 //If a key gets clicked
                 $(".keys-row").click(keyClick);
             } else {
-                if(!isExact) {
-                    $("#keys-output").append("<tr class='keys-row'><td>no results on this page</td></tr>");
-                }
-                if(callback) callback(0);
+                $("#keys-output").append("<tr class='keys-row'><td>no results on this page</td></tr>");
             }
         }
     });
