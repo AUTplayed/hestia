@@ -71,6 +71,7 @@ public class ExactKeysService {
         } else {
             state.setPattern(pattern);
         }
+        state.setConnection(host, port, db);
         state.setCursor(cursor);
         return state;
     }
