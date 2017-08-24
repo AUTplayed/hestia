@@ -1,13 +1,31 @@
 var count;
+var requestCount;
 var pattern;
 var cursor = 0;
 var curkey;
 var selectedRow;
+var rest = [];
+var meanSum = 0;
+var meanCount = 0;
+var counter = 0;
 
 $(document).ready(function() {
 
     //On Search button click
     $("#keys-search").click(search);
+
+    $("#keys-pattern").keydown(function () {
+        resetKeys();
+    });
+
+    $("#keys-count").focusout(function () {
+        var keyscount = $("#keys-count");
+        if(keyscount.val() < 1) {
+            keyscount.val(1);
+        } else if(keyscount.val() > 1000) {
+            keyscount.val(1000);
+        }
+    });
 
     //On Count or Pattern enter event
     $("#keys-count, #keys-pattern").keydown(function (ev) {
@@ -20,13 +38,16 @@ $(document).ready(function() {
     //On Nextpage button click
     $("#keys-nextpage").click(function() {
 
+        count = $("#keys-count").val();
+        counter = 0;
+        requestCount = count;
         //When the cursor is 0 we are at the start again -  display "no more pages"
         if (cursor == 0) {
             $("#keys-error").html("No more pages")
         } else {
 
             //Else get the next keys
-            getKeys();
+            getExactKeys();
         }
     });
 
@@ -49,13 +70,15 @@ $(document).ready(function() {
 });
 
 function search() {
+    resetKeys();
     //get all input values and call getKeys() which, well..., gets the keys
     count = $("#keys-count").val();
+    requestCount = count;
     pattern = $("#keys-pattern").val();
 
     //Reset cursor
     cursor = 0;
-    getKeys();
+    getExactKeys();
 }
 
 function deleteKeys(url) {
@@ -74,12 +97,51 @@ function deleteKeys(url) {
     });
 }
 
+function resetKeys() {
+    meanCount = 0;
+    meanSum = 0;
+    rest = [];
+    counter = 0;
+}
+
+function getExactKeys() {
+    if($("#keys-exact").is(':checked')) {
+        $("#keys-output").html("");
+        var remaining = count - rest.length;
+        getExactKeysRec(remaining);
+    } else {
+        getKeys(false);
+    }
+}
+
+function getExactKeysRec(remaining) {
+    getKeys(true, function (resCount) {
+        remaining -= resCount;
+        if(resCount === 0) {
+            resCount = requestCount / (requestCount * 4);
+        }
+        meanCount++;
+        meanSum += requestCount / resCount;
+        if(remaining > 0) {
+            requestCount = remaining * (meanSum / meanCount);
+            requestCount = Math.ceil(requestCount);
+            if (cursor == 0) {
+                $("#keys-error").html("No more pages")
+            } else {
+                getExactKeysRec(remaining);
+            }
+        }
+    });
+}
+
 /**
  * Gets the next keys from the db
  */
-function getKeys() {
+function getKeys(isExact, callback) {
     //Clear all data
-    $("#keys-output").html("");
+    if(!isExact) {
+        $("#keys-output").html("");
+    }
     $("#keys-error").html("");
     $("#keys-value-value").html("");
     $("#keys-value-status").html("");
@@ -88,14 +150,31 @@ function getKeys() {
 
     //Build url depending on filled input forms
     var url = "/keys?cursor=" + cursor;
-    if (count && count != "") {
-        url += "&count=" + count;
+    if (requestCount && requestCount != "") {
+        url += "&count=" + requestCount;
     }
     if (pattern && pattern != "") {
         url += "&pattern=" + pattern;
     }
     url += getConnection();
 
+    //Append rest from earlier request
+    if(rest.length > 0) {
+
+        var restlen = rest.length;
+        for(var i = 0; i < restlen; i++) {
+            var output = $("#keys-output");
+            var length = output.find("tr").length;
+            if(length >= count) {
+                rest.push(key);
+            } else {
+                output.append("<tr class='keys-row'><td>" + (++counter) + "</td><td>" + rest.shift() + "</td></tr>");
+            }
+        }
+    }
+    if(requestCount < 1 || rest.length > 0) {
+        return;
+    }
     //Send request to server
     $.get(url, function(res) {
 
@@ -110,13 +189,20 @@ function getKeys() {
 
                 //Iterate all keys and append them to the output table
                 res.keys.forEach(function(key) {
-                    $("#keys-output").append("<tr class='keys-row'><td>" + key + "</td></tr>");
+                    var output = $("#keys-output");
+                    var length = output.find("tr").length;
+                    if(length < count) {
+                        output.append("<tr class='keys-row'><td>" + (++counter) + "</td><td>" + key + "</td></tr>");
+                    }
                 });
-
+                if(callback) callback(res.keys.length);
                 //If a key gets clicked
                 $(".keys-row").click(keyClick);
             } else {
-                $("#keys-output").append("<tr class='keys-row'><td>no results on this page</td></tr>");
+                if(!isExact) {
+                    $("#keys-output").append("<tr class='keys-row'><td>no results on this page</td></tr>");
+                }
+                if(callback) callback(0);
             }
         }
     });
@@ -192,5 +278,5 @@ function ctrlClick(row) {
 }
 
 function getKeyFromRow(row) {
-    return encodeURIComponent(row.children().first().html());
+    return encodeURIComponent(row.children().last().html());
 }
