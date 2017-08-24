@@ -66,7 +66,11 @@ public class ExactKeysService {
         if(!state.getPattern().equals(pattern) || !state.isSameConnection(host, port, db)) {
             state.clear();
         }
-        state.setPattern(pattern);
+        if(pattern == null) {
+            state.setPattern("*");
+        } else {
+            state.setPattern(pattern);
+        }
         state.setCursor(cursor);
         return state;
     }
