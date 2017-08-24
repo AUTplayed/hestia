@@ -15,10 +15,15 @@ public class StateStoreRepository {
     }
 
     public State get(String cookie) {
-        return store.get(cookie);
+        State state = store.get(cookie);
+        if(state == null) {
+            state = new State();
+            put(cookie, state);
+        }
+        return state;
     }
 
-    public void put(String cookie, State state) {
+    private void put(String cookie, State state) {
         store.put(cookie, state);
     }
 }

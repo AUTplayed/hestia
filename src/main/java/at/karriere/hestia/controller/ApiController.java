@@ -3,12 +3,13 @@ package at.karriere.hestia.controller;
 import at.karriere.hestia.service.*;
 import org.apache.log4j.Logger;
 import org.bouncycastle.cert.ocsp.Req;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 public class ApiController {
@@ -19,14 +20,16 @@ public class ApiController {
     NamespaceScheduleService namespaceScheduleService;
     NamespaceService namespaceService;
     InfoService infoService;
+    ExactKeysService exactKeysService;
 
     @Autowired
-    public ApiController(KeysService keysService, KeyspaceService keyspaceService, NamespaceScheduleService namespaceScheduleService, NamespaceService namespaceService, InfoService infoService) {
+    public ApiController(KeysService keysService, KeyspaceService keyspaceService, NamespaceScheduleService namespaceScheduleService, NamespaceService namespaceService, InfoService infoService, ExactKeysService exactKeysService) {
         this.keysService = keysService;
         this.keyspaceService = keyspaceService;
         this.namespaceScheduleService = namespaceScheduleService;
         this.namespaceService = namespaceService;
         this.infoService = infoService;
+        this.exactKeysService = exactKeysService;
     }
 
     /**
@@ -78,6 +81,23 @@ public class ApiController {
                        @RequestParam(required = false, name = "port") Integer port) {
         LOGGER.info("GET /info");
         return infoService.getInfo(host, port);
+    }
+
+    @RequestMapping(value = "/exactKeys", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String exactKeys(@RequestParam(required = false, name = "cursor") Long cursor,
+                            @RequestParam(required = false, name = "count") Long count,
+                            @RequestParam(required = false, name = "pattern") String pattern,
+                            @RequestParam(required = false, name = "host") String host,
+                            @RequestParam(required = false, name = "port") Integer port,
+                            @RequestParam(required = false, name = "db") Integer db,
+                            @CookieValue(value = "state", required = false) String cookie,
+                            HttpServletResponse response) {
+        LOGGER.info("GET /exactKeys");
+        String result =  exactKeysService.keysJson(cursor, count, pattern, host, port, db, cookie);
+        JSONObject json = new JSONObject(result);
+        String resCookie = json.getString("cookie");
+        response.addCookie(new Cookie("state", resCookie));
+        return result;
     }
 
 }
