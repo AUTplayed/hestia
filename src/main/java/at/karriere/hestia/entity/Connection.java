@@ -24,7 +24,7 @@ public class Connection {
         this.hostname = hostname;
     }
 
-    public Connection(String hostname,Integer port) {
+    public Connection(String hostname, Integer port) {
         this.port = port;
         this.hostname = hostname;
     }

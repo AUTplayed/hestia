@@ -23,12 +23,12 @@ public class KeysService {
             cursor = 0L;
         }
         if (count == null) {
-            count = Long.valueOf(dbWrapperCliService.wrapAndExecute(host, port,"DBSIZE", db)) + 1;
+            count = Long.valueOf(dbWrapperCliService.wrapAndExecute(host, port, "DBSIZE", db)) + 1;
         }
         if (pattern == null || pattern.equals("")) {
             pattern = "*";
         }
-        String command = "SCAN "+cursor+" COUNT "+count+" MATCH "+pattern;
+        String command = "SCAN " + cursor + " COUNT " + count + " MATCH " + pattern;
         return dbWrapperCliService.wrapAndExecute(host, port, command, db);
     }
 

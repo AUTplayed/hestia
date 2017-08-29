@@ -5,7 +5,7 @@ var curkey;
 var selectedRow;
 var counter = 0;
 
-$(document).ready(function() {
+$(document).ready(function () {
     var inputNextpage = $("#keys-nextpage");
     var inputPattern = $("#keys-pattern");
     var inputCount = $("#keys-count");
@@ -34,9 +34,9 @@ $(document).ready(function() {
 
     inputCount.focusout(function () {
         var keyscount = $("#keys-count");
-        if(keyscount.val() < 0) {
+        if (keyscount.val() < 0) {
             keyscount.val(0);
-        } else if(keyscount.val() > 10000) {
+        } else if (keyscount.val() > 10000) {
             keyscount.val(10000);
         }
     });
@@ -58,7 +58,7 @@ $(document).ready(function() {
     });
 
     //On Nextpage button click
-    inputNextpage.click(function() {
+    inputNextpage.click(function () {
 
         //When the cursor is 0 we are at the start again -  display "no more pages"
         if (cursor == 0) {
@@ -71,13 +71,13 @@ $(document).ready(function() {
     });
 
     //On Value delete button click
-    $("#keys-value-delete").click(function() {
+    $("#keys-value-delete").click(function () {
 
         //Only if a value is currently selected and displayed
         var marked = $(".marked");
         if (marked.length > 0) {
             var url = "/cli?command=DEL";
-            for(var i = 0; i < marked.length; i++) {
+            for (var i = 0; i < marked.length; i++) {
                 var key = getKeyFromRow(marked.eq(i));
                 url += " " + key;
             }
@@ -91,18 +91,18 @@ $(document).ready(function() {
 function exportClick(format) {
     var marked = $(".marked");
     var list;
-    if(marked.length > 0) {
+    if (marked.length > 0) {
         list = marked;
     } else {
         list = $("#keys-output").find("tr");
     }
-    if(list.length <= 0) {
+    if (list.length <= 0) {
         $("#keys-value-status").html("No keys found to export");
     } else {
         var keys = "";
-        for(var i = 0; i < list.length; i++) {
+        for (var i = 0; i < list.length; i++) {
             keys += getKeyFromRow(list.eq(i));
-            if(i < list.length - 1) {
+            if (i < list.length - 1) {
                 keys += "\n";
             }
         }
@@ -146,7 +146,7 @@ function search() {
 }
 
 function deleteKeys(url) {
-    $.get(url, function(res) {
+    $.get(url, function (res) {
 
         //Display deleted amount
         $("#keys-value-status").html("Deleted: " + res);
@@ -186,7 +186,7 @@ function getKeys(isExact, callback) {
     url += getConnection();
 
     //Send request to server
-    $.get(url, function(res) {
+    $.get(url, function (res) {
 
         //If there is a cursor returned
         if (res && res.cursor) {
@@ -198,7 +198,7 @@ function getKeys(isExact, callback) {
             if (res.keys) {
 
                 //Iterate all keys and append them to the output table
-                res.keys.forEach(function(key) {
+                res.keys.forEach(function (key) {
                     $("#keys-output").append("<tr class='keys-row'><td>" + (++counter) + "</td><td>" + key + "</td></tr>");
                 });
 
@@ -221,9 +221,9 @@ function keyClick(ev) {
     //Save the selected row
     selectedRow = $(ev.currentTarget);
 
-    if(ev.originalEvent.shiftKey) {
+    if (ev.originalEvent.shiftKey) {
         shiftClick(selectedRow);
-    } else if(ev.originalEvent.ctrlKey || ev.originalEvent.metaKey) {
+    } else if (ev.originalEvent.ctrlKey || ev.originalEvent.metaKey) {
         ctrlClick(selectedRow);
     } else {
         //Remember last clicked row
@@ -240,7 +240,7 @@ function keyClick(ev) {
 
         //Build url and send get request to server
         var url = "/cli?command=GET " + curkey + getConnection();
-        $.get(url, function(response) {
+        $.get(url, function (response) {
             try {
 
                 //If returned value is a json, pretty print to UI
@@ -259,14 +259,14 @@ function shiftClick(row) {
     var lastindex = lastClick.index();
     var index = row.index();
     var smaller, bigger;
-    if(index < lastindex) {
+    if (index < lastindex) {
         smaller = index;
         bigger = lastindex;
     } else {
         smaller = lastindex;
         bigger = index;
     }
-    for(var i = smaller; i <= bigger; i++) {
+    for (var i = smaller; i <= bigger; i++) {
         $(".keys-row").eq(i).addClass("marked");
     }
     var count = $(".marked").length;

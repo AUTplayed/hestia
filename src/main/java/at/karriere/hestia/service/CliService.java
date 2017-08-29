@@ -45,11 +45,12 @@ public class CliService {
 
     @PostConstruct
     public void init() {
-        defaultHostComponent.setDefault(defaultHostname,defaultPort);
+        defaultHostComponent.setDefault(defaultHostname, defaultPort);
     }
 
     /**
      * Executes a specified command on specified host and port redis server, returning results in String form
+     *
      * @param hostname
      * @param port
      * @param command
@@ -70,9 +71,9 @@ public class CliService {
 
     public String executeCommand(String hostname, Integer port, CommandContainer commandContainer) {
         String command = commandContainer.getCommand();
-        String [] args = commandContainer.getArgs();
+        String[] args = commandContainer.getArgs();
 
-        Connection connection = new Connection(hostname,port);
+        Connection connection = new Connection(hostname, port);
         defaultHostComponent.check(connection);
 
         //Connect to redis server socket
@@ -86,7 +87,7 @@ public class CliService {
                 cmd = Protocol.Command.valueOf(command.toUpperCase());
             } catch (IllegalArgumentException e) {
                 LOGGER.error("Failed to parse command");
-                return "ERR illegal command '"+command.toLowerCase()+"'";
+                return "ERR illegal command '" + command.toLowerCase() + "'";
             }
             //Parse args to byte array
             byte[][] byteArgs = new byte[args.length][];
@@ -96,9 +97,9 @@ public class CliService {
 
             //Send command
             try {
-                repository.sendToRedis(cmd,byteArgs);
+                repository.sendToRedis(cmd, byteArgs);
             } catch (IOException e) {
-                LOGGER.error("Failed to flush to redis",e);
+                LOGGER.error("Failed to flush to redis", e);
             }
 
             //Receive result
@@ -106,7 +107,7 @@ public class CliService {
             try {
                 result = repository.readResult();
             } catch (JedisDataException e) {
-                LOGGER.error("Failed to execute command",e);
+                LOGGER.error("Failed to execute command", e);
                 return e.getMessage();
             }
 

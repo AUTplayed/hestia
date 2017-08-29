@@ -16,7 +16,7 @@ public class StateStoreRepository {
 
     public State get(String cookie) {
         State state = store.get(cookie);
-        if(state == null) {
+        if (state == null) {
             state = new State();
             put(cookie, state);
         }

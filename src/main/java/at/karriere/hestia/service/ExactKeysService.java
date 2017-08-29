@@ -31,6 +31,7 @@ public class ExactKeysService {
 
     /**
      * Gets exact amount if keys requested
+     *
      * @param cursor
      * @param count
      * @param pattern
@@ -46,7 +47,7 @@ public class ExactKeysService {
         int sizeOfQueue = state.getSizeOfQueue();
         keys = addKeys(keys, getBuffer(state, count));
         count -= sizeOfQueue;
-        if(count > 0) {
+        if (count > 0) {
             keys = addKeys(keys, exactKeysComponent.getKeys(state, count, pattern, host, port, db));
         }
         state.setKeys(keys);
@@ -56,6 +57,7 @@ public class ExactKeysService {
 
     /**
      * Gets exact amount of keys requested in json format
+     *
      * @param cursor
      * @param count
      * @param pattern
@@ -77,6 +79,7 @@ public class ExactKeysService {
 
     /**
      * Gets the state of a user from the repo, generate new if none exists
+     *
      * @param cookie
      * @param cursor
      * @param pattern
@@ -86,19 +89,19 @@ public class ExactKeysService {
      * @return
      */
     private State getState(String cookie, Long cursor, String pattern, String host, Integer port, Integer db) {
-        if(cookie == null) {
+        if (cookie == null) {
             cookie = cookieGenerateComponent.generate();
         }
         State state = stateStoreRepository.get(cookie);
         state.setKeys("");
         state.setCookie(cookie);
-        if(!state.getCursor().equals(cursor)) {
+        if (!state.getCursor().equals(cursor)) {
             state.clearQueue();
         }
-        if(!state.getPattern().equals(pattern) || !state.isSameConnection(host, port, db)) {
+        if (!state.getPattern().equals(pattern) || !state.isSameConnection(host, port, db)) {
             state.clear();
         }
-        if(pattern == null) {
+        if (pattern == null) {
             state.setPattern("*");
         } else {
             state.setPattern(pattern);
@@ -110,12 +113,13 @@ public class ExactKeysService {
 
     /**
      * Add together 2 Strings with a \n in between if they are both filled
+     *
      * @param add1
      * @param add2
      * @return
      */
     private String addKeys(String add1, String add2) {
-        if(!add1.equals("")) {
+        if (!add1.equals("")) {
             return add1 + "\n" + add2;
         } else {
             return add2;

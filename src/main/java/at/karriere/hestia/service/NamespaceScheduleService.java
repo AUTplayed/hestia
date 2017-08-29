@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -37,11 +38,11 @@ public class NamespaceScheduleService {
     public void scan(String host, Integer port) {
         String result = keyspaceService.getKeySpaces(host, port);
         Integer[] keyspaces = keySpaceCollectorComponent.collect(result);
-        for(Integer keyspace : keyspaces) {
+        for (Integer keyspace : keyspaces) {
             HashMap<String, Long> map = new HashMap<>();
             Long time = System.currentTimeMillis();
             scan(0L, 100000L, "*:*", host, port, keyspace, map);
-            LOGGER.info("Scanning db" + keyspace + " took " + (System.currentTimeMillis() - time) / 1000 +"s");
+            LOGGER.info("Scanning db" + keyspace + " took " + (System.currentTimeMillis() - time) / 1000 + "s");
             saveResults(map, host, port, keyspace);
         }
     }
@@ -64,7 +65,7 @@ public class NamespaceScheduleService {
 
         JSONObject info = null;
         Set<String> existingSet = new HashSet<>();
-        if(!prevVal.equals("")) {
+        if (!prevVal.equals("")) {
 
             //Previous info json (value)
             info = new JSONObject(prevVal);
@@ -76,15 +77,15 @@ public class NamespaceScheduleService {
         //New info json
         JSONObject newVal = new JSONObject();
         for (String namespace : map.keySet()) {
-            if(namespace.contains("\"")) {
+            if (namespace.contains("\"")) {
                 try {
-                    namespace = URLEncoder.encode(namespace, "utf-8");
+                    namespace = URLEncoder.encode(namespace, StandardCharsets.UTF_8.name());
                 } catch (UnsupportedEncodingException e) {
-                    LOGGER.error("failed to encode namespace" , e);
+                    LOGGER.error("failed to encode namespace", e);
                 }
             }
             JSONObject nameSpaceValue = new JSONObject();
-            if(existingSet.contains(namespace)) {
+            if (existingSet.contains(namespace)) {
                 JSONObject prevNameSpaceValue = (JSONObject) info.get(namespace);
                 String description = prevNameSpaceValue.get("description").toString();
                 nameSpaceValue.put("description", description);
@@ -96,7 +97,7 @@ public class NamespaceScheduleService {
             newVal.put(namespace, nameSpaceValue);
         }
 
-        String json = newVal.toString().replaceAll("\"","\\\\\"");
+        String json = newVal.toString().replaceAll("\"", "\\\\\"");
         command = "SET " + key + " \"" + json + "\"";
         dbWrapperCliService.wrapAndExecute(host, port, command, db);
 

@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 
 @RestController
 public class ApiController {
@@ -67,7 +68,7 @@ public class ApiController {
 
     @RequestMapping(value = "/scheduleNamespaces", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
     public String scheduleNamespaces(@RequestParam(required = false, name = "host") String host,
-                             @RequestParam(required = false, name = "port") Integer port) {
+                                     @RequestParam(required = false, name = "port") Integer port) {
         LOGGER.info("GET /scheduleNamespaces");
         namespaceScheduleService.scan(host, port);
         return "Done";
@@ -100,7 +101,7 @@ public class ApiController {
         LOGGER.info("GET /exactKeys");
 
         //Get result and cookie
-        String result =  exactKeysService.keysJson(cursor, count, pattern, host, port, db, cookie);
+        String result = exactKeysService.keysJson(cursor, count, pattern, host, port, db, cookie);
         JSONObject json = new JSONObject(result);
         String resCookie = json.getString("cookie");
 
@@ -108,7 +109,7 @@ public class ApiController {
         response.addCookie(new Cookie("state", resCookie));
         return result;
     }
-    
+
     @RequestMapping(value = "/export", method = RequestMethod.POST)
     public String export(@RequestParam(required = false, name = "host") String host,
                          @RequestParam(required = false, name = "port") Integer port,
@@ -116,7 +117,7 @@ public class ApiController {
                          @RequestParam(required = false, name = "format") String format,
                          @RequestBody String keys) throws UnsupportedEncodingException {
         LOGGER.info("GET /export");
-        keys = URLDecoder.decode(keys, "utf-8");
+        keys = URLDecoder.decode(keys, StandardCharsets.UTF_8.name());
         return exportService.export(host, port, db, keys, format);
     }
 

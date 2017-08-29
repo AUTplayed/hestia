@@ -9,7 +9,7 @@ import java.util.List;
 public class OutputConverterComponent {
 
     //Frech kopiert, github.com/ApesRise/jedis-cli/ - Kommentare wurden ergänzt
-    public String stringify(Object obj){
+    public String stringify(Object obj) {
         //When byte[]
         if (obj instanceof byte[]) {
             return new String((byte[]) obj);
@@ -67,7 +67,7 @@ public class OutputConverterComponent {
 
         //Append every element to StringBuilder
         for (Object cur : build) {
-            if(cur!=null) {
+            if (cur != null) {
                 sb.append(cur);
                 sb.append("\n");
             }

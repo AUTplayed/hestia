@@ -17,7 +17,7 @@ public class KeyspaceService {
     }
 
     public String getKeySpaces(String host, Integer port) {
-       return cliService.executeCommand(host,port,"info keyspace");
+        return cliService.executeCommand(host, port, "info keyspace");
     }
 
     public String getKeySpacesJson(String host, Integer port) {

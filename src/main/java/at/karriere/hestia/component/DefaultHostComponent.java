@@ -4,6 +4,7 @@ import at.karriere.hestia.entity.Connection;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
@@ -16,7 +17,7 @@ public class DefaultHostComponent {
     private String defaultHostname;
     private Integer defaultPort;
 
-    public void setDefault(String hostname,Integer port) {
+    public void setDefault(String hostname, Integer port) {
         defaultHostname = hostname;
         defaultPort = port;
     }
@@ -24,10 +25,10 @@ public class DefaultHostComponent {
     public void check(Connection connection) {
         //check if no host or port are passed
         //and set default properties
-        if(connection.getHostname() == null || connection.getHostname().equals("")) {
+        if (connection.getHostname() == null || connection.getHostname().equals("")) {
             connection.setHostname(defaultHostname);
         }
-        if(connection.getPort() == null || connection.getPort() == 0) {
+        if (connection.getPort() == null || connection.getPort() == 0) {
             connection.setPort(defaultPort);
         }
     }

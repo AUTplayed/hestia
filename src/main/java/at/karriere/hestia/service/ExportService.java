@@ -18,11 +18,11 @@ public class ExportService {
 
     public String export(String host, Integer port, Integer db, String keys, String format) {
         String[] keyArray = keys.split("\n");
-        if(keyArray.length < 1) {
+        if (keyArray.length < 1) {
             return "";
         }
         String command = "MGET";
-        for(String key : keyArray) {
+        for (String key : keyArray) {
             command += " " + key;
         }
         String values = dbWrapperCliService.wrapAndExecute(host, port, command, db);

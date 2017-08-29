@@ -19,7 +19,7 @@ public class JsonKeysConverterComponent {
         JSONObject response = new JSONObject();
 
         //When the array is empty return empty jsonobject
-        if(lines.length < 2 && lines[0].equals("")) {
+        if (lines.length < 2 && lines[0].equals("")) {
             return response;
         }
 
@@ -27,12 +27,12 @@ public class JsonKeysConverterComponent {
         response.put("cursor", lines[0]);
 
         //If no keys are given, just return the cursor
-        if(lines.length == 1) {
+        if (lines.length == 1) {
             return response;
         }
 
         //Copy subarray and put it into a json array
-        String[] keys = Arrays.copyOfRange(lines,1,lines.length);
+        String[] keys = Arrays.copyOfRange(lines, 1, lines.length);
         JSONArray jsonArray = new JSONArray(keys);
 
         //Put jsonarray into jsonobject and return it

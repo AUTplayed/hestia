@@ -17,25 +17,26 @@ public class InfoFilterComponent {
 
     /**
      * filters all info into needed info
+     *
      * @param info
      * @return
      */
     public String filter(String info) {
-        info = info.replaceAll("\r","");
+        info = info.replaceAll("\r", "");
         String[] lines = info.split("\n");
         String filtered = "";
         String category = "";
         boolean categoryUsed = false;
         boolean inCategory = false;
         for (String line : lines) {
-            switch(isInArray(line)) {
+            switch (isInArray(line)) {
                 case 1: //When property is detected
-                    if(!categoryUsed && !category.equals("")) {
+                    if (!categoryUsed && !category.equals("")) {
                         filtered += category + "\n";
                         categoryUsed = true;
                         category = "";
                     }
-                    if(line.startsWith("uptime")) {
+                    if (line.startsWith("uptime")) {
                         filtered += uptimeConverter(line);
                     } else {
                         filtered += line + "\n";
@@ -47,10 +48,10 @@ public class InfoFilterComponent {
                     filtered += line + "\n";
                     break;
                 case 3: //When newline is detected
-                    if(categoryUsed) {
+                    if (categoryUsed) {
                         filtered += "\n";
                     }
-                    if(inCategory) {
+                    if (inCategory) {
                         inCategory = false;
                     }
                     break;
@@ -59,7 +60,7 @@ public class InfoFilterComponent {
                     categoryUsed = false;
                     break;
                 default: //Default case
-                    if(inCategory) {
+                    if (inCategory) {
                         filtered += line + "\n";
                     }
             }
@@ -69,23 +70,24 @@ public class InfoFilterComponent {
 
     /**
      * checks if line is in any filter array
+     *
      * @param line
      * @return
      */
     private short isInArray(String line) {
-        if(line.equals("\r") || line.equals("")) {
+        if (line.equals("\r") || line.equals("")) {
             return 3;
         }
-        if(line.startsWith("#")) {
+        if (line.startsWith("#")) {
             for (String category : categories) {
-                if(line.contains(category)) {
+                if (line.contains(category)) {
                     return 2;
                 }
             }
             return 4;
         }
         for (String property : properties) {
-            if(line.startsWith(property)) {
+            if (line.startsWith(property)) {
                 return 1;
             }
         }
@@ -94,6 +96,7 @@ public class InfoFilterComponent {
 
     /**
      * formats the uptime seconds
+     *
      * @param line
      * @return
      */
@@ -116,19 +119,21 @@ public class InfoFilterComponent {
 
     /**
      * Converts a single time value to a 2 digit String
+     *
      * @param time
      * @return
      */
     private String stringifySingleTime(double time) {
         String result = "";
-        if(time < 10) {
+        if (time < 10) {
             result = "0";
         }
-        return result + String.valueOf((int)time);
+        return result + String.valueOf((int) time);
     }
 
     /**
      * Converts 4 time values to a dd-hh-mm-ss String
+     *
      * @param days
      * @param hours
      * @param minutes

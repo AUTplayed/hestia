@@ -15,7 +15,7 @@ public class NamespaceService {
 
     public String getNamespaces(String host, Integer port, Integer db) {
         String infoValue = dbWrapperCliService.wrapAndExecute(host, port, "GET info", db);
-        if(infoValue.startsWith("ERR"))
+        if (infoValue.startsWith("ERR"))
             return "ERR";
         return infoValue;
     }

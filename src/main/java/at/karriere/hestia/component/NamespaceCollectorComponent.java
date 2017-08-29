@@ -12,7 +12,7 @@ public class NamespaceCollectorComponent {
 
 
     public void collect(String[] keys, HashMap<String, Long> map) {
-        for(String key : keys) {
+        for (String key : keys) {
             key = key.split(":")[0];
             map.putIfAbsent(key, 0L);
             Long count = map.get(key);
