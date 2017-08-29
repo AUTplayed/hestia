@@ -67,9 +67,6 @@ public class State {
 
     /**
      * Gets specified count of keys from queue like key1\nkey2\nkey3
-     *
-     * @param count
-     * @return
      */
     public String getFromQueue(Long count) {
         String sum = "";

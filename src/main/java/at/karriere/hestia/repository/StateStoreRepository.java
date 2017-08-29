@@ -1,6 +1,7 @@
 package at.karriere.hestia.repository;
 
 import at.karriere.hestia.entity.State;
+import org.apache.commons.collections4.map.LRUMap;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -8,10 +9,11 @@ import java.util.HashMap;
 @Repository
 public class StateStoreRepository {
 
-    private HashMap<String, State> store;
+    //private HashMap<String, State> store;
+    private LRUMap<String, State> store;
 
     public StateStoreRepository() {
-        store = new HashMap<>();
+        store = new LRUMap<>(100);
     }
 
     public State get(String cookie) {

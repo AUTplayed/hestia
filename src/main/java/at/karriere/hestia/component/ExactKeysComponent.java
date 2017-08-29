@@ -19,14 +19,6 @@ public class ExactKeysComponent {
 
     /**
      * Gets exact amount of keys specified
-     *
-     * @param state
-     * @param count
-     * @param pattern
-     * @param host
-     * @param port
-     * @param db
-     * @return
      */
     public String getKeys(State state, Long count, String pattern, String host, Integer port, Integer db) {
         String keys = "";
@@ -50,15 +42,6 @@ public class ExactKeysComponent {
 
     /**
      * Recursively gets exact amount of keys requested
-     *
-     * @param state
-     * @param requestCount
-     * @param remaining
-     * @param pattern
-     * @param host
-     * @param port
-     * @param db
-     * @return
      */
     private String getKeysRec(State state, Long requestCount, Long remaining, String pattern, String host, Integer port, Integer db) {
         String rawKeys = keysService.keys(state.getCursor(), requestCount, pattern, host, port, db);
@@ -88,10 +71,6 @@ public class ExactKeysComponent {
 
     /**
      * Parse output returned from redis into cursor and keys
-     *
-     * @param state
-     * @param keys
-     * @return
      */
     private String[] parseKeys(State state, String keys) {
         String[] keyArray = keys.split("\n");
@@ -101,9 +80,6 @@ public class ExactKeysComponent {
 
     /**
      * Join string[] to String with \n delimiters
-     *
-     * @param array
-     * @return
      */
     private String join(String[] array) {
         return String.join("\n", array);
@@ -111,11 +87,6 @@ public class ExactKeysComponent {
 
     /**
      * Cut excess keys from array and put them into the queue. Return requested amount.
-     *
-     * @param state
-     * @param keysArray
-     * @param remaining
-     * @return
      */
     private String[] cutRest(State state, String[] keysArray, Long remaining) {
         int limit = keysArray.length + Integer.valueOf(Long.toString(remaining));
@@ -127,10 +98,6 @@ public class ExactKeysComponent {
 
     /**
      * Add together saved keys in state and keys passed, \n in between if none of them are empty
-     *
-     * @param state
-     * @param add
-     * @return
      */
     private String addKeys(State state, String add) {
         if (!state.getKeys().equals("")) {

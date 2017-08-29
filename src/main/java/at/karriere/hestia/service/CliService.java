@@ -22,7 +22,6 @@ import java.io.IOException;
 @Service
 public class CliService {
 
-    private CliRepository repository;
     private OutputConverterComponent outputConverterComponent;
     private DefaultHostComponent defaultHostComponent;
     private SplitCommandComponent splitCommandComponent;
@@ -35,12 +34,10 @@ public class CliService {
 
 
     @Autowired
-    public CliService(CliRepository repository, OutputConverterComponent outputConverterComponent, DefaultHostComponent defaultHostComponent, SplitCommandComponent splitCommandComponent) {
-        this.repository = repository;
+    public CliService(OutputConverterComponent outputConverterComponent, DefaultHostComponent defaultHostComponent, SplitCommandComponent splitCommandComponent) {
         this.outputConverterComponent = outputConverterComponent;
         this.defaultHostComponent = defaultHostComponent;
         this.splitCommandComponent = splitCommandComponent;
-
     }
 
     @PostConstruct
@@ -50,11 +47,6 @@ public class CliService {
 
     /**
      * Executes a specified command on specified host and port redis server, returning results in String form
-     *
-     * @param hostname
-     * @param port
-     * @param command
-     * @return
      */
     public String executeCommand(String hostname, Integer port, String command) {
 
@@ -70,6 +62,7 @@ public class CliService {
     }
 
     public String executeCommand(String hostname, Integer port, CommandContainer commandContainer) {
+        CliRepository repository = new CliRepository();
         String command = commandContainer.getCommand();
         String[] args = commandContainer.getArgs();
 

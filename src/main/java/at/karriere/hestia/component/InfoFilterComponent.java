@@ -17,9 +17,6 @@ public class InfoFilterComponent {
 
     /**
      * filters all info into needed info
-     *
-     * @param info
-     * @return
      */
     public String filter(String info) {
         info = info.replaceAll("\r", "");
@@ -70,9 +67,6 @@ public class InfoFilterComponent {
 
     /**
      * checks if line is in any filter array
-     *
-     * @param line
-     * @return
      */
     private short isInArray(String line) {
         if (line.equals("\r") || line.equals("")) {
@@ -96,9 +90,6 @@ public class InfoFilterComponent {
 
     /**
      * formats the uptime seconds
-     *
-     * @param line
-     * @return
      */
     private String uptimeConverter(String line) {
         //Get value of key:value pair
@@ -119,9 +110,6 @@ public class InfoFilterComponent {
 
     /**
      * Converts a single time value to a 2 digit String
-     *
-     * @param time
-     * @return
      */
     private String stringifySingleTime(double time) {
         String result = "";
@@ -133,12 +121,6 @@ public class InfoFilterComponent {
 
     /**
      * Converts 4 time values to a dd-hh-mm-ss String
-     *
-     * @param days
-     * @param hours
-     * @param minutes
-     * @param seconds
-     * @return
      */
     private String stringifyTime(double days, double hours, double minutes, double seconds) {
         String dd = stringifySingleTime(days);

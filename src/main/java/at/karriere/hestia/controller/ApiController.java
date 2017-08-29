@@ -40,13 +40,6 @@ public class ApiController {
 
     /**
      * Endpoint for /keys command, returns keys and cursor depending on specified cursor, count and pattern in JSON format
-     *
-     * @param cursor
-     * @param count
-     * @param pattern
-     * @param host
-     * @param port
-     * @return
      */
     @RequestMapping(value = "/keys", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public String keys(@RequestParam(required = false, name = "cursor") Long cursor,

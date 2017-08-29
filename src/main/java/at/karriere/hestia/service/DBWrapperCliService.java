@@ -22,6 +22,9 @@ public class DBWrapperCliService {
         this.dbCommandWrapperComponent = dbCommandWrapperComponent;
     }
 
+    /**
+     * Wraps a command in a eval with select db and returns the result
+     */
     public String wrapAndExecute(String host, Integer port, String command, Integer db) {
         LOGGER.info(command);
         if (db == null || db == 0) {

@@ -25,17 +25,13 @@ public class CliRepository {
 
     /**
      * Connect to specified host and port via socket and setup streams
-     *
-     * @param hostname
-     * @param port
-     * @return
      */
-    public boolean connect(String hostname, int port) {
+    public boolean connect(String hostname,int port) {
         socket = new Socket();
         try {
             socket.setKeepAlive(true);
             socket.setTcpNoDelay(true);
-            socket.connect(new InetSocketAddress(hostname, port), 3000);
+            socket.connect(new InetSocketAddress(hostname, port),3000);
             outstream = new RedisOutputStream(socket.getOutputStream());
             instream = new RedisInputStream(socket.getInputStream());
         } catch (SocketException e) {
@@ -55,7 +51,7 @@ public class CliRepository {
 
     public void sendToRedis(Protocol.Command command, byte[]... args) throws IOException {
         if (isConnected()) {
-            Protocol.sendCommand(outstream, command, args);
+            Protocol.sendCommand(outstream,command,args);
             outstream.flush();
         } else {
             throw new IOException("Connection not open");
@@ -73,7 +69,7 @@ public class CliRepository {
     /**
      * Disconnect from connected socket and closing streams
      */
-    public void disconnect() {
+    public void disconnect(){
         try {
             if (instream != null) {
                 instream.close();
@@ -85,7 +81,7 @@ public class CliRepository {
                 socket.close();
             }
         } catch (IOException e) {
-            LOGGER.error("Failed to close socket/streams", e);
+            LOGGER.error("Failed to close socket/streams",e);
         }
     }
 
