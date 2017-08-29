@@ -98,9 +98,13 @@ public class ApiController {
                             @CookieValue(value = "state", required = false) String cookie,
                             HttpServletResponse response) {
         LOGGER.info("GET /exactKeys");
+
+        //Get result and cookie
         String result =  exactKeysService.keysJson(cursor, count, pattern, host, port, db, cookie);
         JSONObject json = new JSONObject(result);
         String resCookie = json.getString("cookie");
+
+        //Set cookie on client side via http set cookie header
         response.addCookie(new Cookie("state", resCookie));
         return result;
     }
