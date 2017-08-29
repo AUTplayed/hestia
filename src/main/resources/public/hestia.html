@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html>
 <header>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="css/hestia.css">
 </header>
 <body>
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -22,7 +24,8 @@
                 <li class="active"><a href="hestia.html">Hestia</a></li>
                 <li><a href="helios.html">Helios</a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">Dropdown <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="#">Action</a></li>
                         <li><a href="#">Another action</a></li>
@@ -82,13 +85,24 @@
             <h3>Output</h3>
         </div>
         <pre id="cli-help">Use any cli command like you normally would. <br>Select a connection and database in the 'Connection' tab. <br>Use 'clear' to clear the output.</pre>
+        <div class="sk-cube-grid" id="cli-spinner" style="display: none">
+            <div class="sk-cube sk-cube1"></div>
+            <div class="sk-cube sk-cube2"></div>
+            <div class="sk-cube sk-cube3"></div>
+            <div class="sk-cube sk-cube4"></div>
+            <div class="sk-cube sk-cube5"></div>
+            <div class="sk-cube sk-cube6"></div>
+            <div class="sk-cube sk-cube7"></div>
+            <div class="sk-cube sk-cube8"></div>
+            <div class="sk-cube sk-cube9"></div>
+        </div>
         <div id="cli-output"></div>
     </div>
     <div class="tab-pane" id="keys" role="tabpanel">
         <div id="keys-keys" class="tabwrap">
             <span class="input-group" id="keys-count-wrapper">
                 <span class="input-group-addon">count</span>
-                <input type="number" id="keys-count">
+                <input type="number" id="keys-count" min="0" max="10000">
             </span>
             <span class="input-group" id="keys-pattern-wrapper">
                 <span class="input-group-addon">pattern</span>
@@ -96,27 +110,43 @@
             </span>
             <input type="button" id="keys-search" value="Search">
             <input type="button" id="keys-nextpage" value="Next Page">
-            <span class="checkbox"><label style="font-size: 25px">
-                <input type="checkbox" value="" checked="" id="keys-exact">
-                <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>Exact count (slower)</label>
-            </span>
             <div style="color:red" id="keys-error"></div>
         </div>
         <div id="keys-value">
             <div id="keys-value-wrapper">
                 <p>Value</p>
-                <button id="keys-value-delete" class="btn btn-danger" data-toggle="confirmation" data-placement="left" data-popout="true">Delete</button>
+                <button id="keys-value-delete" class="btn btn-danger" data-toggle="confirmation" data-placement="left"
+                        data-popout="true">Delete
+                </button>
+                <button id="keys-value-export" class="btn" data-placement="top" data-popout="true">Export</button>
                 <span id="keys-value-status"></span>
                 <pre id="keys-value-value"></pre>
             </div>
         </div>
-        <table id="keys-output"></table>
+        <div class="sk-cube-grid" id="keys-spinner" style="display: none">
+            <div class="sk-cube sk-cube1"></div>
+            <div class="sk-cube sk-cube2"></div>
+            <div class="sk-cube sk-cube3"></div>
+            <div class="sk-cube sk-cube4"></div>
+            <div class="sk-cube sk-cube5"></div>
+            <div class="sk-cube sk-cube6"></div>
+            <div class="sk-cube sk-cube7"></div>
+            <div class="sk-cube sk-cube8"></div>
+            <div class="sk-cube sk-cube9"></div>
+        </div>
+        <table id="keys-output-table" class="table table-condensed table-striped">
+            <tbody id="keys-output">
+
+            </tbody>
+        </table>
     </div>
 </div>
 </body>
 <footer>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
     <script src="js/bootstrap-confirmation.min.js"></script>
     <script src="js/hestia.js"></script>
     <script src="js/servers.js"></script>

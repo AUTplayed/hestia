@@ -22,7 +22,6 @@ import java.io.IOException;
 @Service
 public class CliService {
 
-    private CliRepository repository;
     private OutputConverterComponent outputConverterComponent;
     private DefaultHostComponent defaultHostComponent;
     private SplitCommandComponent splitCommandComponent;
@@ -35,25 +34,19 @@ public class CliService {
 
 
     @Autowired
-    public CliService(CliRepository repository, OutputConverterComponent outputConverterComponent, DefaultHostComponent defaultHostComponent, SplitCommandComponent splitCommandComponent) {
-        this.repository = repository;
+    public CliService(OutputConverterComponent outputConverterComponent, DefaultHostComponent defaultHostComponent, SplitCommandComponent splitCommandComponent) {
         this.outputConverterComponent = outputConverterComponent;
         this.defaultHostComponent = defaultHostComponent;
         this.splitCommandComponent = splitCommandComponent;
-
     }
 
     @PostConstruct
     public void init() {
-        defaultHostComponent.setDefault(defaultHostname,defaultPort);
+        defaultHostComponent.setDefault(defaultHostname, defaultPort);
     }
 
     /**
      * Executes a specified command on specified host and port redis server, returning results in String form
-     * @param hostname
-     * @param port
-     * @param command
-     * @return
      */
     public String executeCommand(String hostname, Integer port, String command) {
 
@@ -69,10 +62,11 @@ public class CliService {
     }
 
     public String executeCommand(String hostname, Integer port, CommandContainer commandContainer) {
+        CliRepository repository = new CliRepository();
         String command = commandContainer.getCommand();
-        String [] args = commandContainer.getArgs();
+        String[] args = commandContainer.getArgs();
 
-        Connection connection = new Connection(hostname,port);
+        Connection connection = new Connection(hostname, port);
         defaultHostComponent.check(connection);
 
         //Connect to redis server socket
@@ -86,7 +80,7 @@ public class CliService {
                 cmd = Protocol.Command.valueOf(command.toUpperCase());
             } catch (IllegalArgumentException e) {
                 LOGGER.error("Failed to parse command");
-                return "ERR illegal command '"+command.toLowerCase()+"'";
+                return "ERR illegal command '" + command.toLowerCase() + "'";
             }
             //Parse args to byte array
             byte[][] byteArgs = new byte[args.length][];
@@ -96,9 +90,9 @@ public class CliService {
 
             //Send command
             try {
-                repository.sendToRedis(cmd,byteArgs);
+                repository.sendToRedis(cmd, byteArgs);
             } catch (IOException e) {
-                LOGGER.error("Failed to flush to redis",e);
+                LOGGER.error("Failed to flush to redis", e);
             }
 
             //Receive result
@@ -106,7 +100,7 @@ public class CliService {
             try {
                 result = repository.readResult();
             } catch (JedisDataException e) {
-                LOGGER.error("Failed to execute command",e);
+                LOGGER.error("Failed to execute command", e);
                 return e.getMessage();
             }
 

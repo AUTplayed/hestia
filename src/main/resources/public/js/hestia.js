@@ -1,7 +1,8 @@
-$(document).ready(function() {
+$(document).ready(function () {
     $('[data-toggle=confirmation]').confirmation({
         rootSelector: '[data-toggle=confirmation]'
     });
+
     readServers();
     setupEvents();
 });
@@ -11,12 +12,12 @@ $(document).ready(function() {
  */
 function readServers() {
     var selectlist = $("#connection-server");
-    servers.forEach(function(server) {
+    servers.forEach(function (server) {
         selectlist.append("<option>" + server.name + "</option>")
     });
 }
 
-String.prototype.replaceAll = function(search, replacement) {
+String.prototype.replaceAll = function (search, replacement) {
     var target = this;
     return target.replace(new RegExp(search, 'g'), replacement);
 };
@@ -27,27 +28,26 @@ String.prototype.replaceAll = function(search, replacement) {
 function setupEvents() {
 
     //On cli keypress
-    $("#cli-command").keydown(function(ev) {
-
+    $("#cli-command").keydown(function (ev) {
         //If keypress is "ENTER"
-        if (ev.originalEvent.keyCode == 13) {
+        if (ev.originalEvent.keyCode === 13) {
 
             //Get command from input
             var commandInput = $("#cli-command");
             var command = commandInput.val();
 
-            if($("#cli-clear").is(':checked')) {
+            if ($("#cli-clear").is(':checked')) {
                 commandInput.val("");
             }
 
             //If command is clear, clear the output
-            if(command == "clear") {
+            if (command === "clear") {
                 $("#cli-output").html("");
             } else {
-
+                $("#cli-spinner").show();
                 //Send Request to server
-                $.get("/cli?command=" + command + getConnection(), function(res) {
-
+                $.get("/cli?command=" + command + getConnection(), function (res) {
+                    $("#cli-spinner").hide();
                     //Display result
                     $("#cli-output").html(res);
                 });
@@ -56,16 +56,16 @@ function setupEvents() {
     });
 
     //On Server dropdown value change
-    $("#connection-server").change(function() {
+    $("#connection-server").change(function () {
 
         //Get selected server
         var selected = $("#connection-server").val();
 
         //iterate servers
-        servers.forEach(function(server) {
+        servers.forEach(function (server) {
 
             //set hostname and port of selected server
-            if (server.name == selected) {
+            if (server.name === selected) {
                 $("#connection-host").val(server.host);
                 $("#connection-port").val(server.port);
                 getAndSetInfo();
@@ -80,7 +80,7 @@ function setupEvents() {
 
     $("#connection-host, #connection-port").keydown(function (ev) {
         //If keypress is "ENTER"
-        if (ev.originalEvent.keyCode == 13) {
+        if (ev.originalEvent.keyCode === 13) {
             getAndSetInfo();
         } else {
             $("#connection-server").val("Custom");
@@ -88,35 +88,35 @@ function setupEvents() {
     });
 
     //On Database dropdown click
-    $("#connection-database").click(function() {
-
-        //delete all choices except the first one (Default)
-        $("#connection-database").find("option").slice(1).remove();
+    $("#connection-database").click(function () {
 
         //Build url
         var url = "/keyspaces";
         url += getConnectionNoDb();
 
         //Send request to server
-        $.get(url, function(res) {
+        $.get(url, function (res) {
+
+            //delete all choices except the first one (Default)
+            $("#connection-database").find("option").slice(1).remove();
 
             //if there are databases
             if (res.length > 0) {
 
                 //Fill in the options
                 var selectlist = $("#connection-database");
-                res.forEach(function(keyspace) {
+                res.forEach(function (keyspace) {
                     selectlist.append("<option>" + keyspace + "</option>");
                 });
             }
         });
     });
-    
+
     $("#tab-connection").click(function () {
         getAndSetInfo();
     });
 
-    $("#connection-database").change(function() {
+    $("#connection-database").change(function () {
         getNamespaces();
     });
 }
@@ -130,10 +130,11 @@ function getAndSetInfo() {
         $("#connection-info").html("Unable to connect");
         $("#connection-status").html("Unable to connect");
     }
+
     $.get(url, function (res) {
-        if(res && res != "") {
+        if (res && res !== "") {
             $("#connection-info").html(setInfoTable(res));
-            $("#connection-status").html("Connected to: "+$("#connection-host").val()+" ("+$("#connection-server").val()+")");
+            $("#connection-status").html("Connected to: " + $("#connection-host").val() + " (" + $("#connection-server").val() + ")");
             getNamespaces();
         } else {
             failed();
@@ -144,11 +145,11 @@ function getAndSetInfo() {
 function setInfoTable(info) {
     var table = "<table id='connection-table'>\n";
     var lines = info.split("\n");
-    for(var i = 0; i < lines.length; i++) {
+    for (var i = 0; i < lines.length; i++) {
         var line = lines[i];
-        if(line != "") {
-            table+="<tr>\n";
-            if(line.startsWith("#")) {
+        if (line !== "") {
+            table += "<tr>\n";
+            if (line.startsWith("#")) {
                 var header = line.substr(2, line.length);
                 table += "<th>" + header + "</th>\n</tr>\n";
             } else {
@@ -181,13 +182,14 @@ function editNamespaceDescription(ev) {
     var jsonString = JSON.stringify(currentNamespaces).replaceAll('\"', '\\"');  //WTF do not split into 2 method calls - won't work
     var url = "/cli?command=SET info " + "\"" + encodeURIComponent(jsonString) + "\"" + getConnection();
     $.get(url, function (res) {
-        if(res !== "OK") {
+        if (res !== "OK") {
             target.css("background-color", "red");
         } else {
             target.css("background-color", "#8bc72a");
         }
     });
 }
+
 var currentNamespaces;
 
 function buildNamespaceTable(res) {
@@ -195,7 +197,7 @@ function buildNamespaceTable(res) {
     var table = "<table id='connection-namespaces-table'>\n";
     table += "<tr>\n<th>Namespace</th>\n<th>#</th>\n<th>Description</th>\n</tr>\n";
     var keys = Object.keys(res);
-    if(keys.length < 1) {
+    if (keys.length < 1) {
         return "";
     }
     keys.forEach(function (key) {

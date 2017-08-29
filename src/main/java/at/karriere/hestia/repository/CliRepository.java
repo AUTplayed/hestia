@@ -25,9 +25,6 @@ public class CliRepository {
 
     /**
      * Connect to specified host and port via socket and setup streams
-     * @param hostname
-     * @param port
-     * @return
      */
     public boolean connect(String hostname,int port) {
         socket = new Socket();

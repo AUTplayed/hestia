@@ -13,12 +13,12 @@ public class JsonKeySpaceConverterComponent {
         String[] lines = result.split("\n");
 
         //When the array is empty return empty jsonarray
-        if(lines.length < 1) {
+        if (lines.length < 1) {
             return "[]";
         }
 
         //Copy subarray and put it into a json array
-        String[] keyspaces = Arrays.copyOfRange(lines,1, lines.length);
+        String[] keyspaces = Arrays.copyOfRange(lines, 1, lines.length);
         for (int i = 0; i < keyspaces.length; i++) {
             keyspaces[i] = keyspaces[i].split(",")[0];
         }

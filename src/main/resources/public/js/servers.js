@@ -5,6 +5,11 @@ var servers = [
         port : ""
     },
     {
+        name : "sdev01",
+        host : "10.10.10.36",
+        port : 6379
+    },
+    {
         name : "sdev04",
         host : "10.10.10.152",
         port : 6379

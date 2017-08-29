@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class InfoService {
 
-    CliService cliService;
-    InfoFilterComponent infoFilterComponent;
+    private CliService cliService;
+    private InfoFilterComponent infoFilterComponent;
 
     @Autowired
     public InfoService(CliService cliService, InfoFilterComponent infoFilterComponent) {

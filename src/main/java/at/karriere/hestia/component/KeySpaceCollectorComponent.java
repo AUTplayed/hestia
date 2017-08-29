@@ -13,7 +13,7 @@ public class KeySpaceCollectorComponent {
         int counter = 0;
         //Skip keyspaces header
         keyspaces = Arrays.copyOfRange(keyspaces, 1, keyspaces.length);
-        for(String keyspace : keyspaces) {
+        for (String keyspace : keyspaces) {
             String db = keyspace.split(":")[0];
             Integer dbNumber = Integer.valueOf(db.substring(2));
             result[counter++] = dbNumber;

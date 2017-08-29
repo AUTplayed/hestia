@@ -33,16 +33,12 @@ public class CliController {
 
     /**
      * Executes a specified command with specified args (separated with spaces) on specified host and port redis server, returning results in String form
-     * @param host
-     * @param port
-     * @param command
-     * @return
      */
-    @RequestMapping(value = "/cli",method = RequestMethod.GET,produces = MediaType.TEXT_PLAIN_VALUE)
+    @RequestMapping(value = "/cli", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
     public String cli(@RequestParam(required = false, name = "host") String host,
                       @RequestParam(required = false, name = "port") Integer port,
                       @RequestParam(required = true, name = "command") String command,
-                      @RequestParam(required = false, name = "db") Integer db){
+                      @RequestParam(required = false, name = "db") Integer db) {
         LOGGER.info("GET /cli");
 
         //Execute command

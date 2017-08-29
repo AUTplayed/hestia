@@ -69,7 +69,7 @@ dependencies {
     compile group: 'redis.clients', name: 'jedis', version: '2.9.0'
     compile group: 'com.spotify', name: 'docker-client', version: '8.8.3'
     compile group: 'org.json', name: 'json', version: '20170516'
-
+    compile group: 'org.apache.commons', name: 'commons-collections4', version: '4.1'
 }
 
 
