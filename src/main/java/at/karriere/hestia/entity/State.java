@@ -65,6 +65,11 @@ public class State {
         bufferKeys.addAll(Arrays.asList(keys));
     }
 
+    /**
+     * Gets specified count of keys from queue like key1\nkey2\nkey3
+     * @param count
+     * @return
+     */
     public String getFromQueue(Long count) {
         String sum = "";
         if(getSizeOfQueue() > 0) {
@@ -101,6 +106,7 @@ public class State {
     }
 
     public boolean isSameConnection(String host, Integer port, Integer db) {
+        //Edge cases because null defaults to sdev04
         if(host == null && port == null && this.connection == null)
             return true;
         if((host == null || port == null) && this.connection != null)

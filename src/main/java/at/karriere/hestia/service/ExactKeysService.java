@@ -29,6 +29,17 @@ public class ExactKeysService {
         this.cookieGenerateComponent = cookieGenerateComponent;
     }
 
+    /**
+     * Gets exact amount if keys requested
+     * @param cursor
+     * @param count
+     * @param pattern
+     * @param host
+     * @param port
+     * @param db
+     * @param cookie
+     * @return
+     */
     public State keys(Long cursor, Long count, String pattern, String host, Integer port, Integer db, String cookie) {
         String keys = "";
         State state = getState(cookie, cursor, pattern, host, port, db);
@@ -43,6 +54,17 @@ public class ExactKeysService {
         return state;
     }
 
+    /**
+     * Gets exact amount of keys requested in json format
+     * @param cursor
+     * @param count
+     * @param pattern
+     * @param host
+     * @param port
+     * @param db
+     * @param cookie
+     * @return
+     */
     public String keysJson(Long cursor, Long count, String pattern, String host, Integer port, Integer db, String cookie) {
         State state = keys(cursor, count, pattern, host, port, db, cookie);
         String keys = state.getCursor() + "\n" + state.getKeys();
@@ -53,6 +75,16 @@ public class ExactKeysService {
         return state.getFromQueue(count);
     }
 
+    /**
+     * Gets the state of a user from the repo, generate new if none exists
+     * @param cookie
+     * @param cursor
+     * @param pattern
+     * @param host
+     * @param port
+     * @param db
+     * @return
+     */
     private State getState(String cookie, Long cursor, String pattern, String host, Integer port, Integer db) {
         if(cookie == null) {
             cookie = cookieGenerateComponent.generate();
@@ -75,6 +107,13 @@ public class ExactKeysService {
         state.setCursor(cursor);
         return state;
     }
+
+    /**
+     * Add together 2 Strings with a \n in between if they are both filled
+     * @param add1
+     * @param add2
+     * @return
+     */
     private String addKeys(String add1, String add2) {
         if(!add1.equals("")) {
             return add1 + "\n" + add2;
