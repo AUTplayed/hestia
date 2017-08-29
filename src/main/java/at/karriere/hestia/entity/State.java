@@ -2,6 +2,7 @@ package at.karriere.hestia.entity;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Objects;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -78,7 +79,7 @@ public class State {
         for (int i = 1; i < count; i++) {
             String head = bufferKeys.poll();
             if (head != null) {
-                sum += "\n" + head;
+                sum += Vars.DELIMITER + head;
             } else {
                 return sum;
             }
@@ -105,15 +106,11 @@ public class State {
 
     public boolean isSameConnection(String host, Integer port, Integer db) {
         //Edge cases because null defaults to sdev04
-        if (host == null && port == null && this.connection == null)
-            return true;
-        if ((host == null || port == null) && this.connection != null)
+        if (this.connection == null)
             return false;
         if ((this.db == null && db == null) || (this.db == null && db == 0))
-            return true;
-        if (connection == null)
-            return false;
-        return connection.getHostname().equals(host) && connection.getPort().equals(port) && this.db.equals(db);
+            return Objects.equals(connection.getHostname(), host) && Objects.equals(connection.getPort(), port);
+        return Objects.equals(connection.getHostname(), host) && Objects.equals(connection.getPort(), port) && Objects.equals(this.db, db);
     }
 
     public String getCookie() {

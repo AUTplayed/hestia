@@ -1,6 +1,7 @@
 package at.karriere.hestia.component;
 
 import at.karriere.hestia.entity.State;
+import at.karriere.hestia.entity.Vars;
 import at.karriere.hestia.service.KeysService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -73,7 +74,7 @@ public class ExactKeysComponent {
      * Parse output returned from redis into cursor and keys
      */
     private String[] parseKeys(State state, String keys) {
-        String[] keyArray = keys.split("\n");
+        String[] keyArray = keys.split(Vars.DELIMITER);
         state.setCursor(Long.valueOf(keyArray[0]));
         return Arrays.copyOfRange(keyArray, 1, keyArray.length);
     }
@@ -82,7 +83,7 @@ public class ExactKeysComponent {
      * Join string[] to String with \n delimiters
      */
     private String join(String[] array) {
-        return String.join("\n", array);
+        return String.join(Vars.DELIMITER, array);
     }
 
     /**
@@ -102,7 +103,7 @@ public class ExactKeysComponent {
     private String addKeys(State state, String add) {
         if (!state.getKeys().equals("")) {
             if (!add.equals("")) {
-                return state.getKeys() + "\n" + add;
+                return state.getKeys() + Vars.DELIMITER + add;
             }
             return state.getKeys();
         }

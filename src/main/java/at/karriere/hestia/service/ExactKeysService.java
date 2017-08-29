@@ -4,6 +4,7 @@ import at.karriere.hestia.component.CookieGenerateComponent;
 import at.karriere.hestia.component.ExactKeysComponent;
 import at.karriere.hestia.component.JsonKeysConverterComponent;
 import at.karriere.hestia.entity.State;
+import at.karriere.hestia.entity.Vars;
 import at.karriere.hestia.repository.StateStoreRepository;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,15 +15,13 @@ public class ExactKeysService {
 
     final static Logger LOGGER = Logger.getLogger(ExactKeysService.class);
 
-    private KeysService keysService;
     private StateStoreRepository stateStoreRepository;
     private ExactKeysComponent exactKeysComponent;
     private JsonKeysConverterComponent jsonKeysConverterComponent;
     private CookieGenerateComponent cookieGenerateComponent;
 
     @Autowired
-    public ExactKeysService(KeysService keysService, StateStoreRepository stateStoreRepository, ExactKeysComponent exactKeysComponent, JsonKeysConverterComponent jsonKeysConverterComponent, CookieGenerateComponent cookieGenerateComponent) {
-        this.keysService = keysService;
+    public ExactKeysService(StateStoreRepository stateStoreRepository, ExactKeysComponent exactKeysComponent, JsonKeysConverterComponent jsonKeysConverterComponent, CookieGenerateComponent cookieGenerateComponent) {
         this.stateStoreRepository = stateStoreRepository;
         this.exactKeysComponent = exactKeysComponent;
         this.jsonKeysConverterComponent = jsonKeysConverterComponent;
@@ -51,7 +50,7 @@ public class ExactKeysService {
      */
     public String keysJson(Long cursor, Long count, String pattern, String host, Integer port, Integer db, String cookie) {
         State state = keys(cursor, count, pattern, host, port, db, cookie);
-        String keys = state.getCursor() + "\n" + state.getKeys();
+        String keys = state.getCursor() + Vars.DELIMITER + state.getKeys();
         return jsonKeysConverterComponent.convert(keys, state.getCookie());
     }
 
@@ -90,7 +89,7 @@ public class ExactKeysService {
      */
     private String addKeys(String add1, String add2) {
         if (!add1.equals("")) {
-            return add1 + "\n" + add2;
+            return add1 + Vars.DELIMITER + add2;
         } else {
             return add2;
         }

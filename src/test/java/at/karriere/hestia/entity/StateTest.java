@@ -9,6 +9,7 @@ public class StateTest {
     @Test
     public void testConnection() {
         State state = new State();
+        state.setConnection(null, null, null);
         assertThat(state.isSameConnection(null, null, null)).as("check if all null = true").isTrue();
         state.setConnection("localhost", 1234, 1);
         assertThat(state.isSameConnection("localhost", 1234, 1)).as("check if all same = true").isTrue();

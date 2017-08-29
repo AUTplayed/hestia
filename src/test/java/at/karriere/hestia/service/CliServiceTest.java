@@ -14,7 +14,6 @@ import static org.mockito.Mockito.when;
 
 public class CliServiceTest {
 
-    CliRepository cliRepository;
     OutputConverterComponent outputConverterComponent;
     DefaultHostComponent defaultHostComponent;
     SplitCommandComponent splitCommandComponent;
@@ -22,26 +21,18 @@ public class CliServiceTest {
 
     @Before
     public void prepare() {
-        cliRepository = Mockito.mock(CliRepository.class);
-        when(cliRepository.readResult()).thenReturn("OK");
-        when(cliRepository.connect("localhost",1234)).thenReturn(true);
         outputConverterComponent = Mockito.mock(OutputConverterComponent.class);
         when(outputConverterComponent.stringify("OK")).thenReturn("OK");
         defaultHostComponent = Mockito.mock(DefaultHostComponent.class);
         splitCommandComponent = new SplitCommandComponent();
-        cliService = new CliService(cliRepository,outputConverterComponent,defaultHostComponent,splitCommandComponent);
+        cliService = new CliService(outputConverterComponent,defaultHostComponent,splitCommandComponent);
     }
 
 
     @Test
-    public void testValidCommand() {
-        String result = cliService.executeCommand("localhost",1234,"SET FOO BAR");
-        assertThat(result).as("Check valid command").isEqualTo("OK");
+    public void testConnectionError() {
+        String result = cliService.executeCommand("asd",1234,"SET FOO BAR");
+        assertThat(result).as("Check connection error").isEqualTo("ERR failed to connect to specified hostname and port");
     }
 
-    @Test
-    public void testInvalidCommand() {
-        String result = cliService.executeCommand("localhost", 1234, "asd FOO BAR");
-        assertThat(result).as("Check invalid command").isEqualTo("ERR illegal command 'asd'");
-    }
 }

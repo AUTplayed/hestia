@@ -64,7 +64,7 @@ $(document).ready(function () {
         if (cursor == 0) {
             $("#keys-error").html("No more pages")
         } else {
-
+            count = $("#keys-count").val();
             //Else get the next keys
             getKeys();
         }
@@ -185,9 +185,10 @@ function getKeys(isExact, callback) {
     }
     url += getConnection();
 
+    $("#keys-spinner").show();
     //Send request to server
     $.get(url, function (res) {
-
+        $("#keys-spinner").hide();
         //If there is a cursor returned
         if (res && res.cursor) {
 

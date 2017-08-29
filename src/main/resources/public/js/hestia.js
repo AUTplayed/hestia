@@ -29,7 +29,6 @@ function setupEvents() {
 
     //On cli keypress
     $("#cli-command").keydown(function (ev) {
-
         //If keypress is "ENTER"
         if (ev.originalEvent.keyCode === 13) {
 
@@ -45,10 +44,10 @@ function setupEvents() {
             if (command === "clear") {
                 $("#cli-output").html("");
             } else {
-
+                $("#cli-spinner").show();
                 //Send Request to server
                 $.get("/cli?command=" + command + getConnection(), function (res) {
-
+                    $("#cli-spinner").hide();
                     //Display result
                     $("#cli-output").html(res);
                 });
