@@ -23,21 +23,14 @@ public class ExactKeysComponent {
      */
     public String getKeys(State state, Long count, String pattern, String host, Integer port, Integer db) {
         String keys = "";
+        double mean = state.getMean();
+        long requestCount = count;
 
-        //Use the default method when there is no pattern
-        if (pattern == null || pattern.equals("*")) {
-            keys = keysService.keys(state.getCursor(), count, pattern, host, port, db);
-            keys = join(parseKeys(state, keys));
-        } else {
-            double mean = state.getMean();
-            long requestCount = count;
-
-            //Take old mean if it exists
-            if (mean != 0) {
-                requestCount = (long) Math.ceil(count * mean);
-            }
-            keys = getKeysRec(state, requestCount, count, pattern, host, port, db);
+        //Take old mean if it exists
+        if (mean != 0) {
+            requestCount = (long) Math.ceil(count * mean);
         }
+        keys = getKeysRec(state, requestCount, count, pattern, host, port, db);
         return keys;
     }
 

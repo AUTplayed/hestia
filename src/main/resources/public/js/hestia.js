@@ -58,7 +58,7 @@ function setupEvents() {
 
     //On Server dropdown value change
     $("#connection-server").change(function () {
-
+        $("#keys-nextpage").prop("disabled", true);
         //Get selected server
         var selected = $("#connection-server").val();
 
@@ -80,6 +80,7 @@ function setupEvents() {
     });
 
     $("#connection-host, #connection-port").keydown(function (ev) {
+        $("#keys-nextpage").prop("disabled", true);
         //If keypress is "ENTER"
         if (ev.originalEvent.keyCode === 13) {
             getAndSetInfo();
@@ -119,12 +120,12 @@ function setupEvents() {
 
     $("#connection-database").change(function () {
         getNamespaces();
+        inputNextpage.prop("disabled", true);
     });
 }
 
 function getAndSetInfo() {
     $("#connection-namespaces").html("");
-    cursor = 0;
     var url = "/info";
     url += getConnectionNoDb();
 
@@ -166,7 +167,6 @@ function setInfoTable(info) {
 }
 
 function getNamespaces() {
-    cursor = 0;
     $("#connection-namespaces").html("");
     var url = "/namespaces?a=b" + getConnection();
     $.get(url, function (res) {
