@@ -11,7 +11,7 @@ $(document).ready(function () {
     var inputCount = $("#keys-count");
     inputNextpage.prop("disabled", true);
 
-    $(document).mouseup(function(e) {
+    $(document).mouseup(function (e) {
         var container = $("#keys-value, #keys-output, #keys-keys");
 
         // if the target of the click isn't the container nor a descendant of the container
@@ -63,7 +63,7 @@ $(document).ready(function () {
         //If keypress is "ENTER"
         if (ev.originalEvent.keyCode === 13) {
             search();
-        } else if(ev.originalEvent.keyCode < 9 || ev.originalEvent.keyCode > 40) {
+        } else if (ev.originalEvent.keyCode < 9 || ev.originalEvent.keyCode > 40) {
             inputNextpage.prop("disabled", true);
         }
     });
@@ -188,9 +188,10 @@ function getKeys(isExact, callback) {
 
     //Build url depending on filled input forms
     var url = "/exactKeys?cursor=" + cursor;
-    if (count && count != "") {
-        url += "&count=" + count;
+    if (!count && count == "") {
+        count = 10;
     }
+    url += "&count=" + count;
     if (pattern && pattern != "") {
         url += "&pattern=" + encodeURIComponent(pattern);
     }
@@ -200,6 +201,10 @@ function getKeys(isExact, callback) {
     //Send request to server
     $.get(url, function (res) {
         $("#keys-spinner").hide();
+
+        if (res.error) {
+            $("#keys-output").append("<tr class='keys-row'><td>" + res.error + "</td></tr>");
+        }
         //If there is a cursor returned
         if (res && res.cursor) {
 
@@ -217,7 +222,7 @@ function getKeys(isExact, callback) {
                 //If a key gets clicked
                 $(".keys-row").click(keyClick);
             } else {
-                $("#keys-output").append("<tr class='keys-row'><td>no results on this page</td></tr>");
+                $("#keys-output").append("<tr class='keys-row'><td>no results found</td></tr>");
             }
         }
     });
@@ -234,7 +239,6 @@ function keyClick(ev) {
     selectedRow = $(ev.currentTarget);
 
     if (ev.originalEvent.shiftKey) {
-
         shiftClick(selectedRow);
     } else if (ev.originalEvent.ctrlKey || ev.originalEvent.metaKey) {
         ctrlClick(selectedRow);

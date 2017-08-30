@@ -112,7 +112,7 @@ function setupEvents() {
 
     $("#connection-database").change(function () {
         getNamespaces();
-        inputNextpage.prop("disabled", true);
+        $("#keys-nextpage").prop("disabled", true);
     });
 
     $("#cli-safety").click(function () {

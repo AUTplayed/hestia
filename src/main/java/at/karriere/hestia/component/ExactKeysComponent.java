@@ -22,7 +22,6 @@ public class ExactKeysComponent {
      * Gets exact amount of keys specified
      */
     public String getKeys(State state, Long count, String pattern, String host, Integer port, Integer db) {
-        String keys = "";
         double mean = state.getMean();
         long requestCount = count;
 
@@ -30,8 +29,7 @@ public class ExactKeysComponent {
         if (mean != 0) {
             requestCount = (long) Math.ceil(count * mean);
         }
-        keys = getKeysRec(state, requestCount, count, pattern, host, port, db);
-        return keys;
+        return getKeysRec(state, requestCount, count, pattern, host, port, db);
     }
 
     /**
