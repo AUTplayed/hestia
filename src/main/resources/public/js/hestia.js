@@ -47,7 +47,7 @@ function setupEvents() {
                 $("#cli-output").html("");
                 $("#cli-spinner").show();
                 //Send Request to server
-                $.get("/cli?command=" + command + getConnection(), function (res) {
+                $.get("/cli?command=" + encodeURIComponent(command) + getConnection(), function (res) {
                     $("#cli-spinner").hide();
                     //Display result
                     $("#cli-output").html(res);
