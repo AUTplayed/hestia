@@ -36,22 +36,14 @@ function setupEvents() {
             var commandInput = $("#cli-command");
             var command = commandInput.val();
 
-            if ($("#cli-clear").is(':checked')) {
-                commandInput.val("");
-            }
-
             //If command is clear, clear the output
             if (command === "clear") {
                 $("#cli-output").html("");
+                commandInput.val("");
+            } else if(command.toLowerCase().includes("del") || command.toLowerCase().includes("flush")) {
+                $("#cli-safety").click();
             } else {
-                $("#cli-output").html("");
-                $("#cli-spinner").show();
-                //Send Request to server
-                $.get("/cli?command=" + encodeURIComponent(command) + getConnection(), function (res) {
-                    $("#cli-spinner").hide();
-                    //Display result
-                    $("#cli-output").html(res);
-                });
+                executeCliCommand(command);
             }
         }
     });
@@ -121,6 +113,24 @@ function setupEvents() {
     $("#connection-database").change(function () {
         getNamespaces();
         inputNextpage.prop("disabled", true);
+    });
+
+    $("#cli-safety").click(function () {
+        executeCliCommand($("#cli-command").val());
+    });
+}
+
+function executeCliCommand(command) {
+    if ($("#cli-clear").is(':checked')) {
+        $("#cli-command").val("");
+    }
+    $("#cli-output").html("");
+    $("#cli-spinner").show();
+    //Send Request to server
+    $.get("/cli?command=" + encodeURIComponent(command) + getConnection(), function (res) {
+        $("#cli-spinner").hide();
+        //Display result
+        $("#cli-output").html(res);
     });
 }
 

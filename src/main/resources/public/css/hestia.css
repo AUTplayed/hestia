@@ -72,6 +72,10 @@
     font-size: 25px;
 }
 
+#cli-safety {
+    visibility: hidden;
+}
+
 #keys-value-wrapper>p {
     font-size: 25px;
 }
