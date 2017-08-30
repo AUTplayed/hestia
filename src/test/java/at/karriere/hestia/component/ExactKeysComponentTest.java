@@ -61,17 +61,6 @@ public class ExactKeysComponentTest {
     }
 
     @Test
-    public void testNonExact() {
-        when(keysService.keys(anyLong(), anyLong(), anyString(), anyString(), anyInt(), anyInt())).thenReturn("123\nkey1\nkey2");
-        exactKeysComponent = new ExactKeysComponent(keysService);
-        State state = new State();
-        String keys1 = exactKeysComponent.getKeys(state, 5L , "*" ,null, null, null);
-        assertThat(keys1).as("check if first call returned right values").isEqualTo("key1\nkey2");
-        assertThat(state.getCursor()).as("check if cursor was set correctly").isEqualTo(123L);
-        assertThat(state.getFromQueue(2L)).as("check if queue was not filled").isEqualTo("");
-    }
-
-    @Test
     public void testMeanIncreaseWhenNoResult() {
         when(keysService.keys(anyLong(), anyLong(), anyString(), anyString(), anyInt(), anyInt())).thenReturn("123").thenReturn("234").thenReturn("345").thenReturn("456\nkey1");
         exactKeysComponent = new ExactKeysComponent(keysService);
