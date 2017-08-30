@@ -11,6 +11,17 @@ $(document).ready(function () {
     var inputCount = $("#keys-count");
     inputNextpage.prop("disabled", true);
 
+    $(document).mouseup(function(e)
+    {
+        var container = $("#keys-value, #keys-output, #keys-keys");
+
+        // if the target of the click isn't the container nor a descendant of the container
+        if (!container.is(e.target) && container.has(e.target).length === 0)
+        {
+            $(".marked").removeClass("marked");
+        }
+    });
+
     $("#keys-value-export").confirmation({
         rootSelector: "#keys-value-export",
         title: "Choose file format",
@@ -51,10 +62,10 @@ $(document).ready(function () {
 
     inputPattern.keydown(function (ev) {
         //If keypress is "ENTER"
+        inputNextpage.prop("disabled", true);
         if (ev.originalEvent.keyCode === 13) {
             search();
         }
-        inputNextpage.prop("disabled", true);
     });
 
     //On Nextpage button click
@@ -223,6 +234,7 @@ function keyClick(ev) {
     selectedRow = $(ev.currentTarget);
 
     if (ev.originalEvent.shiftKey) {
+
         shiftClick(selectedRow);
     } else if (ev.originalEvent.ctrlKey || ev.originalEvent.metaKey) {
         ctrlClick(selectedRow);

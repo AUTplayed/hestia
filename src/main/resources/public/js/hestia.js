@@ -180,7 +180,7 @@ function editNamespaceDescription(ev) {
     var value = target.val();
     var children = target.parent().parent().children();
     var key = children.eq(0).html();
-    currentNamespaces[key].description = value;
+    currentNamespaces[key].description = encodeURIComponent(value);
     var jsonString = JSON.stringify(currentNamespaces).replaceAll('\"', '\\"');  //WTF do not split into 2 method calls - won't work
     var url = "/cli?command=SET info " + "\"" + encodeURIComponent(jsonString) + "\"" + getConnection();
     $.get(url, function (res) {
@@ -205,7 +205,7 @@ function buildNamespaceTable(res) {
     keys.forEach(function (key) {
         table += "<tr>\n<td>" + decodeURIComponent(key) + "</td>\n";
         table += "<td>" + res[key].count + "</td>\n";
-        table += "<td><input class='connection-namespaces-description' value='" + res[key].description + "'></td>\n</tr>\n";
+        table += "<td><input class='connection-namespaces-description' value='" + decodeURIComponent(res[key].description) + "'></td>\n</tr>\n";
     });
     table += "</table>";
     return table;
