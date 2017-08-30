@@ -203,7 +203,7 @@ function buildNamespaceTable(res) {
         return "";
     }
     keys.forEach(function (key) {
-        table += "<tr>\n<td>" + key + "</td>\n";
+        table += "<tr>\n<td>" + decodeURIComponent(key) + "</td>\n";
         table += "<td>" + res[key].count + "</td>\n";
         table += "<td><input class='connection-namespaces-description' value='" + res[key].description + "'></td>\n</tr>\n";
     });
