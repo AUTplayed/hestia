@@ -181,7 +181,7 @@ function getKeys(isExact, callback) {
         url += "&count=" + count;
     }
     if (pattern && pattern != "") {
-        url += "&pattern=" + pattern;
+        url += "&pattern=" + encodeURIComponent(pattern);
     }
     url += getConnection();
 

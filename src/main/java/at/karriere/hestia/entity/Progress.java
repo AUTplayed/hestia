@@ -10,8 +10,10 @@ public class Progress {
     private Integer db;
     private double lastProgress;
     private String host;
+    private Long startTime;
 
     public Progress(Long dbsize, Integer db, String host) {
+        this.startTime = System.currentTimeMillis();
         this.dbsize = dbsize;
         scanned = 0L;
         this.db = db;
@@ -30,5 +32,9 @@ public class Progress {
             lastProgress = progress;
             LOGGER.info("Scanned " + progress + "% of db" + db + " of server " + host);
         }
+    }
+
+    public void finish() {
+        LOGGER.info("Scanning db" + db + " took " + (System.currentTimeMillis() - startTime) / 1000.0 + "s");
     }
 }

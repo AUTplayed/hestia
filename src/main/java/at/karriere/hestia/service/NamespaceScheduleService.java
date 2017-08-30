@@ -47,22 +47,23 @@ public class NamespaceScheduleService {
             Progress progress = scanProgressComponent.start(host, port, keyspace);
             HashMap<String, Long> map = new HashMap<>();
             Long time = System.currentTimeMillis();
-            scan(0L, Vars.SCANSIZE, "*:*", host, port, keyspace, map, progress);
-            LOGGER.info("Scanning db" + keyspace + " took " + (System.currentTimeMillis() - time) / 1000.0 + "s");
+            scan(Vars.SCANSIZE, host, port, keyspace, map, progress);
             saveResults(map, host, port, keyspace);
         }
     }
 
-    private void scan(Long cursor, Long count, String pattern, String host, Integer port, Integer db, HashMap<String, Long> map, Progress progress) {
+    private void scan(Long count, String host, Integer port, Integer db, HashMap<String, Long> map, Progress progress) {
         String keys = "";
+        Long cursor = 0L;
         do {
-            keys = keysService.keys(cursor, count, pattern, host, port, db, false);
+            keys = keysService.keys(cursor, count, "*:*", host, port, db, false);
             String[] keysArray = keys.split("\n");
             cursor = Long.valueOf(keysArray[0]);
             String[] keysCopy = Arrays.copyOfRange(keysArray, 1, keysArray.length);
             namespaceCollectorComponent.collect(keysCopy, map);
             progress.tick(count);
         } while (cursor != 0);
+        progress.finish();
     }
 
     private void saveResults(HashMap<String, Long> map, String host, Integer port, Integer db) {
