@@ -136,6 +136,7 @@ function executeCliCommand(command) {
 
 function getAndSetInfo() {
     $("#connection-namespaces").html("");
+    if($("#connection-host").val() === "") return;
     var url = "/info";
     url += getConnectionNoDb();
 
@@ -178,6 +179,7 @@ function setInfoTable(info) {
 
 function getNamespaces() {
     $("#connection-namespaces").html("");
+    if($("#connection-host").val() === "") return;
     var url = "/namespaces?a=b" + getConnection();
     $.get(url, function (res) {
         $("#connection-namespaces").html(buildNamespaceTable(res));
