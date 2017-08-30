@@ -19,6 +19,10 @@ public class KeysService {
     }
 
     public String keys(Long cursor, Long count, String pattern, String host, Integer port, Integer db) {
+        return keys(cursor, count, pattern, host, port, db, true);
+    }
+
+    public String keys(Long cursor, Long count, String pattern, String host, Integer port, Integer db, boolean log) {
         if (cursor == null) {
             cursor = 0L;
         }
@@ -29,7 +33,7 @@ public class KeysService {
             pattern = "*";
         }
         String command = "SCAN " + cursor + " COUNT " + count + " MATCH " + pattern;
-        return dbWrapperCliService.wrapAndExecute(host, port, command, db);
+        return dbWrapperCliService.wrapAndExecute(host, port, command, db, log);
     }
 
     public String keysJson(Long cursor, Long count, String pattern, String host, Integer port, Integer db) {

@@ -26,14 +26,18 @@ public class DBWrapperCliService {
      * Wraps a command in a eval with select db and returns the result
      */
     public String wrapAndExecute(String host, Integer port, String command, Integer db) {
-        LOGGER.info(command);
+        return wrapAndExecute(host, port, command, db, true);
+    }
+
+    public String wrapAndExecute(String host, Integer port, String command, Integer db, boolean log) {
+        if(log) LOGGER.info(command);
         if (db == null || db == 0) {
             return cliService.executeCommand(host, port, command);
         }
         CommandContainer commandContainer = splitCommandComponent.split(command);
         CommandContainer wrapContainer = dbCommandWrapperComponent.wrap(commandContainer, db);
 
-        LOGGER.info(wrapContainer.getCommand() + " \"" + wrapContainer.getArgs()[0] + "\" " + wrapContainer.getArgs()[1]);
+        if(log) LOGGER.info(wrapContainer.getCommand() + " \"" + wrapContainer.getArgs()[0] + "\" " + wrapContainer.getArgs()[1]);
         return cliService.executeCommand(host, port, wrapContainer);
     }
 }

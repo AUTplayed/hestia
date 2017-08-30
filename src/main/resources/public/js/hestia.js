@@ -44,6 +44,7 @@ function setupEvents() {
             if (command === "clear") {
                 $("#cli-output").html("");
             } else {
+                $("#cli-output").html("");
                 $("#cli-spinner").show();
                 //Send Request to server
                 $.get("/cli?command=" + command + getConnection(), function (res) {
@@ -122,6 +123,7 @@ function setupEvents() {
 }
 
 function getAndSetInfo() {
+    $("#connection-namespaces").html("");
     cursor = 0;
     var url = "/info";
     url += getConnectionNoDb();
