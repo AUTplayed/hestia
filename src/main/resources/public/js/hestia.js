@@ -191,7 +191,7 @@ function editNamespaceDescription(ev) {
     var target = $(ev.currentTarget);
     var value = target.val();
     var children = target.parent().parent().children();
-    var key = children.eq(0).html();
+    var key = encodeURIComponent(children.eq(0).html());
     currentNamespaces[key].description = encodeURIComponent(value);
     var jsonString = JSON.stringify(currentNamespaces).replaceAll('\"', '\\"');  //WTF do not split into 2 method calls - won't work
     var url = "/cli?command=SET info " + "\"" + encodeURIComponent(jsonString) + "\"" + getConnection();
