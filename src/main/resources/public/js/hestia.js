@@ -12,8 +12,13 @@ $(document).ready(function () {
  */
 function readServers() {
     var selectlist = $("#connection-server");
-    servers.forEach(function (server) {
-        selectlist.append("<option>" + server.name + "</option>")
+    $.get("/servers",function (res) {
+        res.forEach(function (server) {
+            servers.push(server);
+        });
+        servers.forEach(function (server) {
+            selectlist.append("<option>" + server.name + "</option>")
+        });
     });
 }
 
