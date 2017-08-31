@@ -24,6 +24,7 @@ public class ApiControllerTest {
         InfoService infoService = Mockito.mock(InfoService.class);
         ExportService exportService = Mockito.mock(ExportService.class);
         ExactKeysService exactKeysService = Mockito.mock(ExactKeysService.class);
+        ServerConfigService serverConfigService = Mockito.mock(ServerConfigService.class);
 
         when(keysService.keysJson(any(),any(),any(),any(),any(), any())).thenReturn("OK");
         when(keyspaceService.getKeySpacesJson(any(),any())).thenReturn("OK");
@@ -31,7 +32,7 @@ public class ApiControllerTest {
         when(infoService.getInfo(any(),any())).thenReturn("OK");
         when(exportService.export(any(),any(),any(),any(),any())).thenReturn("OK");
 
-        apiController = new ApiController(keysService, keyspaceService, namespaceScheduleService, namespaceService, infoService, exportService, exactKeysService);
+        apiController = new ApiController(keysService, keyspaceService, namespaceScheduleService, namespaceService, infoService, exportService, exactKeysService, serverConfigService);
     }
 
 
