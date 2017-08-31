@@ -1,0 +1,68 @@
+{
+    "configuration": {
+        "packages": "org.apache.logging.log4j.core",
+
+        "Properties" : {
+            "Property" : {
+                "name" : "baseDir",
+                "value" : "/var/log/hestia"
+            }
+        },
+
+        "appenders": {
+            "appender": [
+                {
+                    "type": "RollingFile",
+                    "name": "HestiaLogger",
+                    "FileName": "${baseDir}/hestia.log",
+                    "filePattern": "${baseDir}/hestia-%d{yyyy-MM-dd}.log",
+                    "PatternLayout": {
+                        "pattern": "%d{DATE} [%t] %-5level %c{1.}: %msg%n%throwable"
+                    },
+                    "Policies" : {
+                        "TimeBasedTriggeringPolicy" : {
+                            "interval" : "1"
+                        }
+                    },
+                    "DefaultRolloverStrategy" : {
+                        "Delete" :  {
+                            "basePath" : "${baseDir}",
+                            "IfLastModified" : {
+                                "age" : "5m"
+                            }
+                        }
+                    }
+                },
+                {
+                    "type": "File",
+                    "name": "durationLogger",
+                    "FileName": "${baseDir}/hestiaDuration.log",
+                    "PatternLayout": {
+                        "pattern": "%d{DATE} %msg%n"
+                    }
+                }
+            ]
+        },
+        "loggers": {
+            "root": {
+                "level": "info",
+                "appender-ref": [
+                    {
+                        "ref": "HestiaLogger"
+                    }
+                ]
+            },
+            "logger": [
+                {
+                    "level": "info",
+                    "name" : "durationLogger",
+                    "appender-ref": [
+                        {
+                            "ref": "durationLogger"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}
