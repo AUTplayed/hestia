@@ -26,9 +26,10 @@ public class ApiController {
     InfoService infoService;
     ExactKeysService exactKeysService;
     ExportService exportService;
+    ServerConfigService serverConfigService;
 
     @Autowired
-    public ApiController(KeysService keysService, KeyspaceService keyspaceService, NamespaceScheduleService namespaceScheduleService, NamespaceService namespaceService, InfoService infoService, ExportService exportService, ExactKeysService exactKeysService) {
+    public ApiController(KeysService keysService, KeyspaceService keyspaceService, NamespaceScheduleService namespaceScheduleService, NamespaceService namespaceService, InfoService infoService, ExportService exportService, ExactKeysService exactKeysService, ServerConfigService serverConfigService) {
         this.keysService = keysService;
         this.keyspaceService = keyspaceService;
         this.namespaceScheduleService = namespaceScheduleService;
@@ -36,6 +37,7 @@ public class ApiController {
         this.infoService = infoService;
         this.exactKeysService = exactKeysService;
         this.exportService = exportService;
+        this.serverConfigService = serverConfigService;
     }
 
     /**
@@ -119,6 +121,12 @@ public class ApiController {
         LOGGER.info("GET /export");
         keys = URLDecoder.decode(keys, StandardCharsets.UTF_8.name());
         return exportService.export(host, port, db, keys, format);
+    }
+
+    @RequestMapping(value = "/servers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String servers() {
+        LOGGER.info("GET /servers");
+        return serverConfigService.getServers();
     }
 
 }
